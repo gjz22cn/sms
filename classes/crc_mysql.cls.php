@@ -118,6 +118,7 @@
 				$this->lasterrmsg = mysql_error();
 				
 			}
+            mysql_query("SET NAMES utf8");
 			return $this->m_mysqlhandle;
 		}
 

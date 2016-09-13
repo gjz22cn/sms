@@ -206,5 +206,6 @@ CREATE TABLE `crc_workex` (
   `workex_year` int(4) NOT NULL default '0',
   `workex_posi` varchar(32) NOT NULL default '',
   `workex_desc` varchar(512) NOT NULL default '',
+  `workex_score` int(4) NOT NULL default '0',
   PRIMARY KEY  (`workex_id`)
 ) ENGINE=MyISAM auto_increment=2;

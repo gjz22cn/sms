@@ -14,6 +14,7 @@ include_once('../classes/crc_courses.cls.php');
 include_once('../classes/crc_teacher.cls.php');
 include_once('../classes/crc_evaluation.cls.php');
 include_once('../classes/crc_admin.cls.php');
+include_once('../classes/crc_staff.cls.php');
 include_once('../classes/crc_dbsetup.cls.php');
 ?>
 
@@ -91,6 +92,7 @@ print '[' . $title . ']';
                 $_SESSION['profileid'] = "";
                 $_SESSION['name'] = "";
                 $_SESSION['data'] = "";
+                $_SESSION['workexdata'] = "";
                 $_SESSION['profiledata'] = "";
                 $_SESSION['scheduledata'] = "";
                 $_SESSION['coursesdata'] = "";
@@ -146,15 +148,21 @@ print '[' . $title . ']';
 
 			}
 /* james add start */
-		} else if ($_GET['method'] == 'workex') {
-			if ($_GET['func'] == 'get') {
-				
-				$_SESSION['msg'] = "";
-				$profile = new crc_profile(false);
-				$_SESSION['profiledata'] = $profile->fn_getprofile($_SESSION['uid']);
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_workex.php?func=get&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'update') {
+		} else if ($_GET['method'] == 'staff') {
+			//$staff = new crc_staff(false);
+			$staff = new crc_staff(true);
+			if ($_GET['func'] == 'showaddworkex') {
+                $_SESSION['workexdata'] = $staff->m_workexdata;
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+			} else if ($_GET['func'] == 'addworkex') {
+				$result = $staff->fn_setworkex($_POST);
+				if($result == false) {
+					$_SESSION['workexdata'] = $staff->m_workexdata;
+					$_SESSION['msg'] = $staff->lasterrmsg;
+				} else {
+					$_SESSION['msg'] = "Work expirence successfully added";
+				}
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
             }
 
 /* james add end */

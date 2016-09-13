@@ -250,6 +250,8 @@ function verify(page) {
 		} else {
 			dbsetup.submit();
 		}
+	} else if (page == "staffaddworkex") {
+        staffaddworkex.submit();
 	} else {
 		alert("unknown/unhandled page");
 	}	
