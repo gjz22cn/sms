@@ -197,3 +197,14 @@ CREATE TABLE `crc_venue` (
   `venue_shortname` varchar(8) NOT NULL default '',
   PRIMARY KEY  (`venue_id`)
 ) ENGINE=MyISAM auto_increment=2 ;
+
+DROP TABLE IF EXISTS `crc_workex`;
+CREATE TABLE `crc_workex` (
+  `workex_id` int(11) NOT NULL auto_increment,
+  `workex_uid` int(11) NOT NULL default '0',
+  `workex_dure` varchar(64) NOT NULL default '',
+  `workex_year` int(4) NOT NULL default '0',
+  `workex_posi` varchar(32) NOT NULL default '',
+  `workex_desc` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`workex_id`)
+) ENGINE=MyISAM auto_increment=2;

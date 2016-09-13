@@ -145,7 +145,19 @@ print '[' . $title . ']';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_register.php?' . session_name() . '=' . session_id() . '">';
 
 			}
+/* james add start */
+		} else if ($_GET['method'] == 'workex') {
+			if ($_GET['func'] == 'get') {
+				
+				$_SESSION['msg'] = "";
+				$profile = new crc_profile(false);
+				$_SESSION['profiledata'] = $profile->fn_getprofile($_SESSION['uid']);
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_workex.php?func=get&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 
+			} else if ($_GET['func'] == 'update') {
+            }
+
+/* james add end */
 		} else if ($_GET['method'] == 'profile') {
 
 			if ($_GET['func'] == 'get') {
