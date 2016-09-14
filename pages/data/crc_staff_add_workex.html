@@ -8,16 +8,20 @@
 
 function load()
 {
-    if (("action" in g_data))
+    if (!("action" in g_data))
     {
         return;
     }
 
-    //g_data['action'] = "edit";
-    if (g_data.action == "edit") 
+    alert(JSON.stringify(g_data));
+    if (g_data.action == "add") 
     {
         //alert(JSON.stringify(g_data));
-        autofilldata(g_data);
+        autofilldata(g_data, 0);
+    }
+    else if (g_data.action == "edit") 
+    {
+        autofilldata(g_data, 1);
     }
 }
 </script>
@@ -42,7 +46,10 @@ function load()
 
 <form name="staffaddworkex" action="crc_handler.php?method=staff&func=addworkex" method="post">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
-<table width="500">
+<input type="hidden" name="action">
+<input type="hidden" name="workex_uid">
+<input type="hidden" name="workex_id">
+<table>
 	<tr>
 		<td valign="top" width="80">
             <!-- This is the menu -->
@@ -77,11 +84,11 @@ function load()
         </tr>
     	<tr>
         	<td align="right"><span class="error">*</span>Year: </td>
-        	<td><input type="text" name="year" size="5" value=""></td>
+        	<td><input type="text" name="workex_year" size="5" value=""></td>
         </tr>
 		<tr>
         	<td align="right"><span class="error">*</span>Position: </td>
-            <td><select name="position"><option value="4">部门正职</option>
+            <td><select name="workex_position"><option value="4">部门正职</option>
                     <option value="3">部门副职</option>
                     <option value="2">业务经理</option>
                     <option value="1">业务主办及以下</option>
@@ -90,12 +97,11 @@ function load()
         </tr>
 		<tr>
         	<td align="right">Description: </td>
-            <!--<td><input type="text" name="desc" size="512" style="width:200px;height:80px;" value=""></td>-->
-            <td><textarea name="desc" rows="8" cols="128" maxlength="1024" value=""></textarea></td>
+            <td><textarea name="workex_desc" rows="8" cols="128" maxlength="1024" value=""></textarea></td>
         </tr>
     	<tr>
         	<td align="right"><span class="error">*</span>Score: </td>
-        	<td><input type="text" name="score" size="5" value=""></td>
+        	<td><input type="text" name="workex_score" size="5" value=""></td>
         </tr>
 		<tr>
       		<td colspan="2" align="center"><BR/><input type="submit" name="Add" value="Add" onclick="javascript:verify(\'staffaddworkex\');"></td>

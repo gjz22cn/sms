@@ -35,23 +35,7 @@ print '[' . $title . ']';
 <LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
 </HEAD>
 <BODY>
-<CENTER><!----------------------------------------------------
-			// This is the main boss of the web page. The page
-			// is broken down into 3 groups as follows:
-			//
-			// - The "Page Header" where the logo should be placed
-			//   and anything else that is to be seen on every page.
-			//
-			// - The "Page Content" where the content text of the
-			//   page is to be placed for users to see.
-			//
-			// - The "Page Footer" where the closing statements
-			//   such as webmaster email and any closing statements
-			//   should be placed. Again this will be seen on every page.
-			//
-			// Note that all this should be placed within a table
-			// containing 3 rows respectively.
-			------------------------------------------------------>
+<CENTER>
 
 <TABLE width="100%">
 	<!-- The Page Header -->
@@ -149,12 +133,15 @@ print '[' . $title . ']';
 			}
 /* james add start */
 		} else if ($_GET['method'] == 'staff') {
-			//$staff = new crc_staff(false);
-			$staff = new crc_staff(true);
 			if ($_GET['func'] == 'showaddworkex') {
+                $staff = new crc_staff(false);
                 $_SESSION['workexdata'] = $staff->m_workexdata;
+                $_SESSION['workexdata']['action'] = 'add';
+                $_SESSION['workexdata']['workex_uid'] = '1';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 			} else if ($_GET['func'] == 'addworkex') {
+                $staff = new crc_staff(false);
+                //$staff = new crc_staff(true);
 				$result = $staff->fn_setworkex($_POST);
 				if($result == false) {
 					$_SESSION['workexdata'] = $staff->m_workexdata;
@@ -162,9 +149,17 @@ print '[' . $title . ']';
 				} else {
 					$_SESSION['msg'] = "Work expirence successfully added";
 				}
+                $_SESSION['workexdata']['workex_uid'] = '1';
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+            } else if ($_GET['func'] == 'editworkex') {
+                $staff = new crc_staff(false);
+                if (!isset($_GET['uid']) || !isset($_GET['workex_id']) || !isset($_GET['action'])) {
+                }
+                $_SESSION['workexdata'] = $staff->fn_getworkexentry($_GET['uid'], $_GET['workex_id']);
+                $_SESSION['workexdata']['action'] = 'edit';
+                $_SESSION['workexdata']['workex_uid'] = '1';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
             }
-
 /* james add end */
 		} else if ($_GET['method'] == 'profile') {
 

@@ -69,14 +69,17 @@
 			$this->_DEBUG = $debug;
 			
             $this->m_uid = 1;
+            $this->m_workexdata['action'] = '';
+            $this->m_workexdata['workex_id'] = '';
+            $this->m_workexdata['workex_uid'] = '';
 			$this->m_workexdata['syear'] = '';
 			$this->m_workexdata['smonth'] = '';
 			$this->m_workexdata['eyear'] = '';
 			$this->m_workexdata['emonth'] = '';
-			$this->m_workexdata['year'] = '';
-			$this->m_workexdata['position'] = '';
-			$this->m_workexdata['desc'] = '';
-			$this->m_workexdata['score'] = '';
+			$this->m_workexdata['workex_year'] = '';
+			$this->m_workexdata['workex_position'] = '';
+			$this->m_workexdata['workex_desc'] = '';
+			$this->m_workexdata['workex_score'] = '';
 
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::constructor}: The class \"crc_staff\" was successfuly created. <br>";
@@ -94,11 +97,25 @@
 				echo "DEBUG {crc_staff::fn_setworkex}: Setting workex information <br>";
 			}
 
+            if(!isset($post['action']) || !isset($post['workex_uid'])) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            if ($post['action'] != 'edit' && $post['action'] != 'add') {
+				$this->lasterrmsg = "Invalid param value!" . $post['action'];
+                return false;
+            }
+
+            if ($post['action'] == 'edit' && !isset($post['workex_id']) ) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
 			$db = new crc_mysql($this->_DEBUG);
 			$db->fn_connect();
 			$result = true;
 			if ($db->m_mysqlhandle != false) {
-				echo "DEBUG {crc_staff::fn_setworkex}: Setting workex information 1<br>";
 				if(isset($post['syear']) && isset($post['smonth'])) {
 					$this->m_startmonth = $post['syear'] . '.' . $post['smonth'];
 					$this->m_workexdata['syear'] = $post['syear'];
@@ -117,27 +134,27 @@
 					$this->m_workexdata['eyear'] = "";
 					$this->m_workexdata['emonth'] = "";
 				}
-				if(isset($post['year'])) {
-					$this->m_year = $post['year'];
+				if(isset($post['workex_year'])) {
+					$this->m_year = $post['workex_year'];
 				} else {
 					$this->m_year = "";
 				}
-				if(isset($post['position'])) {
-					$this->m_position = $post['position'];
+				if(isset($post['workex_position'])) {
+					$this->m_position = $post['workex_position'];
 				} else {
 					$this->m_position = "";
 				}
-				if(isset($post['desc'])) {
-					$this->m_desc = $post['desc'];
+				if(isset($post['workex_desc'])) {
+					$this->m_desc = $post['workex_desc'];
 				} else {
 					$this->m_desc = "";
 				}
-				$this->m_status = 'In progress';
-				if(isset($post['score'])) {
-					$this->m_score = $post['score'];
+				if(isset($post['workex_score'])) {
+					$this->m_score = $post['workex_score'];
 				} else {
 					$this->m_score = "";
 				}
+				$this->m_status = 'In progress';
 				
 				//this data should be restored if something goes wrong
 				echo "DEBUG {crc_staff::fn_setworkex}: Setting workex information 2<br>";
@@ -155,13 +172,24 @@
 
                 $this->m_dure = $this->m_startmonth . '~' . $this->m_endmonth;
 
-				//set course information
-                $this->m_sql = 'insert into ' . MYSQL_WORKEX_TBL . '(' .
-                    'workex_uid, workex_dure, ' .
-                    'workex_year, workex_posi, ' .
-                    'workex_desc, workex_score) ' .
-                    'values("' . $this->m_uid. '","' . $this->m_dure. '","' . $this->m_year.
-                    '","' . $this->m_position. '","' . $this->m_desc. '","' . $this->m_score. '")';
+				//set information
+                if ($post['action'] == 'add') {
+                    $this->m_sql = 'insert into ' . MYSQL_WORKEX_TBL . '(' .
+                        'workex_uid, workex_dure, ' .
+                        'workex_year, workex_posi, ' .
+                        'workex_desc, workex_score) ' .
+                        'values("' . $post['workex_uid'] . '","' . $this->m_dure . '","' . $this->m_year .
+                        '","' . $this->m_position . '","' . $this->m_desc . '","' . $this->m_score . '")';
+                }
+                else {
+                    $this->m_sql = 'update ' . MYSQL_WORKEX_TBL . ' set ' .
+                        'workex_dure="' . $this->m_dure . 
+                        '",workex_year="' . $this->m_year . 
+                        '",workex_posi="' . $this->m_position . 
+                        '",workex_desc="' . $this->m_desc . 
+                        '",workex_score="' . $this->m_score . 
+                        '" where workex_id="' . $post['workex_id'] . '" and workex_uid="' . $post['workex_uid'] . '"';
+                }
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			
 				if (mysql_errno() != 0) {
 					if ($this->_DEBUG) {
@@ -181,7 +209,73 @@
 				$this->lasterrmsg = "Cannot connect to MySQL database";
 			}
 			return $result;
-		}
+        }
+
+        function fn_getworkexentry($workex_uid, $workex_id) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_getworkexentry}: Get one workex entry <br>";
+			}
+
+            $this->m_workexdata['workex_id'] = $workex_id;
+            $this->m_workexdata['workex_uid'] = $workex_uid;
+
+			$closedb = false;
+			if($db == null) {
+				$db = new crc_mysql($this->_DEBUG);
+				$db->fn_connect();
+				$closedb = true;
+			}
+			if ($db->m_mysqlhandle != 0) {
+				$this->m_sql = 'select * ' .
+								'from ' . MYSQL_WORKEX_TBL . 
+								' where (workex_uid = "' . $workex_uid . '" and workex_id = "' . $workex_id . '" ) ';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_num_rows($resource) > 0) {
+					$index = 0;
+					while ($row = mysql_fetch_array($resource)) {
+                        if($index>0) {
+                            if ($this->_DEBUG) {
+                                echo 'ERROR {crc_admin::fn_getworkexentry}: More than one entry in workex table. <br>';
+                            }
+                            break;
+                        }
+						$this->m_workexdata['workex_id']    = $row[0];
+						$this->m_workexdata['workex_uid']   = $row[1];
+						$this->m_workexdata['workex_dure']  = $row[2];
+						$this->m_workexdata['workex_year']  = $row[3];
+						$this->m_workexdata['workex_position']  = $row[4];
+						$this->m_workexdata['workex_desc']  = $row[5];
+						$this->m_workexdata['workex_score'] = $row[6];
+                        $dure = $this->m_workexdata['workex_dure'];
+                        $index1 = strpos($dure, ".");
+                        $index2 = strpos($dure, "~");
+                        $this->m_workexdata['syear'] = substr($dure, 0, $index1);
+                        $this->m_workexdata['smonth'] = substr($dure, $index1+1, $index2-$index1-1);
+                        $dure = substr($this->m_workexdata['workex_dure'], $index2+1);
+                        $index1 = strpos($dure, ".");
+                        $this->m_workexdata['eyear'] = substr($dure, 0, $index1);
+                        $this->m_workexdata['emonth'] = substr($dure, $index1+1);
+						$index++;
+					}
+				} else {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_admin::fn_getworkexentry}: The sql command returned nothing. <br>';
+					}
+				}
+				if ($closedb == true) {
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+				}
+                return $this->m_workexdata;
+			} else {
+				if ($closedb == true) {
+					$db->fn_disconnect();
+				}
+				return null;
+			}
+        }
+
+
 
 		function fn_getcourseid($db, $course) {
 			//******************************************
@@ -595,79 +689,5 @@
 			return $result;
 		}
 		
-		function fn_setstudentschedule($db, $post, $profileid) {
-			
-			//***************************************************
-			// Helper function for inserting the student schedule
-			//***************************************************
-			
-			if ($this->_DEBUG) {
-				echo "DEBUG {crc_admin::fn_setstudentschedule}: Setting student schedule <br>";
-			}
-			
-			$closedb = false;
-			if($db == null) {
-				$db = new crc_mysql($this->_DEBUG);
-				$db->fn_connect();
-				$closedb = true;
-			}
-			if ($db->m_mysqlhandle == false) {
-				$db->fn_disconnect();
-				return false;
-			}
-			
-			$this->fn_getcourselist($db);
-			$this->m_scheduleid = 0;
-            $resource = 0;
-			for($i = 0; $i < count($this->m_courselist); $i++) {
-				if(isset($post['course' . $i]) && (strtolower($post['course' . $i]) == "on")) {
-					$this->fn_getscheduleid($db, $this->m_courselist[$i]['courseid']);
-					if ($this->m_scheduleid == 0) {
-						if ($this->_DEBUG) {
-							echo 'ERROR {crc_admin::fn_setstudentschedule}: Could not get schedule id. <br>';
-						}
-						if (is_resource($resource)) {
-							$db->fn_freesql($resource);
-						}
-						$db->fn_disconnect();
-						return false;
-					}
-					//check if the student has been already assigned to this course
-					$this->m_sql = 'select * ' .
-							'from ' . MYSQL_STUDENT_SCHEDULE_TBL . 
-							' where (student_schedule_profile_id = "' . $profileid .
-							'" and student_schedule_schedule_id = "' . $this->m_scheduleid . '")';
-					$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
-					if (mysql_num_rows($resource) == 0) {
-						//set student schedule
-						$this->m_sql = 'insert into ' . MYSQL_STUDENT_SCHEDULE_TBL . '(' .
-									'student_schedule_profile_id, ' .
-									'student_schedule_schedule_id, ' .
-									'student_schedule_questions) ' .
-									'values("' . $profileid .
-									'","' . $this->m_scheduleid .
-									'","1")';
-						$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
-						if (mysql_affected_rows() <= 0) {
-							if ($this->_DEBUG) {
-								echo 'ERROR {crc_admin::fn_setstudentschedule}: Could not insert student schedule information. <br>';
-							}
-							$db->fn_freesql($resource);
-							$db->fn_disconnect();
-							return false;
-						}
-					}
-				}
-			}
-			
-			if ($closedb == true) {
-				if (is_resource($resource)) {
-					$db->fn_freesql($resource);
-				}
-				$db->fn_disconnect();
-			}
-			
-			return true;
-		}
 	}
 ?>
