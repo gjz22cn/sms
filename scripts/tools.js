@@ -240,8 +240,8 @@ function verify(page) {
 		} else {
 			dbsetup.submit();
 		}
-	} else if (page == "staffaddworkex") {
-        staffaddworkex.submit();
+	} else if (page == "staffworkex") {
+        staffworkex.submit();
 	} else {
 		alert("unknown/unhandled page");
 	}	
@@ -280,14 +280,12 @@ function autofilldata(data, type)
                 }
             }
             else if ("TEXTAREA" == ee.tagName) {
-                if (type == 1) {
                     ee.value = data[ee.name];
-                }
-                else if ("SELECT" == ee.tagName) {
-                    for (var j=0; j<ee.options.length; j++ ) {
-                        if (ee.options[j].value == data[ee.name]) {
-                            ee.selectedIndex=j;
-                        }
+            }
+            else if ("SELECT" == ee.tagName) {
+                for (var j=0; j<ee.options.length; j++ ) {
+                    if (ee.options[j].value == data[ee.name]) {
+                        ee.selectedIndex=j;
                     }
                 }
             }

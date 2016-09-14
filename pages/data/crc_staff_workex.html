@@ -13,7 +13,7 @@ function load()
         return;
     }
 
-    alert(JSON.stringify(g_data));
+    //alert(JSON.stringify(g_data));
     if (g_data.action == "add") 
     {
         //alert(JSON.stringify(g_data));
@@ -44,7 +44,7 @@ function load()
 <!-- fix parts end -->
 
 
-<form name="staffaddworkex" action="crc_handler.php?method=staff&func=addworkex" method="post">
+<form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
 <input type="hidden" name="action">
 <input type="hidden" name="workex_uid">
@@ -104,7 +104,7 @@ function load()
         	<td><input type="text" name="workex_score" size="5" value=""></td>
         </tr>
 		<tr>
-      		<td colspan="2" align="center"><BR/><input type="submit" name="Add" value="Add" onclick="javascript:verify(\'staffaddworkex\');"></td>
+      		<td colspan="2" align="center"><BR/><input type="submit" name="Add" value="Add" onclick="javascript:verify(\'staffworkex\');"></td>
     	</tr>
       </table>
     </td>

@@ -133,32 +133,37 @@ print '[' . $title . ']';
 			}
 /* james add start */
 		} else if ($_GET['method'] == 'staff') {
+            $staff = new crc_staff(false);
+            //$staff = new crc_staff(true);
 			if ($_GET['func'] == 'showaddworkex') {
-                $staff = new crc_staff(false);
                 $_SESSION['workexdata'] = $staff->m_workexdata;
                 $_SESSION['workexdata']['action'] = 'add';
                 $_SESSION['workexdata']['workex_uid'] = '1';
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-			} else if ($_GET['func'] == 'addworkex') {
-                $staff = new crc_staff(false);
-                //$staff = new crc_staff(true);
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+			} else if ($_GET['func'] == 'updateworkex') {
 				$result = $staff->fn_setworkex($_POST);
 				if($result == false) {
-					$_SESSION['workexdata'] = $staff->m_workexdata;
 					$_SESSION['msg'] = $staff->lasterrmsg;
-				} else {
-					$_SESSION['msg'] = "Work expirence successfully added";
-				}
+                } else {
+                    if ($_POST['action'] == 'add') {
+                        //$_SESSION['workexdata'] = '';
+                        $_SESSION['workexdata']['action'] = 'add';
+                        $_SESSION['msg'] = "添加成功";
+                    } else {
+                        $_SESSION['workexdata'] = $staff->fn_getworkexentry($_POST['action']['workex_uid'], $_POST['action']['workex_id']);
+                        $_SESSION['workexdata']['action'] = 'edit';
+                        $_SESSION['msg'] = "更新成功";
+                    }
+                }
                 $_SESSION['workexdata']['workex_uid'] = '1';
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-            } else if ($_GET['func'] == 'editworkex') {
-                $staff = new crc_staff(false);
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+            } else if ($_GET['func'] == 'showeditworkex') {
                 if (!isset($_GET['uid']) || !isset($_GET['workex_id']) || !isset($_GET['action'])) {
                 }
                 $_SESSION['workexdata'] = $staff->fn_getworkexentry($_GET['uid'], $_GET['workex_id']);
                 $_SESSION['workexdata']['action'] = 'edit';
                 $_SESSION['workexdata']['workex_uid'] = '1';
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=addworkex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
             }
 /* james add end */
 		} else if ($_GET['method'] == 'profile') {

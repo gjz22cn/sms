@@ -21,13 +21,8 @@
 		var $m_workexdata;
 		var $m_startmonth;
 		var $m_endmonth;
-		var $m_year;
-		var $m_position;
-		var $m_desc;
-		var $m_score;
 		var $m_status;		
 		var $m_uid;		
-		var $m_dure;		
 
 		var $m_data;
 		var $m_courseid;
@@ -69,7 +64,7 @@
 			$this->_DEBUG = $debug;
 			
             $this->m_uid = 1;
-            $this->m_workexdata['action'] = '';
+            $this->m_workexdata['action'] = 'add';
             $this->m_workexdata['workex_id'] = '';
             $this->m_workexdata['workex_uid'] = '';
 			$this->m_workexdata['syear'] = '';
@@ -135,42 +130,40 @@
 					$this->m_workexdata['emonth'] = "";
 				}
 				if(isset($post['workex_year'])) {
-					$this->m_year = $post['workex_year'];
+					$this->m_workexdata['workex_year'] = $post['workex_year'];
 				} else {
-					$this->m_year = "";
+					$this->m_workexdata['workex_year'] = "";
 				}
 				if(isset($post['workex_position'])) {
-					$this->m_position = $post['workex_position'];
+					$this->m_workexdata['workex_position'] = $post['workex_position'];
 				} else {
-					$this->m_position = "";
+					$this->m_workexdata['workex_position'] = "";
 				}
 				if(isset($post['workex_desc'])) {
-					$this->m_desc = $post['workex_desc'];
+					$this->m_workexdata['workex_desc'] = $post['workex_desc'];
 				} else {
-					$this->m_desc = "";
+					$this->m_workexdata['workex_desc'] = "";
 				}
 				if(isset($post['workex_score'])) {
-					$this->m_score = $post['workex_score'];
+					$this->m_workexdata['workex_score'] = $post['workex_score'];
 				} else {
-					$this->m_score = "";
+					$this->m_workexdata['workex_score'] = "";
 				}
 				$this->m_status = 'In progress';
 				
 				//this data should be restored if something goes wrong
-				echo "DEBUG {crc_staff::fn_setworkex}: Setting workex information 2<br>";
 				
-				if( ($this->m_year == "") || 
+				if( ($this->m_workexdata['workex_year'] == "") || 
 				    ($this->m_workexdata['syear'] == "") ||
 				    ($this->m_workexdata['smonth'] == "") ||
 				    ($this->m_workexdata['eyear'] == "") ||
 				    ($this->m_workexdata['emonth'] == "") ||
-				    ($this->m_position == "") ||
-				    ($this->m_desc == "") ) {
+				    ($this->m_workexdata['workex_position'] == "") ||
+				    ($this->m_workexdata['workex_desc'] == "") ) {
 					return false;
 				}
-				echo "DEBUG {crc_staff::fn_setworkex}: Setting workex information 3<br>";
 
-                $this->m_dure = $this->m_startmonth . '~' . $this->m_endmonth;
+                $this->m_workexdata['workex_dure'] = $this->m_startmonth . '~' . $this->m_endmonth;
 
 				//set information
                 if ($post['action'] == 'add') {
@@ -178,16 +171,20 @@
                         'workex_uid, workex_dure, ' .
                         'workex_year, workex_posi, ' .
                         'workex_desc, workex_score) ' .
-                        'values("' . $post['workex_uid'] . '","' . $this->m_dure . '","' . $this->m_year .
-                        '","' . $this->m_position . '","' . $this->m_desc . '","' . $this->m_score . '")';
+                        'values("' . $post['workex_uid'] . '","' . 
+                        $this->m_workexdata['workex_dure'] . '","' . 
+                        $this->m_workexdata['workex_year'] . '","' . 
+                        $this->m_workexdata['workex_position'] . '","' . 
+                        $this->m_workexdata['workex_desc'] . '","' . 
+                        $this->m_workexdata['workex_score'] . '")';
                 }
                 else {
                     $this->m_sql = 'update ' . MYSQL_WORKEX_TBL . ' set ' .
-                        'workex_dure="' . $this->m_dure . 
-                        '",workex_year="' . $this->m_year . 
-                        '",workex_posi="' . $this->m_position . 
-                        '",workex_desc="' . $this->m_desc . 
-                        '",workex_score="' . $this->m_score . 
+                        'workex_dure="' . $this->m_workexdata['workex_dure'] . 
+                        '",workex_year="' . $this->m_workexdata['workex_year'] . 
+                        '",workex_posi="' . $this->m_workexdata['workex_position'] . 
+                        '",workex_desc="' . $this->m_workexdata['workex_desc'] . 
+                        '",workex_score="' . $this->m_workexdata['workex_score'] . 
                         '" where workex_id="' . $post['workex_id'] . '" and workex_uid="' . $post['workex_uid'] . '"';
                 }
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			

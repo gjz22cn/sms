@@ -23,8 +23,8 @@
     <LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
 </HEAD>
 <?php
-if($_GET['method'] == 'addworkex') {
-    include "data/crc_staff_add_workex.html";
+if($_GET['method'] == 'workex') {
+    include "data/crc_staff_workex.html";
 } else if($_GET['method'] == 'addstudent') {
 } else {
     include "data/crc_unknown_main.html";
