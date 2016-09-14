@@ -1,9 +1,9 @@
-This file will provide you with a brief description of FreeSMS and instructions
-on how to install FreeSMS.
+This file will provide you with a brief description of SMS and instructions
+on how to install SMS.
 
-Since it's development in 2003, FreeSMS has successfully offered educational organizations
+Since it's development in 2003, SMS has successfully offered educational organizations
 an easy to use and effective facility to manage courses, teachers and students.
-FreeSMS provides the following features:
+SMS provides the following features:
 
  - Support for profile based management: Administrator, Teacher and Student
  - Online teacher and student registration
@@ -20,7 +20,7 @@ Features to implement:
  - Allow admin to perform sanity checks on the database
  - Allow students/admin to withdraw from an enrolled course
 
-From a technical perspective FreeSMS is based on PHP5 and requires a MySQL database. This 
+From a technical perspective SMS is based on PHP5 and requires a MySQL database. This 
 demonstration site has been tested on: 
 
 openSUSE 11.4 with
@@ -34,53 +34,58 @@ openSUSE 11.4 with
  - WampServer 2.1 (<a href="http://www.wampserver.com/">www.wampserver.net</a>) or
  - XAMPP 1.7.4 (<a href="http://www.apachefriends.org/en/xampp.html">http://www.apachefriends.org/en/xampp.html</a>)
 
-In order to install FreeSMS, please use the following instructions:
+In order to install SMS, please use the following instructions:
 
-1. Download FreeSMS: 
+1. Download SMS: 
 ====================
-FreeSMS can be downloaded at http://sourceforge.net/projects/freesms/.
+SMS can be downloaded at http://sourceforge.net/projects/sms/.
 You need also a properly configured http server (e.g. Apache) capable
 of running php code and a MySQL server. On Windows OSs the recommended
 approach is to use WampServer or XAMPP.
 
-2. Extract FreeSMS: 
+2. Extract SMS: 
 ===================
 Now that you have a zip file, you need to extract it a directory in the 
 path of your web server root (or have an alias setup). For example, if 
-you have a public_home folder you could extract there FreeSMS archive. 
+you have a public_home folder you could extract there SMS archive. 
 
 3. MySQL Server Database Setup:
 ===============================
 For security reasons, you need a 'root' account with nonempty password configured on the MySQL server.
-Also, for the same reasons, the password of the user account needed to access the FreeSMS database cannot be empty.
-From web browser: go to the following link: http://<server>/freesms/mysql/setup.php
+Also, for the same reasons, the password of the user account needed to access the SMS database cannot be empty.
+From web browser: go to the following link: http://<server>/SMS/mysql/setup.php
 and follow the instructions (root access to the MySQL database is needed).
 From Linux terminal: use the bash script provided in "[Install Directory]/mysql/" folder 
 (root access to the MySQL database is needed).
 
 4. Configure PHP Script:
 ========================
-We now need to setup the primary configuration file that FreeSMS
+We now need to setup the primary configuration file that SMS
 requires to successfully administer the application. In the directory
 "[Install Directory]/classes/" you fill find a file crc_constants.mod.php. 
 Open this file and modify MYSQL_SERVER, MYSQL_PORT, MYSQL_DB, MYSQL_USER and MYSQL_PASS
-constants to reflect the connection parameters that need to be used when FreeSMS 
+constants to reflect the connection parameters that need to be used when SMS 
 interacts with the MySQL database.
 
 Once the file has been modified approprietly, you can now use one of the links
-below to login into FreeSMS, enjoy!
+below to login into SMS, enjoy!
 
 
-5. Start Using FreeSMS:
+5. Start Using SMS:
 =======================
 To continue, please select the following resource link 
-http://<server>/freesms
+http://<server>/SMS
 
-I hope that you find FreeSMS usefull. If you have any further questions or comments please
+I hope that you find SMS usefull. If you have any further questions or comments please
 do not hesitate to check out the postings on the project page. 
 For those of you who would like to help out, we are looking for
 volunteers on this project, please send us an email.
 
 Thank You,
-FreeSMS Team.
+SMS Team.
 
+6. DB Setup:
+=======================
+CREATE DATABASE `crcdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER 'sms'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL ON crcdb.* TO 'sms'@'localhost';

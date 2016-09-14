@@ -9,18 +9,20 @@
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
-	<HEAD>
-	  <?php
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="content-language" content="zh-CN" />
+    <?php
     	include_once('../classes/crc_constants.mod.php');
     ?>
-		<TITLE>
-			[FreeSMS: Teacher]
-		</TITLE>
+    <TITLE>
+        [SMS: STAFF]
+    </TITLE>
     <SCRIPT src="../scripts/tools.js" language="JavaScript" type="text/javascript"></SCRIPT>
-		<!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->
-		<LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
-	</HEAD>
-	<BODY>
+    <!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->
+    <LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
+</HEAD>
+<BODY>
 		<CENTER>
 		
 			<!----------------------------------------------------
@@ -69,6 +71,6 @@
 			</TABLE>
 			
 		</CENTER>
-	</BODY>
+</BODY>
 </HTML>
 
