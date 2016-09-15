@@ -11,24 +11,28 @@ var g_url;
 var g_uid='1';
 function load() {
     var temp_str=window.location.href;
-    g_url = temp_str.substr(0, temp_str.indexOf("?"));
-}
-
-function btnadd(type, action, uid) {
-    var newurl=g_url+'?method=show'+action+type;
-    newurl+='&crc='+g_crc;
-    newurl+='&uid='+g_uid1;
-    newurl+='&'+type+'_uid='+uid;
-    alert(newurl);
+    g_url = temp_str.substr(0, temp_str.indexOf("/crc_staff.php"));
 }
 
 function btnaction(type, action, uid, id) {
-    var newurl=g_url+'?method=show'+action+type;
-    newurl+='&crc='+g_crc;
+    var newurl=g_url+'/crc_handler.php?method=staff&func=';
+
+    if (action == 'delete') {
+        newurl+=action+type;
+    } else {
+        newurl+='show'+action+type;
+        //newurl+='&crc='+g_crc;
+    }
     newurl+='&uid='+g_uid1;
     newurl+='&'+type+'_uid='+uid;
-    newurl+='&'+type+'_id='+id;
+    if (action != 'add') {
+        newurl+='&'+type+'_id='+id;
+    }
     alert(newurl);
+
+    if (action == 'delete') {
+        top.location=newurl;
+    }
 }
 </script>
 
@@ -70,7 +74,7 @@ function btnaction(type, action, uid, id) {
         <table class="tbl">
 		<tr>
             <th colspan="6" align="left">公司部门工作经历</th>
-            <th colspan="2" rowspan="2"><input type="button" onclick="btnadd('workex', 'add', g_uid)" value="添加"></th>
+            <th colspan="2" rowspan="2"><input type="button" onclick="btnaction('workex', 'add', g_uid, '1')" value="添加"></th>
 		</tr>
 		<tr>
         	<th>起始时间</th><th>年数</th><th>职务</th><th width="400">描述</th><th>分数</th><th width="200">备注</th>

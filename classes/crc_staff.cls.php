@@ -323,6 +323,44 @@
 			}
         }
 
+        function fn_deleteworkexentry($workex_uid, $workex_id) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_deleteworkexentry}: delete one workex entry <br>";
+			}
+
+            $this->m_workexdata['workex_id'] = $workex_id;
+            $this->m_workexdata['workex_uid'] = $workex_uid;
+
+			$closedb = false;
+			if($db == null) {
+				$db = new crc_mysql($this->_DEBUG);
+				$db->fn_connect();
+				$closedb = true;
+			}
+			if ($db->m_mysqlhandle != 0) {
+				$this->m_sql = 'delete from ' . MYSQL_WORKEX_TBL . 
+								' where (workex_uid = "' . $workex_uid . '" and workex_id = "' . $workex_id . '" ) ';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_admin::fn_deleteworkexentry}: The sql command failed. <br>';
+					}
+                    $result = false;
+				} else {
+                    $result = true;
+                }
+				if ($closedb == true) {
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+				}
+                return $result;
+			} else {
+				if ($closedb == true) {
+					$db->fn_disconnect();
+				}
+				return false;
+			}
+        }
 
 
 		function fn_getcourseid($db, $course) {

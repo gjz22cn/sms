@@ -164,6 +164,10 @@ print '[' . $title . ']';
                 $_SESSION['workexdata']['action'] = 'edit';
                 $_SESSION['workexdata']['workex_uid'] = '1';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+            } else if ($_GET['func'] == 'deleteworkex') {
+                $result = $staff->fn_deleteworkexentry($_GET['workex_uid'], $_GET['workex_id']);
+                $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['workex_uid']);
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
             } else if ($_GET['func'] == 'showall') {
                 $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['uid']);
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
