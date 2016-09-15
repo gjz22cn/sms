@@ -253,7 +253,13 @@ function autofilldata(data, type)
     if (type == 0) {
         for (var i=0;i<ff.elements.length;i++) {
             var ee=ff.elements[i];
-            if (!(ee.name in data)) {
+
+            if (ee.name == "button") {
+                if (ee.type == "submit") {
+                    ee.value = "添加";
+                }
+            }
+            else if (!(ee.name in data)) {
                 continue;
             }
 
@@ -267,7 +273,13 @@ function autofilldata(data, type)
     else if (type == 1) {
         for (var i=0;i<ff.elements.length;i++) {
             var ee=ff.elements[i];
-            if (!(ee.name in data)) {
+
+            if (ee.name == "button") {
+                if (ee.type == "submit") {
+                    ee.value = "修改";
+                }
+            }
+            else if (!(ee.name in data)) {
                 continue;
             }
 

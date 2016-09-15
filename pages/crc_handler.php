@@ -133,8 +133,8 @@ print '[' . $title . ']';
 			}
 /* james add start */
 		} else if ($_GET['method'] == 'staff') {
-            $staff = new crc_staff(false);
-            //$staff = new crc_staff(true);
+            //$staff = new crc_staff(false);
+            $staff = new crc_staff(true);
 			if ($_GET['func'] == 'showaddworkex') {
                 $_SESSION['workexdata'] = $staff->m_workexdata;
                 $_SESSION['workexdata']['action'] = 'add';
@@ -164,6 +164,9 @@ print '[' . $title . ']';
                 $_SESSION['workexdata']['action'] = 'edit';
                 $_SESSION['workexdata']['workex_uid'] = '1';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+            } else if ($_GET['func'] == 'showall') {
+                $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['uid']);
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
             }
 /* james add end */
 		} else if ($_GET['method'] == 'profile') {

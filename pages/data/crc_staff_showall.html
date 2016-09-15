@@ -1,0 +1,108 @@
+<script type="text/javascript">
+<?php
+    print 'var g_crc="' . ($_GET["crc"]) . '";';
+    print 'var g_uid1="' . ($_GET["uid"]) . '";';
+    if (isset($_SESSION["staffdata"])) {
+        print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
+    }
+?>
+
+var g_url;
+var g_uid='1';
+function load() {
+    var temp_str=window.location.href;
+    g_url = temp_str.substr(0, temp_str.indexOf("?"));
+}
+
+function btnadd(type, action, uid) {
+    var newurl=g_url+'?method=show'+action+type;
+    newurl+='&crc='+g_crc;
+    newurl+='&uid='+g_uid1;
+    newurl+='&'+type+'_uid='+uid;
+    alert(newurl);
+}
+function btnaction(type, action, uid, id) {
+    var newurl=g_url+'?method=show'+action+type;
+    newurl+='&crc='+g_crc;
+    newurl+='&uid='+g_uid1;
+    newurl+='&'+type+'_uid='+uid;
+    newurl+='&'+type+'_id='+id;
+    alert(newurl);
+}
+</script>
+
+
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<TABLE width="100%">
+<!-- The Page Header -->
+<TR CLASS="OUTER">
+<?php
+    include "data/crc_page_header_band.html";
+?>
+</TR>
+<!-- The Page Content -->
+<TR CLASS="OUTER">
+<!-- fix parts end -->
+
+
+<form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
+<input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
+<input type="hidden" name="action">
+<input type="hidden" name="workex_uid">
+<input type="hidden" name="workex_id">
+<table>
+	<tr>
+		<td valign="top" width="80">
+            <!-- This is the menu -->
+            <br><br>
+            <?php
+                include "../common/crc_menu.html";
+            ?>
+		</td>
+
+		<td valign="top" align="left">
+	    <!-- This is the content -->
+        <br><br>
+        <table class="tbl">
+		<tr>
+            <th colspan="6" align="left">公司部门工作经历</th><th>小计</th><th></th>
+		</tr>
+		<tr>
+        	<th>起始时间</th><th>年数</th><th>职务</th><th width="400">描述</th><th>分数</th><th width="200">备注</th>
+            <th colspan="2"><input type="button" onclick="btnadd('workex', 'add', g_uid)" value="添加"></th>
+		</tr>
+        <script type="text/javascript">
+        if ('workex' in g_data) {
+            var workex = g_data.workex;
+            for(var i=0; i<workex.length; i++)  
+            {
+                document.write('<tr>');
+                document.write('<td>' + workex[i].workex_dure + '</td>');
+                document.write('<td>' + workex[i].workex_year + '</td>');
+                document.write('<td>' + workex[i].workex_position + '</td>');
+                document.write('<td style="word-wrap:break-word" width="400">' + workex[i].workex_desc + '</td>');
+                document.write('<td>' + workex[i].workex_score + '</td>');
+                document.write('<td style="word-wrap:break-word" width="200">' + workex[i].workex_comment + '</td>');
+                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'edit\',' + g_uid + ',' + workex[i].workex_id + ')" value="修改"></td>');
+                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'delete\',' + g_uid + ',' + workex[i].workex_id + ')" value="删除"></td>');
+                document.write('</tr>');
+            }  
+        }  
+        </script>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+
+<!-- fix parts start -->
+</TR>
+</TABLE>
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->

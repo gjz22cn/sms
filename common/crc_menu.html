@@ -6,6 +6,7 @@ This is the menu
 	 if ($_SESSION['roleid'] == 3) { 
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=courses&func=get" class="hdr">Courses</a></th></tr>';
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=courses&func=editenroll" class="hdr">Enrollment</a></th></tr>';
+	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=showall&uid=1" class="hdr">Show All</a></th></tr>';
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=showaddworkex" class="hdr">Add Workex</a></th></tr>';
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=showeditworkex&uid=1&workex_id=3" class="hdr">Edit Workex</a></th></tr>';
 	 } else if ($_SESSION['roleid'] == 2) {

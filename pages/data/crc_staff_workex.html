@@ -55,11 +55,11 @@ function load()
             <!-- This is the menu -->
             <br><br>
             <?php
-                   include "../common/crc_menu.html";
-                   ?>
+                include "../common/crc_menu.html";
+            ?>
 		</td>
 
-		<td valign="top" align="left" width="420">
+		<td valign="top" align="left">
 	    <!-- This is the content -->
         <br><br>
         <table class="tbl">
@@ -75,19 +75,19 @@ function load()
             }      
         ?>
 		<tr>
-	        <th colspan="2"><em>Enter Work Experience Information</em></th>
+	        <th colspan="2">公司部门工作经历</th>
 		</tr>
 		<tr>
-        	<td align="right"><span class="error">*</span>Time: </td>
+        	<td align="right"><span class="error">*</span>起始时间: </td>
         	<td><input type="text" name="syear" size="4" value="">-<input type="text" name="smonth" size="2" value="">~<input type="text" name="eyear" size="4" value="">-<input type="text" name="emonth" size="2" value="">(YYYY-MM)~(YYYY-MM)
         	</td>
         </tr>
     	<tr>
-        	<td align="right"><span class="error">*</span>Year: </td>
+        	<td align="right"><span class="error">*</span>年数: </td>
         	<td><input type="text" name="workex_year" size="5" value=""></td>
         </tr>
 		<tr>
-        	<td align="right"><span class="error">*</span>Position: </td>
+        	<td align="right"><span class="error">*</span>职务: </td>
             <td><select name="workex_position"><option value="4">部门正职</option>
                     <option value="3">部门副职</option>
                     <option value="2">业务经理</option>
@@ -96,15 +96,19 @@ function load()
                     </select></td>
         </tr>
 		<tr>
-        	<td align="right">Description: </td>
+        	<td align="right">描述: </td>
             <td><textarea name="workex_desc" rows="8" cols="128" maxlength="1024" value=""></textarea></td>
         </tr>
     	<tr>
-        	<td align="right"><span class="error">*</span>Score: </td>
+        	<td align="right"><span class="error">*</span>分数: </td>
         	<td><input type="text" name="workex_score" size="5" value=""></td>
         </tr>
 		<tr>
-      		<td colspan="2" align="center"><BR/><input type="submit" name="Add" value="Add" onclick="javascript:verify(\'staffworkex\');"></td>
+        	<td align="right">备注: </td>
+            <td><textarea name="workex_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        </tr>
+		<tr>
+      		<td colspan="2" align="center"><BR/><input type="submit" name="button" value="提交" onclick="javascript:verify(\'staffworkex\');"></td>
     	</tr>
       </table>
     </td>

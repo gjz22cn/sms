@@ -18,6 +18,7 @@
 	class crc_staff extends crc_object {
 
 		var $m_sql;
+		var $m_alldata;
 		var $m_workexdata;
 		var $m_startmonth;
 		var $m_endmonth;
@@ -75,6 +76,7 @@
 			$this->m_workexdata['workex_position'] = '';
 			$this->m_workexdata['workex_desc'] = '';
 			$this->m_workexdata['workex_score'] = '';
+			$this->m_workexdata['workex_comment'] = '';
 
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::constructor}: The class \"crc_staff\" was successfuly created. <br>";
@@ -82,6 +84,47 @@
 			}
 
 		}
+
+        function fn_getalldata($uid) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_getalldata}: Get all data. <br>";
+			}
+
+			$closedb = false;
+			if($db == null) {
+				$db = new crc_mysql($this->_DEBUG);
+				$db->fn_connect();
+				$closedb = true;
+			}
+			if ($db->m_mysqlhandle != 0) {
+				$this->m_sql = 'select * ' .
+								'from ' . MYSQL_WORKEX_TBL . 
+								' where (workex_uid = "' . $uid . '")';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_num_rows($resource) > 0) {
+                    $this->m_alldata['workex'] = array();
+                    $index=0;
+                    while($row=mysql_fetch_array($resource)){
+                        $this->m_alldata['workex'][$index]=$row;
+                        $index++;
+                    }
+				} else {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_admin::fn_getworkexentry}: The sql command returned nothing. <br>';
+					}
+				}
+				if ($closedb == true) {
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+				}
+			} else {
+				if ($closedb == true) {
+					$db->fn_disconnect();
+				}
+				return null;
+			}
+            return $this->m_alldata;
+        }
 
 		function fn_setworkex($post) {
 			//******************************************
@@ -149,6 +192,11 @@
 				} else {
 					$this->m_workexdata['workex_score'] = "";
 				}
+				if(isset($post['workex_comment'])) {
+					$this->m_workexdata['workex_comment'] = $post['workex_comment'];
+				} else {
+					$this->m_workexdata['workex_comment'] = "";
+				}
 				$this->m_status = 'In progress';
 				
 				//this data should be restored if something goes wrong
@@ -169,22 +217,24 @@
                 if ($post['action'] == 'add') {
                     $this->m_sql = 'insert into ' . MYSQL_WORKEX_TBL . '(' .
                         'workex_uid, workex_dure, ' .
-                        'workex_year, workex_posi, ' .
-                        'workex_desc, workex_score) ' .
+                        'workex_year, workex_position, ' .
+                        'workex_desc, workex_score, workex_comment) ' .
                         'values("' . $post['workex_uid'] . '","' . 
                         $this->m_workexdata['workex_dure'] . '","' . 
                         $this->m_workexdata['workex_year'] . '","' . 
                         $this->m_workexdata['workex_position'] . '","' . 
                         $this->m_workexdata['workex_desc'] . '","' . 
-                        $this->m_workexdata['workex_score'] . '")';
+                        $this->m_workexdata['workex_score'] . '","' . 
+                        $this->m_workexdata['workex_comment'] . '")';
                 }
                 else {
                     $this->m_sql = 'update ' . MYSQL_WORKEX_TBL . ' set ' .
                         'workex_dure="' . $this->m_workexdata['workex_dure'] . 
                         '",workex_year="' . $this->m_workexdata['workex_year'] . 
-                        '",workex_posi="' . $this->m_workexdata['workex_position'] . 
+                        '",workex_position="' . $this->m_workexdata['workex_position'] . 
                         '",workex_desc="' . $this->m_workexdata['workex_desc'] . 
                         '",workex_score="' . $this->m_workexdata['workex_score'] . 
+                        '",workex_comment="' . $this->m_workexdata['workex_comment'] . 
                         '" where workex_id="' . $post['workex_id'] . '" and workex_uid="' . $post['workex_uid'] . '"';
                 }
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			
@@ -243,6 +293,7 @@
 						$this->m_workexdata['workex_position']  = $row[4];
 						$this->m_workexdata['workex_desc']  = $row[5];
 						$this->m_workexdata['workex_score'] = $row[6];
+						$this->m_workexdata['workex_comment']  = $row[7];
                         $dure = $this->m_workexdata['workex_dure'];
                         $index1 = strpos($dure, ".");
                         $index2 = strpos($dure, "~");

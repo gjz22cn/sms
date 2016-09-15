@@ -207,5 +207,6 @@ CREATE TABLE `crc_workex` (
   `workex_position` varchar(8) NOT NULL default '',
   `workex_desc` varchar(1024) NOT NULL default '',
   `workex_score` int(4) NOT NULL default '0',
+  `workex_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`workex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
