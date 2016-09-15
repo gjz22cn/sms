@@ -21,6 +21,7 @@ function btnadd(type, action, uid) {
     newurl+='&'+type+'_uid='+uid;
     alert(newurl);
 }
+
 function btnaction(type, action, uid, id) {
     var newurl=g_url+'?method=show'+action+type;
     newurl+='&crc='+g_crc;
@@ -68,11 +69,12 @@ function btnaction(type, action, uid, id) {
         <br><br>
         <table class="tbl">
 		<tr>
-            <th colspan="6" align="left">公司部门工作经历</th><th>小计</th><th></th>
+            <th colspan="6" align="left">公司部门工作经历</th>
+            <th colspan="2" rowspan="2"><input type="button" onclick="btnadd('workex', 'add', g_uid)" value="添加"></th>
 		</tr>
 		<tr>
         	<th>起始时间</th><th>年数</th><th>职务</th><th width="400">描述</th><th>分数</th><th width="200">备注</th>
-            <th colspan="2"><input type="button" onclick="btnadd('workex', 'add', g_uid)" value="添加"></th>
+            <!--<th colspan="2"></th>-->
 		</tr>
         <script type="text/javascript">
         if ('workex' in g_data) {
