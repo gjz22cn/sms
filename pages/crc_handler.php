@@ -160,7 +160,7 @@ print '[' . $title . ']';
             } else if ($_GET['func'] == 'showeditworkex') {
                 if (!isset($_GET['uid']) || !isset($_GET['workex_id']) || !isset($_GET['action'])) {
                 }
-                $_SESSION['workexdata'] = $staff->fn_getworkexentry($_GET['uid'], $_GET['workex_id']);
+                $_SESSION['workexdata'] = $staff->fn_getworkexentry($_GET['workex_uid'], $_GET['workex_id']);
                 $_SESSION['workexdata']['action'] = 'edit';
                 $_SESSION['workexdata']['workex_uid'] = '1';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
