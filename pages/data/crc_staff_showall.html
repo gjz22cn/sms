@@ -28,11 +28,10 @@ function btnaction(type, action, uid, id) {
     if (action != 'add') {
         newurl+='&'+type+'_id='+id;
     }
-    alert(newurl);
 
-    if (action == 'delete') {
+    //if (action == 'delete') {
         top.location=newurl;
-    }
+    //}
 }
 </script>
 
