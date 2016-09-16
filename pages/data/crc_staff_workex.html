@@ -32,37 +32,14 @@ function load()
 <!-- fix parts start -->
 <BODY onload="load()">
 <CENTER>
-<TABLE width="100%">
-<!-- The Page Header -->
-<TR CLASS="OUTER">
-<?php
-    include "data/crc_page_header_band.html";
-?>
-</TR>
-<!-- The Page Content -->
-<TR CLASS="OUTER">
 <!-- fix parts end -->
-
 
 <form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
 <input type="hidden" name="action">
 <input type="hidden" name="workex_uid">
 <input type="hidden" name="workex_id">
-<table>
-	<tr>
-		<td valign="top" width="80">
-            <!-- This is the menu -->
-            <br><br>
-            <?php
-                include "../common/crc_menu.html";
-            ?>
-		</td>
-
-		<td valign="top" align="left">
-	    <!-- This is the content -->
-        <br><br>
-        <table class="tbl">
+    <table class="tbl">
         <?php
             if (isset($_SESSION['msg'])) {
                $len = strlen($_SESSION['msg']);
@@ -110,16 +87,11 @@ function load()
 		<tr>
       		<td colspan="2" align="center"><BR/><input type="submit" name="button" value="提交" onclick="javascript:verify(\'staffworkex\');"></td>
     	</tr>
-      </table>
-    </td>
-  </tr>
-</table>
+    </table>
 </form>
 
 
 <!-- fix parts start -->
-</TR>
-</TABLE>
 </CENTER>
 </BODY>
 </HTML>

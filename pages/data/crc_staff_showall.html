@@ -21,7 +21,6 @@ function btnaction(type, action, uid, id) {
         newurl+=action+type;
     } else {
         newurl+='show'+action+type;
-        //newurl+='&crc='+g_crc;
     }
     newurl+='&uid='+g_uid1;
     newurl+='&'+type+'_uid='+uid;
@@ -30,9 +29,35 @@ function btnaction(type, action, uid, id) {
     }
     //alert(newurl);
 
-    //if (action == 'delete') {
+    if (action == 'delete') {
         top.location=newurl;
-    //}
+    } else {
+        OpenWindow(newurl, "test", 'iframe', 1000, 400);
+    }
+}
+
+function OpenWindow(content, title, type, width, height) {
+    var topsize = (window.screen.availHeight-30-height)/2;
+    var leftsize = (window.screen.availWidth-10-width)/2;
+    var winarg = 'height='+ height +',width=' + width + ',top=' + topsize + ',left=' + leftsize;
+
+    winarg+=',toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no';
+
+    window.open(content, title, winarg);
+
+    return;
+
+    /* TODO: */
+    ///显示子页面
+    if (type == 'iframe') {
+        $("#menu_window").html("<iframe id='ifrme' name='ifrme' frameborder='0' scrolling='auto' width='" + width + "' height='" + height + "'></iframe>");
+        $("#ifrme").attr("src", content);
+    }
+    ///用于 弹出子页面。。。若果没有下面的，OpenWindow只能在父页面显示子页面，不会弹出来。
+    $("#menu_window").window({
+        title: title, iconCls: 'icon-info', width: width + 15, height: height + 40, top: topsize, left: leftsize, resizable: false, modal: true, shadow: true,
+        minimizable: false, maximizable: false, closable: true, closed: false, collapsible: false
+    });
 }
 </script>
 
