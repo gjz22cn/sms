@@ -9,15 +9,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
 	<HEAD>
-    <?php
-    	include_once('../classes/crc_constants.mod.php');
-    ?>
 		<TITLE>
 			[SMS: Login]
 		</TITLE>
-    <SCRIPT src="../scripts/tools.js" language="JavaScript" type="text/javascript"></SCRIPT>
-		<!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->
-		<LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
+        <?php
+    	    include_once('../classes/crc_constants.mod.php');
+    	    include_once('../common/crc_head_common.php');
+        ?>
 	</HEAD>
 	<BODY onload="javascript:login.username.focus();">
 		<CENTER>
@@ -39,4 +37,3 @@
 		</CENTER>
 	</BODY>
 </HTML>
-
