@@ -1,3 +1,4 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
 <script type="text/javascript">
 <?php
     print 'var g_crc="' . ($_GET["crc"]) . '";';
@@ -9,9 +10,72 @@
 
 var g_url;
 var g_uid='1';
+var g_bi_id='1';
+
+function setbi() {
+    var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid1;
+    var params = { 'bi_uid':g_uid1,
+        'bi_name':'', 'bi_birth':'', 'bi_fwd':'',
+        'bi_no':'', 'bi_gs':'', 'bi_major':'',
+        'bi_cpro':'', 'bi_cpos':'', 'bi_psca':'',
+        'bi_edu':'', 'bi_cwy':'', 'bi_wti':'',
+        'bi_owy':'', 'bi_eng':'', 'bi_bim':'',
+        'bi_cer':'', 'bi_cer2':'', 'bi_act':'',
+        'bi_actdesc':''};
+
+
+    for(var x in params) {
+        var ee=document.getElementsByName(x);
+        if(ee.length == 1) {
+            params[x]=ee[0].value;
+        }
+    }
+
+    //alert(JSON.stringify(params));
+
+    $.ajax({
+        type: "post",
+        url: url,
+        data: "bi_uid=" + g_uid + "&bi_id=" + g_bi_id + "&baseinfo=" + JSON.stringify(params),
+        success: function(msg){
+            var result=msg;
+            var index = result.indexOf('setbiresult=');
+            var res=JSON.parse(result.substr(index+12));
+            alert(res.retstr);
+        }
+    });
+}
+
+function showbi(bidata) {
+    autofilldata(bidata, 1);
+}
+
+function get_baseinfodata() {
+    //创建XMLHttpRequest对象
+    var xmlHttp = new XMLHttpRequest();
+
+    //配置XMLHttpRequest对象
+    xmlHttp.open("get", "crc_data.php?method=staff&func=getbi&uid=" + g_uid1 + "&bi_uid=" + g_uid + "&bi_id=" + g_bi_id);
+
+    //设置回调函数
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            var result=xmlHttp.responseText;
+            var index = result.indexOf('getbiresult=');
+            showbi(JSON.parse(result.substr(index+12)));
+        }
+    }
+
+    //发送请求
+    xmlHttp.send(null);
+}
+
 function load() {
     var temp_str=window.location.href;
     g_url = temp_str.substr(0, temp_str.indexOf("/crc_staff.php"));
+
+    /* base info */
+    get_baseinfodata();
 }
 
 function btnaction(type, action, uid, id) {
@@ -154,7 +218,7 @@ function OpenWindow(content, title, type, width, height) {
             <td>学历得分</td>
             <td><input type="text" name="bi_eduscore" size="8" value=""></td>
             <td>本企业工龄</td>
-            <td><select name="workex_cwy"><option value="4">12年以上</option>
+            <td><select name="bi_cwy"><option value="4">12年以上</option>
                     <option value="3">8-12年（不含）</option>
                     <option value="2">4-8年（不含）</option>
                     <option value="1">4年以下</option>
@@ -229,7 +293,7 @@ function OpenWindow(content, title, type, width, height) {
             <td colspan="6" ><textarea name="bi_actdesc" rows="5" cols="108" maxlength="540" value=""></textarea></td>
 		</tr>
 		<tr>
-            <td colspan="7" align="center"><input type="button" onclick="" value="保存基本情况信息"></td>
+            <td colspan="7" align="center"><input id="bi_setbtn" type="button" onclick="setbi()" value="保存基本情况信息"></td>
 		</tr>
         </table>
 

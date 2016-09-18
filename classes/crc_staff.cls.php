@@ -126,6 +126,102 @@
             return $this->m_alldata;
         }
 
+        function fn_getbione($uid, $bi_id) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_getbione}: Get baseinfo data. <br>";
+			}
+
+            $db = new crc_mysql($this->_DEBUG);
+            $db->fn_connect();
+            $closedb = true;
+			if ($db->m_mysqlhandle != 0) {
+				$this->m_sql = 'select * ' .
+								'from ' . MYSQL_BI_TBL . 
+								' where (bi_uid="' . $uid . '" and bi_id="' . $bi_id . '")';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_num_rows($resource) > 0) {
+                    if($row=mysql_fetch_array($resource)){
+                        $result=$row;
+                    }
+				} else {
+                    $result = null;
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_admin::fn_getbione}: The sql command returned nothing. <br>';
+					}
+				}
+				if ($closedb == true) {
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+				}
+                return $result;
+			} else {
+				if ($closedb == true) {
+					$db->fn_disconnect();
+				}
+				return null;
+			}
+            return null;
+        }
+
+		function fn_setbi($post) {
+			//******************************************
+			// Update the base information
+			//******************************************
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_setbi}: Setting base information <br>";
+			}
+
+            if(!isset($post['baseinfo'])) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            if (!isset($post['bi_id']) && !isset($post['bi_uid']) ) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            $bi = json_decode($post["baseinfo"], true);
+            $setstr = '';
+
+			$db = new crc_mysql($this->_DEBUG);
+			$db->fn_connect();
+			$result = true;
+			if ($db->m_mysqlhandle != false) {
+                $pnames=array('bi_name', 'bi_birth', 'bi_fwd', 'bi_no', 'bi_gs', 'bi_major', 'bi_cpro', 'bi_cpos', 'bi_psca', 'bi_edu', 
+                    'bi_cwy', 'bi_wti', 'bi_owy', 'bi_eng', 'bi_bim', 'bi_cer', 'bi_cer2', 'bi_act', 'bi_actdesc');
+
+                foreach ($pnames as $pname){ 
+                    if(array_key_exists($pname, $bi)) {
+                        $setstr = $setstr . ',' . $pname . '="' . $bi[$pname] . '"';
+                    }
+                }
+				$this->m_status = 'In progress';
+				
+				//set information
+                $this->m_sql = 'update ' . MYSQL_BI_TBL . ' set ' . substr($setstr, 1) .
+                        ' where bi_id="' . $post['bi_id'] . '" and bi_uid="' . $post['bi_uid'] . '"';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_staff::fn_setbi}: Could not set base information. <br>';
+					}
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = "Could not set base information";					
+					return false;
+				}
+				
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$db->fn_disconnect();
+				$result = false;
+				$this->lasterrmsg = "Cannot connect to MySQL database";
+			}
+			return $result;
+        }
+
 		function fn_setworkex($post) {
 			//******************************************
 			// Update the workex information

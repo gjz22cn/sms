@@ -198,6 +198,40 @@ CREATE TABLE `crc_venue` (
   PRIMARY KEY  (`venue_id`)
 ) ENGINE=MyISAM auto_increment=2 ;
 
+DROP TABLE IF EXISTS `crc_bi`;
+CREATE TABLE `crc_bi` (
+  `bi_id` int(11) NOT NULL auto_increment,
+  `bi_uid` int(11) NOT NULL default '0',
+  `bi_name` varchar(16) NOT NULL default '',
+  `bi_birth` varchar(16) NOT NULL default '1950-1',
+  `bi_fwd` varchar(16) NOT NULL default '1970-1',
+  `bi_no` varchar(64) NOT NULL default '',
+  `bi_gs` varchar(128) NOT NULL default '',
+  `bi_major` varchar(128) NOT NULL default '',
+  `bi_cpro` varchar(128) NOT NULL default '',
+  `bi_cpos` varchar(8) NOT NULL default '0',
+  `bi_psca` varchar(8) NOT NULL default '0',
+  `bi_ppscore` int(4) NOT NULL default '0',
+  `bi_edu` varchar(8) NOT NULL default '0',
+  `bi_eduscore` int(4) NOT NULL default '0',
+  `bi_cwy` varchar(8) NOT NULL default '0',
+  `bi_wti` varchar(8) NOT NULL default '0',
+  `bi_wtiscore` int(4) NOT NULL default '0',
+  `bi_owy` varchar(8) NOT NULL default '0',
+  `bi_eng` varchar(8) NOT NULL default '0',
+  `bi_engscore` int(4) NOT NULL default '0',
+  `bi_wyscore` int(4) NOT NULL default '0',
+  `bi_bim` varchar(8) NOT NULL default '0',
+  `bi_bimscore` int(4) NOT NULL default '0',
+  `bi_cer` varchar(8) NOT NULL default '0',
+  `bi_cer2` varchar(8) NOT NULL default '0',
+  `bi_cerscore` int(4) NOT NULL default '0',
+  `bi_act` varchar(8) NOT NULL default '0',
+  `bi_actscore` int(4) NOT NULL default '0',
+  `bi_actdesc` varchar(1024) NOT NULL default '',
+  PRIMARY KEY  (`bi_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 DROP TABLE IF EXISTS `crc_workex`;
 CREATE TABLE `crc_workex` (
   `workex_id` int(11) NOT NULL auto_increment,

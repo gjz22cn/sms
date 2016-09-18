@@ -46,6 +46,7 @@
 	define('MYSQL_FEEDBACK_TBL', 'crcdb.crc_feedback');
 	define('MYSQL_FEEDBACK_QUESTIONS_TBL', 'crcdb.crc_feedback_questions');
 	define('MYSQL_FEEDBACK_ANSWERS_TBL', 'crcdb.crc_feedback_answers');
+	define('MYSQL_BI_TBL', 'crcdb.crc_bi');
 	define('MYSQL_WORKEX_TBL', 'crcdb.crc_workex');
 
 	//******************************************************
