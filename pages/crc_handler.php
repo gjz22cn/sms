@@ -176,15 +176,14 @@ print '[' . $title . ']';
 		} else if ($_GET['method'] == 'profile') {
 
 			if ($_GET['func'] == 'get') {
-				
 				$_SESSION['msg'] = "";
 				$profile = new crc_profile(false);
 				$_SESSION['profiledata'] = $profile->fn_getprofile($_SESSION['uid']);
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_profile.php?func=get&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
 			} else if ($_GET['func'] == 'update') {
 
 				$profile = new crc_profile(false);
+				//$profile = new crc_profile(true);
 				$result = $profile->fn_setprofile($_POST);
 
 				if ($result == false) {
@@ -229,7 +228,7 @@ print '[' . $title . ']';
 					$_SESSION['msg'] = $admin->lasterrmsg;
 					echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_profile.php?method=profile&func=editstudent&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 				} else {
-					$_SESSION['msg'] = "\"" . $_POST['lname'] . ", " . $_POST['fname'] . "\" updated successfully!";
+					$_SESSION['msg'] = "\"" .  $_POST['username'] . "\" updated successfully!";
 					echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_handler.php?method=profile&func=studentlist&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 				}
 				

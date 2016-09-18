@@ -539,7 +539,7 @@
 				$closedb = true;
 			}
 			if ($db->m_mysqlhandle != false) {
-				$this->m_sql = 'select profile_uid, profile_firstname, profile_lastname ' .
+				$this->m_sql = 'select profile_uid ' .
 								'from ' . MYSQL_PROFILES_TBL . ' as p' . 
 								' where (profile_active = "0") and ' .
 								'(profile_role_id = "3") ' .
@@ -549,7 +549,7 @@
 					$index = 0;
 					$this->m_studentlist = '';					
 					while ($row = mysql_fetch_array($resource)) {						
-						$this->m_studentlist[$index]['lastfirstname'] = $row[2] . ', ' . $row[1];//lastname, firstname
+						$this->m_studentlist[$index]['lastfirstname'] = $row[0];//lastname, firstname
 						$this->m_studentlist[$index]['profileuid'] = $row[0];
 						$index++;
 					}
@@ -572,7 +572,7 @@
 			}
 		}		
 		
-		function fn_getprofileid($db, $firstname, $lastname) {
+		function fn_getprofileid($db, $username) {
 			//******************************************
 			// Get profile ID
 			//******************************************
@@ -584,8 +584,7 @@
 			if ($db->m_mysqlhandle != false) {
 
 				$this->m_sql = 'select profile_id from ' . MYSQL_PROFILES_TBL .
-							    ' where (profile_firstname = "' . $firstname . 
-							    '" and profile_lastname = "' . $lastname . '")';
+							    ' where (profile_uid= "' . $username . '")';
 
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 				if (mysql_num_rows($resource) > 0) {
@@ -613,90 +612,42 @@
 			$db->fn_connect();
 			$result = true;
 			if ($db->m_mysqlhandle != false) {
-				if(isset($post['fname'])) {
-					$this->m_firstname = $post['fname'];
+				if(isset($post['username'])) {
+					$this->m_username = $post['username'];
 				} else {
-					$this->m_firstname = "";
-				}
-				if(isset($post['lname'])) {
-					$this->m_lastname = $post['lname'];
-				} else {
-					$this->m_lastname = "";
-				}
-				if(isset($post['gender']))
-				{
-					$this->m_gender = strtoupper($post['gender'][0]);
-				} else {
-					$this->m_gender = "";
+					$this->m_username = "";
 				}
 				if(isset($post['email'])) {
 					$this->m_email = $post['email'];
 				} else {
 					$this->m_email = "";
 				}
-				if(isset($post['lcode']) && isset($post['lprefix']) && isset($post['lpostfix'])) {
-					$this->m_phone = $post['lcode'] . $post['lprefix'] . $post['lpostfix'];
-					$this->m_data['lcode'] = $post['lcode'];
-					$this->m_data['lprefix'] = $post['lprefix'];
-					$this->m_data['lpostfix'] = $post['lpostfix'];
-				} else {
-					$this->m_phone = "";
-					$this->m_data['lcode'] = "";
-					$this->m_data['lprefix'] = "";
-					$this->m_data['lpostfix'] = "";
-				}
-
-				//this data should be restored if something goes wrong
-				$this->m_data['fname'] = $this->m_firstname;
-				$this->m_data['lname'] = $this->m_lastname;
+				$this->m_data['username'] = $this->m_username;
 				$this->m_data['gender'] = $this->m_gender;
 				$this->m_data['email'] = $this->m_email;
 
-				if( ($this->m_firstname == "") || ($this->m_lastname == "") ) {
+				if( $this->m_username == "" ) {
 					if ($this->_DEBUG) {
-						echo 'ERROR {crc_admin::fn_setstudent}: First or last name is empty.<br>';
+						echo 'ERROR {crc_admin::fn_setstudent}: username is empty.<br>';
 					}
 					$db->fn_disconnect();
 					$this->lasterrmsg = "First or last name is empty";
 					return false;
 				}
 				
-				//check if at least one course has been selected
-				$this->fn_getcourselist($db);
-				$courseselected = false;
-				for($i = 0; $i < count($this->m_courselist); $i++) {
-					if(isset($post['course' . $i]) && (strtolower($post['course' . $i]) == "on")) {
-						$courseselected = true;
-						break;
-					}
-				}
-				if($courseselected == false) {
-					if ($this->_DEBUG) {
-						echo 'ERROR {crc_admin::fn_setstudent}: No course has been selected.<br>';
-					}
-					$db->fn_disconnect();
-					$this->lasterrmsg = "No course has been selected";
-					return false;
-				}
-					
 				//check for user name
 				$this->m_sql = 'select * ' .
 							'from ' . MYSQL_PROFILES_TBL . 
-							' where (profile_firstname = "' . $this->m_firstname .
-							'" and profile_lastname = "' . $this->m_lastname . '")';
+							' where (profile_uid = "' . $this->m_username .	'")';
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
-				if (mysql_num_rows($resource) == 0) {					
+				if (mysql_num_rows($resource) == 0) {
 					//insert student
 					$this->m_sql = 'insert into ' . MYSQL_PROFILES_TBL . '(' .
-									'profile_uid, profile_firstname, profile_lastname, ' .
-									'profile_email, profile_gender, profile_phone_land, ' .
+									'profile_uid, ' .
+									'profile_email, ' .
 									'profile_role_id, profile_rdn) ' .
-									'values("' . $this->m_firstname . $this->m_lastname .
-									'","' . $this->m_firstname .
-									'","' . $this->m_lastname .
+									'values("' . $this->m_username .
 									'","' . $this->m_email .
-									'","' . $this->m_gender .
-									'","' . $this->m_phone . 
 									'","3","ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world")';
 					$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 					if (mysql_affected_rows() <= 0) {
@@ -710,7 +661,7 @@
 					}
 
 					//initialize m_profileid
-					$this->fn_getprofileid($db, $this->m_firstname, $this->m_lastname);
+					$this->fn_getprofileid($db, $this->m_username);
 					if ($this->m_profileid == 0) {
 						if ($this->_DEBUG) {
 							echo 'ERROR {crc_admin::fn_setstudent}: Could not get profile id. <br>';
@@ -721,16 +672,6 @@
 						return false;
 					}
 
-					//initialize m_scheduleid using selected course(s)
-					if ($this->fn_setstudentschedule($db, $post, $this->m_profileid) == false) {
-						if ($this->_DEBUG) {
-							echo 'ERROR {crc_admin::fn_setstudent}: Cannot set student schedule. <br>';
-						}
-						$db->fn_freesql($resource);
-						$db->fn_disconnect();
-						$this->lasterrmsg = "Cannot set student schedule";
-						return false;
-					}
 				} else {
 					if ($this->_DEBUG) {
 						echo 'ERROR {crc_admin::fn_setstudent}: User ' . $this->m_firstname . ' ' . $this->m_lastname . ' already exists in database.<br>';

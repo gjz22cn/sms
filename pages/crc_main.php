@@ -14,7 +14,7 @@
     	include_once('../classes/crc_constants.mod.php');
     ?>
 		<TITLE>
-			[FreeSMS: Main]
+			[SMS: Main]
 		</TITLE>
     <SCRIPT src="../scripts/tools.js" language="JavaScript" type="text/javascript"></SCRIPT>
 		<!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->

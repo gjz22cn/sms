@@ -67,42 +67,9 @@ function verify(page) {
 		} else if (profile.password.value == "") {
 			alert("Please enter a valid 'Password'!");
 			profile.lname.focus();
-		} else if (profile.fname.value == "") {
-			alert("Please enter a valid 'Given Name'!");
-			profile.fname.focus(); 
-		} else if (profile.lname.value == "") {
-			alert("Please enter a valid 'Surname'!");
-			profile.lname.focus();
 		} else if (profile.email.value == "") {
 			alert("Please enter a valid 'Email'!");
 			profile.email.focus();
-		} else if (profile.day.value == "") {
-			alert("Please enter a valid 'Day'!");
-			profile.day.focus();
-		} else if (profile.month.value == "") {
-			alert("Please enter a valid 'Month'!");
-			profile.month.focus();
-		} else if (profile.year.value == "") {
-			alert("Please enter a valid 'Year'!");
-			profile.year.focus();
-		} else if (profile.add1.value == "") {
-			alert("Please enter a valid 'Address'!");
-			profile.add1.focus();
-		} else if (profile.city.value == "") {
-			alert("Please enter a valid 'City'!");
-			profile.city.focus();
-		} else if (profile.pc.value == "") {
-			alert("Please enter a valid 'Postal Code'!");
-			profile.pc.focus();
-		} else if (profile.lcode.value == "") {
-			alert("Please enter a valid 'Phone Code'!");
-			profile.lcode.focus();
-		} else if (profile.lprefix.value == "") {
-			alert("Please enter a valid 'Phone Prefix'!");
-			profile.lprefix.focus();
-		} else if (profile.lpostfix.value == "") {
-			alert("Please enter a valid 'Phone Postfix'!");
-			profile.lpostfix.focus();
 		} else {
 			profile.submit();
 		}
@@ -113,42 +80,9 @@ function verify(page) {
 		} else if (editprofile.password.value == "") {
 			alert("Please enter a valid password");
 			editprofile.password.focus();
-		} else if (editprofile.fname.value == "") {
-			alert("Please enter a valid first name");
-			editprofile.fname.focus();
-		} else if (editprofile.lname.value == "") {
-			alert("Please enter a valid last name");
-			editprofile.lname.focus();
 		} else if (editprofile.email.value == "") {
 			alert("Please enter a valid e-mail");
 			editprofile.email.focus();
-		} else if (editprofile.day.value == "") {
-			alert("Please enter a valid day");
-			editprofile.day.focus();
-		} else if (editprofile.month.value == "") {
-			alert("Please enter a valid month");
-			editprofile.month.focus();
-		} else if (editprofile.year.value == "") {
-			alert("Please enter a valid year");
-			editprofile.year.focus();
-		} else if (editprofile.add1.value == "") {
-			alert("Please enter a valid address");
-			editprofile.add1.focus();
-		} else if (editprofile.city.value == "") {
-			alert("Please enter a valid city");
-			editprofile.city.focus();
-		} else if (editprofile.province.value == "") {
-			alert("Please enter a valid province");
-			editprofile.province.focus();
-		} else if (editprofile.country.value == "") {
-			alert("Please enter a valid country");
-			editprofile.country.focus();
-		} else if (editprofile.pc.value == "") {
-			alert("Please enter a valid postal code");
-			editprofile.pc.focus();
-		} else if ((editprofile.lcode.value == "") || (editprofile.lprefix.value == "") || (editprofile.lpostfix.value == "")) {
-			alert("Please enter a valid phone");
-			editprofile.lprefix.focus();			
 		} else {
 			editprofile.submit();
 		}

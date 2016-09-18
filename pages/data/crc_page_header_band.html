@@ -5,17 +5,12 @@
 
 	<!-- The Page Header -->
 	<tr>
-		<th background="<?php echo $APP_IMAGES ?>title.jpg" colspan="2" class="banner" align="left"><strong>Free Student Management System (FreeSMS)<br>Version 2.1.2</strong></th>
-	</tr>
-	<tr>
-		<th background="<?php echo $APP_IMAGES ?>title.jpg" colspan="2" class="banner" align="left"><strong></strong></th>
-	</tr>
+		<th background="<?php echo $APP_IMAGES ?>title.jpg" colspan="2" class="banner" align="left">
+            <p><strong>Staff Management System (SMS)<br>Version 1.0.0</strong></p>
 	<?php 
 		if (isset($_SESSION['name']))
 		{
-			print("<tr>");
-			echo "<th class='info' align='left'>User: " . $_SESSION['name'] . "<br>";
-			echo "Userid: " . $_SESSION['uid'] . "<br>";
+			echo "<p align='right'>User: " . $_SESSION['uid'] . "&nbsp&nbsp&nbsp&nbsp";
 			echo "Role: ";
 			
 			switch($_SESSION['roleid']) 
@@ -23,21 +18,17 @@
 				case 1: 
 					print "Administrator"; 
 					break; 
-				case 2: 
-					print "Teacher"; 
-					break; 
 				case 3: 
-					print "Student"; 
+					print "Staff"; 
 					break; 
 			}
 
-			echo "</th>";
-			echo "</tr>";
+			echo "</p>";
 		}
 	?>
-    <!--
-	<tr>
-		<th class="nav" align="center"><img src="<?php echo $APP_IMAGES ?>freesms_logo.png" width="150" height="37"></th>
+        </th>
 	</tr>
-    -->
+	<tr>
+		<th background="<?php echo $APP_IMAGES ?>title.jpg" colspan="2" class="banner" align="left"><strong></strong></th>
+	</tr>
 </table>
