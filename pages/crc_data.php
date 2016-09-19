@@ -20,7 +20,7 @@ if($_GET['method'] == 'staff') {
     //$staff = new crc_staff(false);
     $staff = new crc_staff(true);
     if($_GET['func'] == 'getbi') {
-        $baseinfo = $staff->fn_getbione($_GET['bi_uid'], $_GET['bi_id']);
+        $baseinfo = $staff->fn_getbione($_GET['bi_uid']);
         if ($baseinfo) {
             $baseinfo['ret'] = 0;
             echo 'getbiresult=' . json_encode($baseinfo);

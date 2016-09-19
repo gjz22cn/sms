@@ -1,12 +1,21 @@
 <script type="text/javascript" src="../scripts/jquery.min.js"></script>
 <script type="text/javascript">
 <?php
-    print 'var g_crc="' . ($_GET["crc"]) . '";';
-    print 'var g_uid="' . ($_GET["uid"]) . '";';
-    print 'var g_pid="' . ($_GET["pid"]) . '";';
-    if (isset($_SESSION["staffdata"])) {
-        print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
-    }
+if (isset($_SESSION["uid"])) {
+    print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+} else {
+    print 'var g_uid=unknown;';
+}
+if (isset($_SESSION["profileid"])) {
+    print 'var g_pid="' . ($_SESSION["profileid"]) . '";';
+} else {
+    print 'var g_pid=unknown;';
+}
+if (isset($_SESSION["staffdata"])) {
+    print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
+} else {
+    print 'var g_data=null;';
+}
 ?>
 
 var g_url;
@@ -61,6 +70,7 @@ function get_baseinfodata() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             var result=xmlHttp.responseText;
             var index = result.indexOf('getbiresult=');
+            //alert(result);
             showbi(JSON.parse(result.substr(index+12)));
         }
     }

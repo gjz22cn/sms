@@ -1,26 +1,32 @@
 <script type="text/javascript">
 <?php
+    if (isset($_SESSION["uid"])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+    } else {
+        print 'var g_uid=unknow;';
+    }
     if (isset($_SESSION["workexdata"])) {
         print 'var g_data=' . json_encode($_SESSION["workexdata"]) . ';';
+    } else {
+        print 'var g_data=unknow;';
     }
 ?>
 
 
 function load()
 {
-    if (!("action" in g_data))
-    {
+    var ee=document.getElementById("staffworkex");
+
+    ee.action = "crc_handler.php?method=staff&func=updateworkex" + "&uid=" + g_uid;
+
+    if (!("action" in g_data)) {
         return;
     }
 
     //alert(JSON.stringify(g_data));
-    if (g_data.action == "add") 
-    {
-        //alert(JSON.stringify(g_data));
+    if (g_data.action == "add") {
         autofilldata(g_data, 0);
-    }
-    else if (g_data.action == "edit") 
-    {
+    } else if (g_data.action == "edit") {
         autofilldata(g_data, 1);
     }
 }
@@ -34,7 +40,7 @@ function load()
 <CENTER>
 <!-- fix parts end -->
 
-<form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
+<form id="staffworkex" name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
 <input type="hidden" name="action">
 <input type="hidden" name="workex_uid">

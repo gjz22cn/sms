@@ -86,11 +86,14 @@
 
 		}
 
-		function fn_getuserinfo($db, $username) {
+		function fn_getuserinfo($username) {
 
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_getuserinfo}: Retreiving the userinfo for " . $username . "<br>";
 			}
+
+            $db = new crc_mysql($this->_DEBUG);
+            $db->fn_connect();
 
 			if ($db->m_mysqlhandle != false) {
 				$this->m_sql = 'select profile_id,profile_uid,profile_role_id from ' . MYSQL_PROFILES_TBL .
@@ -101,16 +104,18 @@
 					$this->m_profileid = $row[0];
 					$this->m_uid = $row[1];
 					$this->m_roleid = $row[2];
+                    return true;
 				} else {
 					$this->m_profileid = 0;
 					if ($this->_DEBUG) {
 						echo 'ERROR {crc_staff::fn_getuserinfo}: The sql command returned nothing. <br>';
 					}
 				}
-				return $this->m_profileid;
-			} else {
-				return 0;
 			}
+
+            $db->fn_freesql($resource);
+            $db->fn_disconnect();
+            return false;
 		}
 
         function fn_getalldata($uid) {
@@ -154,25 +159,25 @@
             return $this->m_alldata;
         }
 
-        function fn_getbione($uid, $bi_id) {
+        function fn_getbione($pid) {
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_getbione}: Get baseinfo data. <br>";
 			}
 
             $db = new crc_mysql($this->_DEBUG);
             $db->fn_connect();
+            $result = null;
             $closedb = true;
 			if ($db->m_mysqlhandle != 0) {
 				$this->m_sql = 'select * ' .
 								'from ' . MYSQL_BI_TBL . 
-								' where (bi_uid="' . $uid . '" and bi_id="' . $bi_id . '")';
+								' where (bi_uid="' . $pid . '")';
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 				if (mysql_num_rows($resource) > 0) {
                     if($row=mysql_fetch_array($resource)){
                         $result=$row;
                     }
 				} else {
-                    $result = null;
 					if ($this->_DEBUG) {
 						echo 'ERROR {crc_admin::fn_getbione}: The sql command returned nothing. <br>';
 					}
@@ -181,14 +186,12 @@
 					$db->fn_freesql($resource);
 					$db->fn_disconnect();
 				}
-                return $result;
 			} else {
 				if ($closedb == true) {
 					$db->fn_disconnect();
 				}
-				return null;
 			}
-            return null;
+            return $result;
         }
 
 		function fn_setbi($post) {
@@ -204,7 +207,7 @@
                 return false;
             }
 
-            if (!isset($post['bi_id']) && !isset($post['bi_uid']) ) {
+            if (!isset($post['bi_uid'])) {
 				$this->lasterrmsg = "Missing param!";
                 return false;
             }
@@ -214,7 +217,7 @@
 
 			$db = new crc_mysql($this->_DEBUG);
 			$db->fn_connect();
-			$result = true;
+			$result = false;
 			if ($db->m_mysqlhandle != false) {
                 $pnames=array('bi_name', 'bi_birth', 'bi_fwd', 'bi_no', 'bi_gs', 'bi_major', 'bi_cpro', 'bi_cpos', 'bi_psca', 'bi_edu', 
                     'bi_cwy', 'bi_wti', 'bi_owy', 'bi_eng', 'bi_bim', 'bi_cer', 'bi_cer2', 'bi_act', 'bi_actdesc');
@@ -228,7 +231,7 @@
 				
 				//set information
                 $this->m_sql = 'update ' . MYSQL_BI_TBL . ' set ' . substr($setstr, 1) .
-                        ' where bi_id="' . $post['bi_id'] . '" and bi_uid="' . $post['bi_uid'] . '"';
+                        ' where bi_uid="' . $post['bi_uid'] . '"';
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			
 				if (mysql_errno() != 0) {
 					if ($this->_DEBUG) {
@@ -239,12 +242,12 @@
 					$this->lasterrmsg = "Could not set base information";					
 					return false;
 				}
+                $result = true;
 				
 				$db->fn_freesql($resource);
 				$db->fn_disconnect();
 			} else {
 				$db->fn_disconnect();
-				$result = false;
 				$this->lasterrmsg = "Cannot connect to MySQL database";
 			}
 			return $result;

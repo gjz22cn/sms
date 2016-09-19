@@ -23,7 +23,7 @@ include_once('../classes/crc_dbsetup.cls.php');
 <HEAD>
 <TITLE><?php				
 if (isset($_GET['method'])) {
-	$title = "FreeSMS: Method->" . $_GET['method'];
+	$title = "SMS: Method->" . $_GET['method'];
 }
 if (isset($_GET['func'])) {
 	$title = $title . " Function->" . $_GET['func'];
@@ -112,9 +112,9 @@ print '[' . $title . ']';
 		} else if ($_GET['method'] == 'staff') {
             //$staff = new crc_staff(false);
             $staff = new crc_staff(true);
-            $staff->fn_getuserinfo($db, $_GET['uid']);
+            $staff->fn_getuserinfo($_GET['uid']);
 
-            if ($staff->m_profileid = 0) {
+            if ($staff->m_profileid == 0) {
                 $_SESSION['msg'] = '无法获取用户(' .  $_GET['uid'] . ')的信息，请重新登陆！';
                 echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_login.php">';
             } else {
@@ -156,7 +156,7 @@ print '[' . $title . ']';
                     $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['workex_uid']);
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'showall') {
-                    $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['uid']);
+                    $_SESSION['staffdata'] = $staff->fn_getalldata($_SESSION['profileid']);
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 }
             }

@@ -90,6 +90,7 @@ CREATE TABLE `crc_profiles` (
   `profile_uid` varchar(100) NOT NULL default '',
   `profile_pwd` varchar(40) NOT NULL default '',
   `profile_email` varchar(100) NOT NULL default '',
+  `profile_role_id` int(11) NOT NULL default '0',
   `profile_active` tinyint(1) NOT NULL default '0',
   `profile_rdn` varchar(100) default 'ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world',
   `profile_date` timestamp NOT NULL,
