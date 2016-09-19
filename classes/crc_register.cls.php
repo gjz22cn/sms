@@ -137,7 +137,7 @@
 				$this->lasterrmsg = "Incomplete input";
 				return false;		
 			}
-			if (($post['username'] == "") || ($post['password'] == "") || ($post['email'] == "")) {
+			if (($post['username'] == "") || ($post['password'] == "")) {
 					$this->lasterrmsg = "Invalid input";
 					return false;
 			}

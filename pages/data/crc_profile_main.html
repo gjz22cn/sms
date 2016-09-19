@@ -1,7 +1,5 @@
 <form name="profile" action="crc_handler.php?method=profile&func=update" method="post">
-
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
-
 <table align="left">
     <tr>
 		<td valign="top" width="180" align="left">
@@ -11,7 +9,7 @@
             ?>
 		</td>
 		<td valign="top" align="left">
-    <table class="std">
+    <table width="320" class="std">
     <?php
         if (isset($_SESSION['msg'])) {
 		  $len = strlen($_SESSION['msg']);
@@ -19,34 +17,37 @@
             $len = 0;
         }
 		if ($len > 0) {
-    		print('<tr><td class="error" align="center"><b>' . $_SESSION['msg'] . '</b></td></tr>');
+    		print('<tr><td  colspan="3" class="error" align="center"><b>' . $_SESSION['msg'] . '</b></td></tr>');
 			$_SESSION['msg'] = "";
 		}
         $data = $_SESSION["profiledata"];
 		if ($data != NULL) {
 		print '<tr>';
-			print '<th colspan="2"><em>Edit User Profile</em></th>';
+			print '<th colspan="3"><strong>帐号信息</strong></th>';
 		print '</tr>';
         print '<tr>';
-          print '<td colspan="2"><br>Please note that the fields with <span class="error">*</span> are mandatory.<br></td>';
+          print '<td colspan="3"><span class="error">*</span>是必需项.<br></td>';
 		print '</tr>';
         print '<tr>';
           print '<td><input type="hidden" name="profileid" value="' . $_SESSION['profileid'] . '" class="text"></td>';
         print '</tr>';
 		print '<tr>';
-		  print '<td align="right"><span class="error">*</span>Username: </td>';
-		  print '<td><input type="text" name="username" size="15" value="' . $data[1] . '"></td>';
+          print '<td width="10"></td>';
+		  print '<td><span class="error">*</span>用户名: </td>';
+		  print '<td><input type="text" name="username" size="24" value="' . $data[1] . '"></td>';
 		print '</tr>';
         print '<tr>';
-          print '<td align="right"><span class="error">*</span>Password: </td>';
-          print '<td><input type="password" name="password" size="15" value=""></td>';
+          print '<td width="10"></td>';
+          print '<td><span class="error">*</span>密码: </td>';
+          print '<td><input type="password" name="password" size="24" value=""></td>';
         print '</tr>';
     	print '<tr>';
-          print '<td align="right"><span class="error">*</span>Email: </td>';
-          print '<td><input type="text" name="email" size="32" value="' . $data[5] . '"></td>';
+          print '<td width="10"></td>';
+          print '<td>Email: </td>';
+          print '<td><input type="text" name="email" size="24" value="' . $data[5] . '"></td>';
         print '</tr>';
   	    print '<tr>';
-          print '<td colspan="2" align="center"><input type="submit" onclick="javascript:verify(\'profile\');" name="update" value="Update"></td>';
+          print '<td colspan="3" align="center"><input type="submit" onclick="javascript:verify(\'profile\');" name="update" value="保存"></td>';
         print '</tr>';
       } else {
           print '<tr><td><br>';

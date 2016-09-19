@@ -13,10 +13,10 @@
 		<TITLE>
 			[SMS: Profile]
 		</TITLE>
-    <SCRIPT src="../scripts/tools.js" language="JavaScript" type="text/javascript"></SCRIPT>
-		<!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->
-		<LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
-	</HEAD>
+        <?php
+    	    //include_once('../classes/crc_constants.mod.php');
+    	    include_once('../common/crc_head_common.php');
+        ?>
 	<BODY>
 		<CENTER>
 			<TABLE width="100%">

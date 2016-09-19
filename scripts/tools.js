@@ -11,42 +11,6 @@ function verify(page) {
 		} else if (register.password.value == "") {
 			alert("Please enter a valid 'Password'!");
 			register.lname.focus();
-		} else if (register.fname.value == "") {
-			alert("Please enter a valid 'Given Name'!");
-			register.fname.focus();
-		} else if (register.lname.value == "") {
-			alert("Please enter a valid 'Surname'!");
-			register.lname.focus();
-		} else if (register.email.value == "") {
-			alert("Please enter a valid 'Email'!");
-			register.email.focus();
-		} else if (register.day.value == "00") {
-			alert("Please enter a valid 'Day'!");
-			register.day.focus();
-		} else if (register.month.value == "00") {
-			alert("Please enter a valid 'Month'!");
-			register.month.focus();
-		} else if (register.year.value == "0000") {
-			alert("Please enter a valid 'Year'!");
-			register.year.focus();
-		} else if (register.add1.value == "") {
-			alert("Please enter a valid 'Address'!");
-			register.add1.focus();
-		} else if (register.city.value == "") {
-			alert("Please enter a valid 'City'!");
-			register.city.focus();
-		} else if (register.pc.value == "") {
-			alert("Please enter a valid 'Postal Code'!");
-			register.pc.focus();
-		} else if (register.lcode.value == "") {
-			alert("Please enter a valid 'Phone Code'!");
-			register.lcode.focus();
-		} else if (register.lprefix.value == "") {
-			alert("Please enter a valid 'Phone Prefix'!");
-			register.lprefix.focus();
-		} else if (register.lpostfix.value == "") {
-			alert("Please enter a valid 'Phone Postfix'!");
-			register.lpostfix.focus();
 		} else {
 			register.submit();
 		}
@@ -67,9 +31,6 @@ function verify(page) {
 		} else if (profile.password.value == "") {
 			alert("Please enter a valid 'Password'!");
 			profile.lname.focus();
-		} else if (profile.email.value == "") {
-			alert("Please enter a valid 'Email'!");
-			profile.email.focus();
 		} else {
 			profile.submit();
 		}
@@ -80,9 +41,6 @@ function verify(page) {
 		} else if (editprofile.password.value == "") {
 			alert("Please enter a valid password");
 			editprofile.password.focus();
-		} else if (editprofile.email.value == "") {
-			alert("Please enter a valid e-mail");
-			editprofile.email.focus();
 		} else {
 			editprofile.submit();
 		}

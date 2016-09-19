@@ -46,7 +46,7 @@
 			$this->classname = 'crc_login';
 			$this->classdescription = 'Handle user login.';
 			$this->classversion = '1.0.0';
-			$this->classdate = 'March 10th, 2003';
+			$this->classdate = 'March 10th, 2016';
 			$this->classdevelopername = 'Shaffin Bhanji';
 			$this->classdeveloperemail = 'shaffin_bhanji@hotmail.com';
 			$this->_DEBUG = $debug;
@@ -127,7 +127,7 @@
 				$db = new crc_mysql($this->_DEBUG);
 				$dbhandle = $db->fn_connect();
 				if ($dbhandle != false) {
-					$this->m_sql = 'select profile_id, profile_firstname, profile_lastname, profile_role_id ' . 
+					$this->m_sql = 'select profile_id, profile_uid, profile_role_id ' . 
 									'from ' . MYSQL_PROFILES_TBL . 
 									' where ((profile_uid = "' . $this->m_uid . '") AND' .
 									' (profile_pwd = SHA1("' . $this->m_pwd . '")) AND (profile_rdn = "' . $this->m_rdn . '"))';
@@ -136,9 +136,9 @@
 
 					if (mysql_num_rows($resource) > 0) {
 						$row = mysql_fetch_row($resource);
-						$this->m_name = $row[1] . ' ' . $row[2];
+						$this->m_name = $row[1];
 						$this->m_profileid = $row[0];
-						$this->m_roleid = $row[3];
+						$this->m_roleid = $row[2];
 						$result = true;
 					} else {
 						$this->lasterrnum = mysql_errno();

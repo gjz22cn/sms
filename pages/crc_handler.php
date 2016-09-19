@@ -71,19 +71,18 @@ print '[' . $title . ']';
 				echo '<meta http-equiv="refresh" content="0;URL=crc_login.php?' . session_name() . '=' . session_id() . '&uid=' . $_POST['username'] . '">';
 
 			} else {
-
                 $_SESSION['uid'] = "";
                 $_SESSION['profileid'] = "";
                 $_SESSION['name'] = "";
                 $_SESSION['data'] = "";
                 $_SESSION['workexdata'] = "";
                 $_SESSION['profiledata'] = "";
-                $_SESSION['scheduledata'] = "";
-                $_SESSION['coursesdata'] = "";
-                $_SESSION['teacherscheduledata'] = "";
-                $_SESSION['teacherstudentsdata'] = "";
-                $_SESSION['teacherattendancegetdata'] = "";
-                $_SESSION['evaluation'] = "";
+                //$_SESSION['scheduledata'] = "";
+                //$_SESSION['coursesdata'] = "";
+                //$_SESSION['teacherscheduledata'] = "";
+                //$_SESSION['teacherstudentsdata'] = "";
+                //$_SESSION['teacherattendancegetdata'] = "";
+                //$_SESSION['evaluation'] = "";
 				$_SESSION['uid'] = $login->m_uid;
 				$_SESSION['name'] = $login->m_name;
 				$_SESSION['profileid'] = $login->m_profileid;
@@ -92,7 +91,6 @@ print '[' . $title . ']';
 				$login->m_sess = session_id();
 				$login->fn_session();
 				echo '<meta http-equiv="refresh" content="0;URL=crc_main.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
 			}
 
 		} else if ($_GET['method'] == 'register') {
@@ -101,35 +99,22 @@ print '[' . $title . ']';
             $_SESSION['registerdata'] = "";
 
 			if (isset($_GET['func'])) {
-
 				if ($_GET['func'] == 'add') {
-
 					$_SESSION['registerdata'] = $_POST;
-
 					$register = new crc_register(false);
 					$result = $register->fn_register($_POST);
-
 					if ($result == false) {
-
 						$_SESSION['msg'] = $register->lasterrmsg;
 						echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_register.php?' . session_name() . '=' . session_id() . '&uid=' . $_POST['username'] . '">';
-
 					} else {
-
 						$_SESSION['registerdata'] = NULL;
 						echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_login.php?' . session_name() . '=' . session_id() . '&uid=' . $_POST['username'] . '">';
-
 					}
-					
 				} else {
-					
 					echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_unknown.php?' . session_name() . '=' . session_id() . '">';
-					
 				}
 			} else {
-
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_register.php?' . session_name() . '=' . session_id() . '">';
-
 			}
 /* james add start */
 		} else if ($_GET['method'] == 'staff') {
