@@ -46,9 +46,9 @@
 			$this->classname = 'crc_login';
 			$this->classdescription = 'Handle user login.';
 			$this->classversion = '1.0.0';
-			$this->classdate = 'March 10th, 2016';
-			$this->classdevelopername = 'Shaffin Bhanji';
-			$this->classdeveloperemail = 'shaffin_bhanji@hotmail.com';
+			$this->classdate = 'Sep 20th, 2016';
+			$this->classdevelopername = 'James';
+			$this->classdeveloperemail = 'gjz22cn@hotmail.com';
 			$this->_DEBUG = $debug;
 
 			if ($this->_DEBUG) {

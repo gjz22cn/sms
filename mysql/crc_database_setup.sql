@@ -89,31 +89,14 @@ CREATE TABLE `crc_profiles` (
   `profile_id` int(11) NOT NULL auto_increment,
   `profile_uid` varchar(100) NOT NULL default '',
   `profile_pwd` varchar(40) NOT NULL default '',
-  `profile_firstname` varchar(100) NOT NULL default '',
-  `profile_lastname` varchar(100) NOT NULL default '',
   `profile_email` varchar(100) NOT NULL default '',
-  `profile_dob` date NOT NULL default '2010-01-01',
-  `profile_gender` varchar(6) NOT NULL default 'M',
-  `profile_employed` tinyint(1) default '0',
-  `profile_employed_title` varchar(100) default '',
-  `profile_employed_company` varchar(100) default '',
-  `profile_address_one` varchar(100) default '',
-  `profile_address_two` varchar(100) default '',
-  `profile_city` varchar(100) default '',
-  `profile_province_state` varchar(100) default '',
-  `profile_postal_code` varchar(100) default '',
-  `profile_country` varchar(100) default '',
-  `profile_phone_land` varchar(14) default '00400000000000',
-  `profile_phone_cell` varchar(14) default '00400000000000',
-  `profile_phone_fax` varchar(14) default '00400000000000',
-  `profile_role_id` int(11) NOT NULL default '0',
   `profile_active` tinyint(1) NOT NULL default '0',
   `profile_rdn` varchar(100) default 'ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world',
   `profile_date` timestamp NOT NULL,
   PRIMARY KEY  (`profile_id`,`profile_uid`,`profile_email`)
-) ENGINE=MyISAM auto_increment=24 ;
+) ENGINE=MyISAM auto_increment=24 CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-INSERT INTO `crc_profiles` (`profile_id`, `profile_uid`, `profile_pwd`, `profile_firstname`, `profile_lastname`, `profile_email`, `profile_dob`, `profile_gender`, `profile_employed`, `profile_employed_title`, `profile_employed_company`, `profile_address_one`, `profile_address_two`, `profile_city`, `profile_province_state`, `profile_postal_code`, `profile_country`, `profile_phone_land`, `profile_phone_cell`, `profile_phone_fax`, `profile_role_id`, `profile_active`, `profile_rdn`) VALUES (1, 'admin', SHA1('admin'), 'Firstname', 'Lastname', 'admin@domain.com', '1977-11-19', 'M', 0, '', '', 'Campulung', '', 'Campulung', 'AG', '115100', 'Romania', '00400000000000', '00400000000000', '00400000000000', 1, 0, 'ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world');
+INSERT INTO `crc_profiles` (`profile_id`, `profile_uid`, `profile_pwd`, `profile_email`, `profile_role_id`, `profile_active`, `profile_rdn`) VALUES (1, 'admin', SHA1('admin'), 'admin@domain.com',  1, 0, 'ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world');
 
 DROP TABLE IF EXISTS `crc_roles`;
 CREATE TABLE `crc_roles` (

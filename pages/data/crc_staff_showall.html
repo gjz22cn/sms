@@ -2,19 +2,18 @@
 <script type="text/javascript">
 <?php
     print 'var g_crc="' . ($_GET["crc"]) . '";';
-    print 'var g_uid1="' . ($_GET["uid"]) . '";';
+    print 'var g_uid="' . ($_GET["uid"]) . '";';
+    print 'var g_pid="' . ($_GET["pid"]) . '";';
     if (isset($_SESSION["staffdata"])) {
         print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
     }
 ?>
 
 var g_url;
-var g_uid='1';
-var g_bi_id='1';
 
 function setbi() {
-    var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid1;
-    var params = { 'bi_uid':g_uid1,
+    var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid;
+    var params = { 'bi_uid':g_pid,
         'bi_name':'', 'bi_birth':'', 'bi_fwd':'',
         'bi_no':'', 'bi_gs':'', 'bi_major':'',
         'bi_cpro':'', 'bi_cpos':'', 'bi_psca':'',
@@ -36,7 +35,7 @@ function setbi() {
     $.ajax({
         type: "post",
         url: url,
-        data: "bi_uid=" + g_uid + "&bi_id=" + g_bi_id + "&baseinfo=" + JSON.stringify(params),
+        data: "bi_uid=" + g_pid + "&baseinfo=" + JSON.stringify(params),
         success: function(msg){
             var result=msg;
             var index = result.indexOf('setbiresult=');
@@ -55,7 +54,7 @@ function get_baseinfodata() {
     var xmlHttp = new XMLHttpRequest();
 
     //配置XMLHttpRequest对象
-    xmlHttp.open("get", "crc_data.php?method=staff&func=getbi&uid=" + g_uid1 + "&bi_uid=" + g_uid + "&bi_id=" + g_bi_id);
+    xmlHttp.open("get", "crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid);
 
     //设置回调函数
     xmlHttp.onreadystatechange = function () {
@@ -78,7 +77,7 @@ function load() {
     get_baseinfodata();
 }
 
-function btnaction(type, action, uid, id) {
+function btnaction(type, action, pid, id) {
     var newurl=g_url+'/crc_handler.php?method=staff&func=';
 
     if (action == 'delete') {
@@ -86,8 +85,8 @@ function btnaction(type, action, uid, id) {
     } else {
         newurl+='show'+action+type;
     }
-    newurl+='&uid='+g_uid1;
-    newurl+='&'+type+'_uid='+uid;
+    newurl+='&uid='+g_uid;
+    newurl+='&'+type+'_uid='+pid;
     if (action != 'add') {
         newurl+='&'+type+'_id='+id;
     }
@@ -303,7 +302,7 @@ function OpenWindow(content, title, type, width, height) {
             <th colspan="2"></th>
 		</tr>
 		<tr>
-            <th colspan="5" align="left">1、公司部门工作经历<input type="button" onclick="btnaction('workex', 'add', g_uid, '1')" value="添加"></th>
+            <th colspan="5" align="left">1、公司部门工作经历<input type="button" onclick="btnaction('workex', 'add', g_pid, '1')" value="添加"></th>
             <th>小计</th>
             <th colspan="2"></th>
 		</tr>
@@ -323,8 +322,8 @@ function OpenWindow(content, title, type, width, height) {
                 document.write('<td style="word-wrap:break-word" width="400">' + workex[i].workex_desc + '</td>');
                 document.write('<td>' + workex[i].workex_score + '</td>');
                 document.write('<td style="word-wrap:break-word" width="200">' + workex[i].workex_comment + '</td>');
-                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'edit\',' + g_uid + ',' + workex[i].workex_id + ')" value="修改"></td>');
-                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'delete\',' + g_uid + ',' + workex[i].workex_id + ')" value="删除"></td>');
+                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'edit\',' + g_pid + ',' + workex[i].workex_id + ')" value="修改"></td>');
+                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'delete\',' + g_pid + ',' + workex[i].workex_id + ')" value="删除"></td>');
                 document.write('</tr>');
             }  
         }  

@@ -29,22 +29,6 @@
 		var $m_pwd;
 		var $m_email;
 		var $m_rdn;
-		var $m_fname;
-		var $m_lname;
-		var $m_dob;
-		var $m_gender;
-		var $m_emp;
-		var $m_emptitle;
-		var $m_empcomp;
-		var $m_add1;
-		var $m_add2;
-		var $m_city;
-		var $m_prov;
-		var $m_country;
-		var $m_code;
-		var $m_phland;
-		var $m_phcell;
-		var $m_phfax;
 		var $m_roleid;
 		var $m_active;
 		var $m_sql;
@@ -80,9 +64,8 @@
 
 			if ($db->m_mysqlhandle != false) {
 
-				$this->m_sql = 'select role_id from ' . 
-														MYSQL_ROLES_TBL . 
-												' where (role_name = "' . $role . '")';
+				$this->m_sql = 'select role_id from ' . MYSQL_ROLES_TBL . 
+                                ' where (role_name = "' . $role . '")';
 
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 				if (mysql_num_rows($resource) > 0) {
@@ -123,6 +106,47 @@
 
 			return $result;
 		}
+
+		function fn_initstaffbi($db, $username) {
+            $result = false;
+
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_register::fn_initstaffbi}: init base info for user " . $profileid . "<br>";
+			}
+
+            if ($db->m_mysqlhandle == false) {
+                return $result;
+            }
+
+            $this->m_sql = 'select profile_id from ' . MYSQL_PROFILES_TBL .
+                            ' where (profile_uid="' . $username . '")';
+            $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+            if (mysql_num_rows($resource) > 0) {
+                $row = mysql_fetch_row($resource);
+                $profileid = $row[0];
+
+				$this->m_sql = 'insert into ' . MYSQL_BI_TBL .
+                    '(bi_uid) select "' . $profileid .
+                    '" from dual where not exists (select bi_uid from ' . MYSQL_BI_TBL .
+                    ' where bi_uid="' . $profileid . '")';
+
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_register::fn_initstaffbi}: Could not init base info. <br>';
+					}
+					$db->fn_freesql($resource);
+                } else {
+                    $result = true;
+                }
+            } else {
+                if ($this->_DEBUG) {
+                    echo 'ERROR {crc_register::fn_initstaffbi}: The sql command returned nothing. <br>';
+                }
+            }
+
+            return $result;
+		}
 		
 		function fn_register($post) {
 			//******************************************
@@ -161,10 +185,9 @@
 				}
 
 				if ($this->fn_userexists($db, $this->m_uid) == false) {
-
 					$this->m_sql = 'insert into ' . MYSQL_PROFILES_TBL . '(' .
-															'profile_uid, profile_pwd, profile_email,profile_role_id) ' .
-												'values("' . $this->m_uid . '",SHA1("' . $this->m_pwd . '"),"' . $this->m_email . '","' . $this->m_roleid . '")';
+								    'profile_uid, profile_pwd, profile_email,profile_role_id) ' .
+									'values("' . $this->m_uid . '",SHA1("' . $this->m_pwd . '"),"' . $this->m_email . '","' . $this->m_roleid . '")';
 					$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 					if ($result == false) {
 						$this->lasterrnum = ERR_REGISTER_ADD_NUM;
@@ -174,17 +197,33 @@
 							echo 'ERROR {crc_profile::fn_setprofile}: Error number: ' . $this->lasterrnum . '. <br>';
 							echo 'ERROR {crc_profile::fn_setprofile}: Error description: ' . $this->lasterrmsg . '. <br>';
 						}
-					}				
-				} else {				
+
+                        $db->fn_disconnect();
+                        return false;
+					}
+
+                    if ($this->fn_initstaffbi($db, $this->m_uid) == false) {
+                        $this->lasterrnum = ERR_REGISTER_ADD_NUM;
+						$this->lasterrmsg = ERR_REGISTER_ADD_DESC;
+						if ($this->_DEBUG) {
+							echo 'ERROR {crc_profile::fn_setprofile}: Could create staff information. <br>';
+							echo 'ERROR {crc_profile::fn_setprofile}: Error number: ' . $this->lasterrnum . '. <br>';
+							echo 'ERROR {crc_profile::fn_setprofile}: Error description: ' . $this->lasterrmsg . '. <br>';
+						}
+
+                        $db->fn_disconnect();
+                        return false;
+                    }
+				} else {
 					$this->lasterrnum = ERR_REGISTER_USEREXISTS_NUM;
 					//lasterrmsg is provided by fn_userexists()
 					if ($this->_DEBUG) {
 						echo 'ERROR {crc_profile::fn_setprofile}: This user ' . $this->m_uid . ' already exists! <br>';
 						echo 'ERROR {crc_profile::fn_setprofile}: Error number: ' . $this->lasterrnum . '.<br>';
 						echo 'ERROR {crc_profile::fn_setprofile}: Error description: ' . $this->lasterrmsg . '.<br>';
-					}							
-				}				
-				$db->fn_disconnect();				
+					}
+				}
+				$db->fn_disconnect();
 			} else {
 				$this->lasterrmsg = mysql_error();
 				$this->lasterrnum = mysql_errno();

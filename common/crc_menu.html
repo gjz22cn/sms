@@ -1,10 +1,8 @@
-<!--
-This is the menu
--->
+<!-- This is the menu -->
 <table align="left" class="tbl" width="100%">	
 	<?php
 	 if ($_SESSION['roleid'] == 3) { 
-	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=showall&uid=1" class="hdr">积分信息</a></th></tr>';
+	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=showall&uid=' . $_SESSION['uid'] . '&pid=' . $_SESSION['profileid'] . '" class="hdr">积分信息</a></th></tr>';
 	 } else if ($_SESSION['roleid'] == 1) {
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=admin&func=showaddstudent" class="hdr">Add Student</a></th></tr>';
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=profile&func=studentlist" class="hdr">Edit Student</a></th></tr>';	
