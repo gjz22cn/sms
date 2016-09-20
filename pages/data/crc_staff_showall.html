@@ -11,6 +11,11 @@ if (isset($_SESSION["profileid"])) {
 } else {
     print 'var g_pid=unknown;';
 }
+if (isset($_SESSION["roleid"])) {
+    print 'var g_roleid="' . ($_SESSION["roleid"]) . '";';
+} else {
+    print 'var g_roleid=unknown;';
+}
 if (isset($_SESSION["staffdata"])) {
     print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
 } else {
@@ -54,37 +59,46 @@ function setbi() {
     });
 }
 
-function showbi(bidata) {
-    autofilldata(bidata, 1);
+function showbi(response) {
+    var result=response;
+    var index = result.indexOf('getbiresult=');
+    var bidata=JSON.parse(result.substr(index+12));
+
+    //alert(result);
+    autofillformdata(document.forms['form_bi'], bidata, 1);
 }
 
-function get_baseinfodata() {
-    //创建XMLHttpRequest对象
-    var xmlHttp = new XMLHttpRequest();
+function showstaffinfo(spid) {
+    alert(spid);
+    /* base info */
+    ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
+}
 
-    //配置XMLHttpRequest对象
-    xmlHttp.open("get", "crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid);
-
-    //设置回调函数
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            var result=xmlHttp.responseText;
-            var index = result.indexOf('getbiresult=');
-            //alert(result);
-            showbi(JSON.parse(result.substr(index+12)));
+function preparestafflist(response) {
+    var result=response;
+    var index=result.indexOf('getsscoreslistresult=');
+    var data=JSON.parse(result.substr(index+21));
+    
+    //alert(result.substr(index+21));
+    if (data.ret == 0) {
+        var ee=document.getElementById("stafflistselect"); 
+        for (var i=0; i<data.data.length; i++) {
+            //alert(data.data[i].bi_uid+"_"+data.data[i].bi_no+"_"+data.data[i].bi_name);
+            ee.options.add(new Option(data.data[i].bi_no+"_"+data.data[i].bi_name, data.data[i].bi_uid));
         }
     }
-
-    //发送请求
-    xmlHttp.send(null);
 }
 
 function load() {
     var temp_str=window.location.href;
     g_url = temp_str.substr(0, temp_str.indexOf("/crc_staff.php"));
 
+    if (g_roleid == '1') {
+        ajaxRequest("GET", "/sms/pages/crc_data.php?method=admin&func=getsscoreslist", null, preparestafflist);
+    }
+
     /* base info */
-    get_baseinfodata();
+    ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid, null, showbi);
 }
 
 function btnaction(type, action, pid, id) {
@@ -151,11 +165,6 @@ function OpenWindow(content, title, type, width, height) {
 <!-- fix parts end -->
 
 
-<form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
-<input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
-<input type="hidden" name="action">
-<input type="hidden" name="workex_uid">
-<input type="hidden" name="workex_id">
 <table align="left">
 	<tr>
 		<td valign="top" width="180">
@@ -167,6 +176,18 @@ function OpenWindow(content, title, type, width, height) {
 
 		<td valign="top" align="left">
 	    <!-- This is the content -->
+
+        <?php
+            if (isset($_SESSION["roleid"])) {
+                if ($_SESSION["roleid"] == '1') {
+                   //include "data/crc_staff_select.html";
+                   print '<p>请选择一个员工<select id="stafflistselect" onchange="showstaffinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
+                }
+            }
+       ?>
+
+        <!-- base info start -->
+        <form id="form_bi" name="form_bi">
         <table class="tbl">
 		<tr>
             <th colspan="5" align="left">一、个人基本情况</th>
@@ -303,8 +324,15 @@ function OpenWindow(content, title, type, width, height) {
             <td colspan="7" align="center"><input id="bi_setbtn" type="button" onclick="setbi()" value="保存基本情况信息"></td>
 		</tr>
         </table>
+        </form>
+        <!-- base info end -->
 
 
+        <form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
+        <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
+        <input type="hidden" name="action">
+        <input type="hidden" name="workex_uid">
+        <input type="hidden" name="workex_id">
         <table class="tbl">
 		<tr>
             <th colspan="5" align="left">三、业务经历</th>
@@ -321,7 +349,7 @@ function OpenWindow(content, title, type, width, height) {
             <!--<th colspan="2"></th>-->
 		</tr>
         <script type="text/javascript">
-        if ('workex' in g_data) {
+        if (g_data && 'workex' in g_data) {
             var workex = g_data.workex;
             for(var i=0; i<workex.length; i++)  
             {
@@ -338,11 +366,11 @@ function OpenWindow(content, title, type, width, height) {
             }  
         }  
         </script>
-      </table>
+        </table>
+        </form>
     </td>
   </tr>
 </table>
-</form>
 
 
 <!-- fix parts start -->

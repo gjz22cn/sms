@@ -489,5 +489,40 @@
 			}
         }
 
+		function fn_getsscoreslist() {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_getsscoreslist}: select list. <br>";
+			}
+
+			$result = null;
+			$db = new crc_mysql($this->_DEBUG);
+			$dbhandle = $db->fn_connect();			
+			if ($dbhandle != false) {
+				$this->m_sql = 'select bi_uid,bi_name,bi_no ' . 
+                    'from ' . MYSQL_BI_TBL;
+                $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_num_rows($resource) > 0) {
+                    $result['data'] = array();
+					while ($row=mysql_fetch_array($resource)) {
+                        $result['data'][] = $row;
+                    }
+                } else {					
+					$this->lasterrnum = ERR_PROFILE_NOPROFILE_NUM;
+					$this->lasterrmsg = ERR_PROFILE_NOPROFILE_DESC;
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_staff::fn_getsscoreslist}: The sql command returned nothing. <br>';
+					}
+				}
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$this->lasterrmsg = mysql_error();
+				$this->lasterrnum = mysql_errno();
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_staff::fn_getsscoreslist}: ' . $this->lasterrmsg . '.<br>';
+				}
+			}
+			return $result;
+        }
 	}
 ?>

@@ -84,7 +84,7 @@ print '[' . $title . ']';
 				$_SESSION['msg'] = "";
 				$login->m_sess = session_id();
 				$login->fn_session();
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '&pid=' . $_SESSION['profileid'] . '">';
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 			}
 		} else if ($_GET['method'] == 'register') {
 			$_SESSION['msg'] = "";
@@ -157,6 +157,8 @@ print '[' . $title . ']';
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'showall') {
                     $_SESSION['staffdata'] = $staff->fn_getalldata($_SESSION['profileid']);
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+                } else if ($_GET['func'] == 'scoreadmin') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 }
             }
