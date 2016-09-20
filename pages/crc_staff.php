@@ -11,7 +11,7 @@
 <HTML>
 <HEAD>
     <TITLE>
-        [SMS: STAFF]
+        [SMS: SCORE]
     </TITLE>
     <?php
     	include_once('../classes/crc_constants.mod.php');
@@ -23,6 +23,8 @@
         include "data/crc_staff_workex.html";
     } else if($_GET['method'] == 'showall') {
         include "data/crc_staff_showall.html";
+    } else if($_GET['method'] == 'showscorestatistics') {
+        include "data/crc_staff_showscores.html";
     } else {
         include "data/crc_unknown_main.html";
     }

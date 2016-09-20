@@ -1,0 +1,171 @@
+<script type="text/javascript">
+function changedcb(response) {
+    var result=response;
+    var index=result.indexOf('chgaccresult=');
+    var data=JSON.parse(result.substr(index+13));
+    //alert(result);
+
+    if (data.ret != 0) {
+        alert(data.retstr);
+        window.location.reload();
+    } else {
+        if (data.action == 'add') {
+            window.location.reload();
+        }
+    }
+}
+
+var amt = {
+    col: 5,
+    addRow: function(table, id, user, pwd, email) {
+        var vals = [id, user, pwd, email, "<a href='###' onclick='amt.modify(table,this)'>修改</a> <a href='###' onclick='amt.del(table,this)'>删除</a>"];
+        var tr = table.insertRow(table.tBodies[0].rows.length);
+        for (var i = 0; i < amt.col-1; i++) {
+            var td = tr.insertCell(tr.cells.length);
+            td.innerHTML = vals[i];
+            
+            if (i==0) {
+                td.hidden=true;
+            }
+            if (id=='0') {
+                var txt = document.createElement("input");
+                txt.type = "text";
+                txt.value = td.innerHTML;
+                td.innerHTML = "";
+                td.appendChild(txt);
+            }
+        }
+
+        var tdbtn = tr.insertCell(tr.cells.length);
+        if (id=='0') {
+            tdbtn.innerHTML = "<a href='###' onclick='amt.modify(table,this)'>保存</a> <a href='###' onclick='amt.del(table,this)'>删除</a>";
+        } else {
+            tdbtn.innerHTML = "<a href='###' onclick='amt.modify(table,this)'>修改</a> <a href='###' onclick='amt.del(table,this)'>删除</a>";
+        }
+    },
+    modify: function(table, row) {
+        var r = row.parentElement.parentElement;
+        c = r.cells;
+        if (/.*修改.*/g.test(row.innerHTML)) {
+            for (var i = 0; i < c.length - 1; i++) {
+                var ci = c[i];
+                var txt = document.createElement("input");
+                txt.type = "text";
+                txt.value = ci.innerHTML;
+                ci.innerHTML = "";
+                ci.appendChild(txt);
+            }
+            row.innerHTML = "保存";
+        } else {
+            var params;
+            var isadd=0;
+            
+            if (c[0].children[0].value == 0) {
+                isadd=1;
+            } else {
+                params += '&pid=' + c[0].children[0].value;
+            }
+            params += '&username=' + c[1].children[0].value;
+            params += '&pwd=' + c[2].children[0].value;
+            params += '&email=' + c[3].children[0].value;
+
+            for (var i=0; i<c.length-1; i++) {
+                var ci = c[i];
+                if (i==2) {
+                    ci.innerHTML = "******";
+                } else {
+                    ci.innerHTML = ci.children[0].value;
+                }
+            }
+            row.innerHTML = "修改";
+
+            if (isadd == 1) {
+                ajaxRequest("POST", "/sms/pages/crc_data.php?method=admin&func=addacc", params, changedcb);
+            } else {
+                ajaxRequest("POST", "/sms/pages/crc_data.php?method=admin&func=setacc", params, changedcb);
+            }
+        }
+    },
+    del: function(table, row) {
+        var r = row.parentElement.parentElement;
+        var ind = r.rowIndex;
+        var pid=parseInt(r.cells[0].innerHTML);
+
+        if (pid > 1) {
+            var params = '&pid=' + pid;
+            params += '&username=' + r.cells[1].innerHTML;
+            ajaxRequest("POST", "/sms/pages/crc_data.php?method=admin&func=delacc", params, changedcb);
+        }
+        table.tBodies[0].deleteRow(ind);
+    }
+}
+
+function showaccs(response) {
+    var result=response;
+    var index=result.indexOf('getaccsresult=');
+    var data=JSON.parse(result.substr(index+14));
+    //alert(result.substr(index+14));
+
+    if (data.ret == 0) {
+        for (var i=1; i<data.data.length; i++) {
+            amt.addRow(table, data.data[i].profile_id, data.data[i].profile_uid, '******', data.data[i].profile_email);
+        }
+    }
+}
+
+function load() {
+    ajaxRequest("GET", "/sms/pages/crc_data.php?method=admin&func=getaccs", null, showaccs);
+}
+</script>
+ 
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<TABLE width="100%">
+<!-- The Page Header -->
+<TR CLASS="OUTER">
+<?php
+    include "data/crc_page_header_band.html";
+?>
+</TR>
+<!-- The Page Content -->
+<TR CLASS="OUTER">
+<!-- fix parts end -->
+
+
+
+<table align="left">
+    <tr>
+        <td valign="top" width="180" align="left">
+            <!-- This is the menu -->
+            <?php
+                include "../common/crc_menu.html";
+            ?>
+		</td>
+		<td valign="top" align="left">
+
+        <table id="table" class="std">
+            <tr>
+                <th hidden></th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>Email</th>
+                <th><input type="button" value="添加" onclick="amt.addRow(table, '0', '', '', '')"/></input></th>
+            </tr>
+        </table>
+
+      </td>
+    </tr>
+</table>
+
+
+                
+                
+<!-- fix parts start -->
+</TR>
+</TABLE>
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->

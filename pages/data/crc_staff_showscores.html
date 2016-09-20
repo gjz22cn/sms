@@ -1,0 +1,83 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+<script type="text/javascript">
+<?php
+if (isset($_SESSION["uid"])) {
+    print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+} else {
+    print 'var g_uid=unknown;';
+}
+if (isset($_SESSION["profileid"])) {
+    print 'var g_pid="' . ($_SESSION["profileid"]) . '";';
+} else {
+    print 'var g_pid=unknown;';
+}
+if (isset($_SESSION["roleid"])) {
+    print 'var g_roleid="' . ($_SESSION["roleid"]) . '";';
+} else {
+    print 'var g_roleid=unknown;';
+}
+if (isset($_SESSION["staffdata"])) {
+    print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
+} else {
+    print 'var g_data=null;';
+}
+?>
+
+var g_url;
+
+
+
+
+function load() {
+    //ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid, null, showbi);
+}
+</script>
+
+
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<TABLE width="100%">
+<!-- The Page Header -->
+<TR CLASS="OUTER">
+<?php
+    include "data/crc_page_header_band.html";
+?>
+</TR>
+<!-- The Page Content -->
+<TR CLASS="OUTER">
+<!-- fix parts end -->
+
+
+<table align="left">
+	<tr>
+		<td valign="top" width="180">
+            <!-- This is the menu -->
+            <?php
+                include "../common/crc_menu.html";
+            ?>
+		</td>
+
+		<td valign="top" align="left">
+	    <!-- This is the content -->
+
+        <form name="scoresta">
+        <table class="tbl">
+		<tr>
+            <th>工号</th><th>姓名</th><th>得分1</th><th>得分2</th><th>得分3</th><th>得分4</th><th>得分n</th><th>总分</th>
+		</tr>
+        </table>
+        </form>
+    </td>
+  </tr>
+</table>
+
+
+<!-- fix parts start -->
+</TR>
+</TABLE>
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->
