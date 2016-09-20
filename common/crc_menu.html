@@ -2,7 +2,7 @@
 <table align="left" class="tbl" width="100%">	
 	<?php
 	 if ($_SESSION['roleid'] == 3) { 
-	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=showall&uid=' . $_SESSION['uid'] . '" class="hdr">积分信息</a></th></tr>';
+	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=score&uid=' . $_SESSION['uid'] . '" class="hdr">积分信息</a></th></tr>';
 	 } else if ($_SESSION['roleid'] == 1) {
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=scoreadmin&uid=' . $_SESSION['uid'] . '" class="hdr">积分信息</a></th></tr>';
 	   print '<tr align="left"><th nowrap><a href="crc_handler.php?method=staff&func=scoreadminstatistics&uid=' . $_SESSION['uid'] . '" class="hdr">积分信息统计</a></th></tr>';

@@ -84,7 +84,7 @@ print '[' . $title . ']';
 				$_SESSION['msg'] = "";
 				$login->m_sess = session_id();
 				$login->fn_session();
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 			}
 		} else if ($_GET['method'] == 'register') {
 			$_SESSION['msg'] = "";
@@ -154,12 +154,12 @@ print '[' . $title . ']';
                 } else if ($_GET['func'] == 'deleteworkex') {
                     $result = $staff->fn_deleteworkexentry($_GET['workex_uid'], $_GET['workex_id']);
                     $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['workex_uid']);
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-                } else if ($_GET['func'] == 'showall') {
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+                } else if ($_GET['func'] == 'score') {
                     $_SESSION['staffdata'] = $staff->fn_getalldata($_SESSION['profileid']);
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadmin') {
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showall&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadminstatistics') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showscorestatistics&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 }

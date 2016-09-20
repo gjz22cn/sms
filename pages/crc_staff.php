@@ -21,8 +21,8 @@
 <?php
     if($_GET['method'] == 'workex') {
         include "data/crc_staff_workex.html";
-    } else if($_GET['method'] == 'showall') {
-        include "data/crc_staff_showall.html";
+    } else if($_GET['method'] == 'score') {
+        include "data/crc_staff_score.html";
     } else if($_GET['method'] == 'showscorestatistics') {
         include "data/crc_staff_showscores.html";
     } else {
