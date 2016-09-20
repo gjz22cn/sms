@@ -10,8 +10,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
 <HEAD>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta http-equiv="content-language" content="zh-CN" />
     <TITLE>
         [SMS: STAFF]
     </TITLE>

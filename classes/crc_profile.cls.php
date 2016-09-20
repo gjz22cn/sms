@@ -30,22 +30,6 @@
 		var $m_pwd;
 		var $m_email;
 		var $m_rdn;
-		var $m_fname;
-		var $m_lname;
-		var $m_dob;
-		var $m_gender;
-		var $m_emp;
-		var $m_emptitle;
-		var $m_empcomp;
-		var $m_add1;
-		var $m_add2;
-		var $m_city;
-		var $m_prov;
-		var $m_country;
-		var $m_code;
-		var $m_phland;
-		var $m_phcell;
-		var $m_phfax;
 		var $m_active;
 		var $m_sql;
 		var $m_data;
@@ -57,9 +41,9 @@
 			$this->classname = 'crc_profile';
 			$this->classdescription = 'Handle user profile.';
 			$this->classversion = '1.0.0';
-			$this->classdate = 'March 10th, 2003';
-			$this->classdevelopername = 'Shaffin Bhanji';
-			$this->classdeveloperemail = 'shaffin_bhanji@hotmail.com';
+			$this->classdate = 'Sep 20th, 2016';
+			$this->classdevelopername = 'James';
+			$this->classdeveloperemail = 'gjz22cn@hotmail.com';
 			$this->_DEBUG = $debug;
 
 			if ($this->_DEBUG) {
@@ -77,7 +61,6 @@
 				echo "DEBUG {crc_profile::fn_getprofile}: Retreiving the profile of uid: " . $uid . ". <br>";
 			}
 
-			$result = false;
 			$this->m_data = null;			
 			$db = new crc_mysql($this->_DEBUG);
 			$dbhandle = $db->fn_connect();			
@@ -178,6 +161,198 @@
 				$this->lasterrmsg = mysql_error();
 				if ($this->_DEBUG) {
 					echo 'ERROR {crc_profile::fn_setprofile}: ' . $this->lasterrmsg . '.<br>';
+				}
+			}
+			$db->fn_disconnect();
+			return $result;
+		}
+
+		function fn_getaccs() {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_profile::fn_getaccs}: Retreiving accs info. <br>";
+			}
+
+			$result = null;
+			$db = new crc_mysql($this->_DEBUG);
+			$dbhandle = $db->fn_connect();			
+			if ($dbhandle != false) {
+				$this->m_sql = 'select profile_id,profile_uid,profile_pwd,profile_email ' . 
+                    'from ' . MYSQL_PROFILES_TBL;
+                $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_num_rows($resource) > 0) {
+                    $result['data'] = array();
+					while ($row=mysql_fetch_array($resource)) {
+                        $result['data'][] = $row;
+                    }
+                } else {					
+					$this->lasterrnum = ERR_PROFILE_NOPROFILE_NUM;
+					$this->lasterrmsg = ERR_PROFILE_NOPROFILE_DESC;
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_profile::fn_getaccs}: The sql command returned nothing. <br>';
+					}
+				}
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$this->lasterrmsg = mysql_error();
+				$this->lasterrnum = mysql_errno();
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_profile::fn_getaccs}: ' . $this->lasterrmsg . '.<br>';
+				}
+			}
+			return $result;
+        }
+
+		function fn_setacc($isadd, $post) {
+            $pid="0";
+            $username="";
+            $pwd="";
+            $email="";
+
+			if ($this->_DEBUG && isset($post['username'])) {
+				echo "DEBUG {crc_profile::fn_setacc}: Updating the profile for \"" . $post['username'] . "\". <br>";
+			}
+			
+			//checking input
+			if (!isset($post['username'], $post['pwd'])) {
+				$this->lasterrmsg = "Incomplete input";
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_profile::fn_setacc}: ' . $this->lasterrmsg . '.<br>';
+				}
+				return false;		
+            } else {
+                $username=$post['username'];
+                $pwd=$post['pwd'];
+            }
+
+			if (isset($post['pid'])) {
+                $pid = $post['pid'];
+            }
+
+            if ($isadd == false) {
+                if ($pid == "") {
+                    $this->lasterrmsg = "Empty profile ID";
+                    if ($this->_DEBUG) {
+                        echo 'ERROR {crc_profile::fn_setacc}: ' . $this->lasterrmsg . '.<br>';
+                    }
+                    return false;
+                }
+            }
+
+			if (($username == "") ) {
+                $this->lasterrmsg = "用户名不能为空";
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_profile::fn_setacc}: ' . $this->lasterrmsg . '.<br>';
+				}
+                return false;
+			}
+
+			if (isset($post['email'])) {
+                $email=$post['email'];
+			}
+
+
+
+			$result = false;
+			$db = new crc_mysql($this->_DEBUG);
+			$dbhandle = $db->fn_connect();
+			if ($dbhandle != false) {
+				//don't allow users with the same name
+				$this->m_sql = 'select * ' . 
+								'from ' . MYSQL_PROFILES_TBL . 
+								' where (profile_uid= "' . $username . '")';
+				$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_num_rows($result) > 0) {
+					while ($row = mysql_fetch_array($result)) {
+						if ($row[0] != $pid) {
+							$this->lasterrmsg = 'The user ' . $username . ' already exists in database.';
+                            if ($this->_DEBUG) {
+                                echo 'ERROR {crc_profile::fn_setacc}: ' . $this->lasterrmsg . '.<br>';
+                            }
+							$db->fn_freesql($result);
+							$db->fn_disconnect();
+							return false;
+						}
+					}
+				}
+				
+                if ($isadd) {
+                    $this->m_sql = 'insert into ' . MYSQL_PROFILES_TBL . 
+                                    '(profile_uid,profile_pwd,profile_email,profile_role_id, profile_rdn) ' .
+									'values("' . $username .
+                                    '","' . strtolower($pwd) .
+									'","' . $email .
+									'","3","ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world")';
+                } else {
+                    if ($pwd == "******") {
+                        $this->m_sql = 'update ' . MYSQL_PROFILES_TBL .
+								' SET profile_uid="' . $username . '",profile_email="' . $email . 
+                                '" where (profile_id = ' . $pid . ')';
+                    } else {
+                        $this->m_sql = 'update ' . MYSQL_PROFILES_TBL .
+								' SET profile_uid="' . $username . '", profile_pwd=SHA1("' . strtolower($pwd) . '"), ' .
+								'profile_email="' . $email . 
+                                '" where (profile_id = ' . $pid . ')';
+                    }
+                }
+				$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if ($result) {
+                    $result = true;
+				} else {
+					$this->lasterrnum = ERR_PROFILE_UPDATE_NUM;
+					$this->lasterrmsg = ERR_PROFILE_UPDATE_DESC;
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_profile::fn_setacc}: Could not update profile information for ' . $pid . '<br>';
+						echo 'ERROR {crc_profile::fn_setacc}: Error number: ' . $this->lasterrnum . '. <br>';
+						echo 'ERROR {crc_profile::fn_setacc}: Error description: ' . $this->lasterrmsg . '. <br>';
+					}
+				}
+			} else {
+				$this->lasterrnum = mysql_errno();
+				$this->lasterrmsg = mysql_error();
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_profile::fn_setacc}: ' . $this->lasterrmsg . '.<br>';
+				}
+			}
+			$db->fn_disconnect();
+			return $result;
+		}
+
+		function fn_delacc($post) {
+			if ($this->_DEBUG && isset($post['username'])) {
+				echo "DEBUG {crc_profile::fn_delacc}: delete the profile for \"" . $post['username'] . "\". <br>";
+			}
+			
+			//checking input
+			if (!isset($post['pid'], $post['username'])) {
+				$this->lasterrmsg = "Incomplete input";
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_profile::fn_delacc}: ' . $this->lasterrmsg . '.<br>';
+				}
+				return false;		
+            }
+
+			$result = false;
+			$db = new crc_mysql($this->_DEBUG);
+			$dbhandle = $db->fn_connect();
+			if ($dbhandle != false) {
+				//don't allow users with the same name
+				$this->m_sql = 'delete from ' . MYSQL_PROFILES_TBL . 
+								' where (profile_uid= "' . $post['username'] . '" and profile_id="' . $post['pid'] . '")';
+				$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() == 0) {
+                    $result = true;
+                } else {
+                    $this->lasterrmsg = 'del' . $username . ' failed.' . mysql_error();
+                    if ($this->_DEBUG) {
+                        echo 'ERROR {crc_profile::fn_delacc}: ' . $this->lasterrmsg . '.<br>';
+                    }
+                }
+			} else {
+				$this->lasterrnum = mysql_errno();
+				$this->lasterrmsg = mysql_error();
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_profile::fn_delacc}: ' . $this->lasterrmsg . '.<br>';
 				}
 			}
 			$db->fn_disconnect();

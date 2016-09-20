@@ -8,7 +8,7 @@ if(isset($_REQUEST[session_name()])) {
 }
 include_once('../classes/crc_login.cls.php');
 //include_once('../classes/crc_register.cls.php');
-//include_once('../classes/crc_profile.cls.php');
+include_once('../classes/crc_profile.cls.php');
 //include_once('../classes/crc_schedule.cls.php');
 //include_once('../classes/crc_courses.cls.php');
 //include_once('../classes/crc_teacher.cls.php');
@@ -33,6 +33,38 @@ if($_GET['method'] == 'staff') {
             echo 'setbiresult={"ret":8008, "retstr":"修改基本情况信息失败!"}';
         } else {
             echo 'setbiresult={"ret":0, "retstr":"修改成功!"}';
+        }
+    }
+} else if($_GET['method'] == 'admin') {
+    $profile = new crc_profile(true);
+    if($_GET['func'] == 'getaccs') {
+        $result = $profile->fn_getaccs();
+        if($result == null) {
+            echo 'getaccsresult={"ret":8008, "retstr":"获取帐号信息失败!"}';
+        } else {
+            $result['ret'] = 0;
+            echo 'getaccsresult=' . json_encode($result);
+        }
+    } else if($_GET['func'] == 'addacc') {
+        $result = $profile->fn_setacc(true, $_POST);
+        if($result == false) {
+            echo 'chgaccresult={"ret":8008, "retstr":"添加失败!"}';
+        } else {
+            echo 'chgaccresult={"ret":0, "action":"add", "retstr":"添加成功!"}';
+        }
+    } else if($_GET['func'] == 'setacc') {
+        $result = $profile->fn_setacc(false, $_POST);
+        if($result == false) {
+            echo 'chgaccresult={"ret":8008, "retstr":"修改失败!"}';
+        } else {
+            echo 'chgaccresult={"ret":0, "action":"set", "retstr":"修改成功!"}';
+        }
+    } else if($_GET['func'] == 'delacc') {
+        $result = $profile->fn_delacc($_POST);
+        if($result == false) {
+            echo 'chgaccresult={"ret":8008, "retstr":"删除失败!"}';
+        } else {
+            echo 'chgaccresult={"ret":0, "action":"del", "retstr":"删除成功!"}';
         }
     }
 } else {

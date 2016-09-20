@@ -196,3 +196,25 @@ function autofilldata(data, type)
         }
     }
 }
+
+function ajaxRequest(method, url, data, callback) {
+    //创建XMLHttpRequest对象
+    var xmlHttp = new XMLHttpRequest();
+
+    //配置XMLHttpRequest对象
+    xmlHttp.open(method, url);
+
+    //设置回调函数
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            callback(xmlHttp.responseText);
+        }
+    }
+
+    if (data != null) {
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    }
+
+    //发送请求
+    xmlHttp.send(data);
+}
