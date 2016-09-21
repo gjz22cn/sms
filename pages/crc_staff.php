@@ -25,6 +25,8 @@
         include "data/crc_staff_score.html";
     } else if($_GET['method'] == 'showscorestatistics') {
         include "data/crc_staff_showscores.html";
+    } else if($_GET['method'] == 'rap') {
+        include "data/crc_staff_rap.html";
     } else {
         include "data/crc_unknown_main.html";
     }

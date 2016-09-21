@@ -216,6 +216,19 @@ CREATE TABLE `crc_bi` (
   PRIMARY KEY  (`bi_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+DROP TABLE IF EXISTS `crc_rap`;
+CREATE TABLE `crc_rap` (
+  `rap_id` int(11) NOT NULL auto_increment,
+  `rap_uid` int(11) NOT NULL default '0',
+  `rap_date` varchar(64) NOT NULL default '',
+  `rap_level` int(4) NOT NULL default '0',
+  `rap_category` int(4) NOT NULL default '0',
+  `rap_reason` varchar(512) NOT NULL default '',
+  `rap_score` int(4) NOT NULL default '0',
+  `rap_entity` varchar(256) NOT NULL default '',
+  PRIMARY KEY  (`rap_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 DROP TABLE IF EXISTS `crc_workex`;
 CREATE TABLE `crc_workex` (
   `workex_id` int(11) NOT NULL auto_increment,

@@ -34,6 +34,28 @@ if ($_GET['method'] == 'staff') {
         } else {
             echo 'setbiresult={"ret":0, "retstr":"修改成功!"}';
         }
+    } else if ($_GET['func'] == 'getrap') {
+        $rapinfo = $staff->fn_getrap($_GET['rap_uid'], $_GET['rap_id']);
+        if ($rapinfo) {
+            $rapinfo['ret'] = 0;
+            echo 'getrapresult=' . json_encode($rapinfo);
+        } else {
+            echo 'getrapresult={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+        }
+    } else if ($_GET['func'] == 'setrap') {
+        $result = $staff->fn_setrap($_POST);
+        if ($result == false) {
+            echo 'setrapresult={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+        } else {
+            echo 'setrapresult={"ret":0, "action":"' . $_POST['action'] .'", "retstr":"修改成功!"}';
+        }
+    } else if ($_GET['func'] == 'delrap') {
+        $result= $staff->fn_delrap($_GET['rap_uid'], $_GET['rap_id']);
+        if ($result == false) {
+            echo 'delscoredataresult={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+        } else {
+            echo 'delscoredataresult={"ret":0, "action":"del", "retstr":"删除成功!"}';
+        }
     }
 } else if ($_GET['method'] == 'admin') {
     if ($_GET['func'] == 'getaccs') {

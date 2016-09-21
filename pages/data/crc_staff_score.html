@@ -24,6 +24,7 @@ if (isset($_SESSION["staffdata"])) {
 ?>
 
 var g_url;
+var g_staffpre="/sms/pages/crc_data.php?method=staff";
 
 function setbi() {
     var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid;
@@ -65,13 +66,65 @@ function showbi(response) {
     var bidata=JSON.parse(result.substr(index+12));
 
     //alert(result);
-    autofillformdata(document.forms['form_bi'], bidata, 1);
+    autofillformdata(document.forms['form_bi'], bidata);
+}
+
+function showrap(response) {
+    var index = response.indexOf('getrapresult=');
+    var data=JSON.parse(response.substr(index+13));
+
+    //alert(response.substr(index+13));
+    if (data.action == 'del') {
+        if(data.ret != 0) {
+            alert("删除失败： "+data.retstr);
+            window.location.reload();            
+        }
+        return;
+    }
+    if (data.ret == 0) {
+        var raplevel = {"4":"国家级","3":"省部级","2":"地市级","1":"公司级","0":"无"};
+        var etable=document.getElementById("table_rap");
+        for (var i=0; i<data.data.length; i++) {
+            var tr = etable.insertRow(etable.rows.length);
+            var td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].rap_date;
+
+            td = tr.insertCell(tr.cells.length);
+            if(data.data[i].rap_level in raplevel) {
+                td.innerHTML = raplevel[data.data[i].rap_level];
+            } else {
+                td.innerHTML = "无";
+            }
+
+            td = tr.insertCell(tr.cells.length);
+            if (data.data[i].rap_category == '1') {
+                td.innerHTML = '奖';
+            } else {
+                td.innerHTML = '罚';
+            }
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].rap_reason;
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].rap_score;
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].rap_entity;
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'rap\', \'edit\',' + g_pid + ',' + data.data[i].rap_id + ', this)" value="修改">';
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'rap\', \'del\',' + g_pid + ',' + data.data[i].rap_id + ', this)" value="删除">';
+        }
+    }
 }
 
 function showstaffinfo(spid) {
     alert(spid);
     /* base info */
-    ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
+    ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
 }
 
 function preparestafflist(response) {
@@ -98,7 +151,10 @@ function load() {
     }
 
     /* base info */
-    ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid, null, showbi);
+    ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid, null, showbi);
+
+    /* rap info */
+    ajaxRequest("GET", g_staffpre+"&func=getrap&uid=" + g_uid + "&rap_uid=" + g_pid + "&rap_id=0", null, showrap);
 }
 
 function btnaction(type, action, pid, id) {
@@ -118,6 +174,26 @@ function btnaction(type, action, pid, id) {
 
     if (action == 'delete') {
         top.location=newurl;
+    } else {
+        OpenWindow(newurl, "test", 'iframe', 1000, 400);
+    }
+}
+
+function btnaction2(func, action, pid, did, r) {
+    var newurl=g_url+'/crc_handler.php?method=staff';
+
+    newurl+='&func='+func;
+    newurl+='&action='+action;
+    newurl+='&uid='+g_uid;
+    newurl+='&pid='+pid;
+    newurl+='&did='+did;
+    //alert(newurl);
+
+    if (action == 'del') {
+        var row=r.parentElement.parentElement;
+        var etable=row.parentElement;
+        etable.deleteRow(row.rowIndex);
+        ajaxRequest("GET", g_staffpre+"&func=delrap&uid=" + g_uid + "&rap_uid=" + pid + "&rap_id=" + did, null, showrap);
     } else {
         OpenWindow(newurl, "test", 'iframe', 1000, 400);
     }
@@ -326,6 +402,23 @@ function OpenWindow(content, title, type, width, height) {
         </table>
         </form>
         <!-- base info end -->
+
+
+        <!-- rewarding and punishment end -->
+        <form name="form_rap" id="form_rap">
+        <table class="tbl" id="table_rap">
+		<tr>
+            <th colspan="5" align="left">个人奖罚记录（证书时间起一年内可加分，技术质量相关及优秀员工类可加分，处罚减分<input type="button" onclick="btnaction2('rap', 'add', g_pid, '0', this)" value="添加"></th>
+            <th>小计</th>
+            <th colspan="2"></th>
+		</tr>
+		<tr>
+            <th>时间(年)</th><th>级别</th><th>类别</th><th width="400">奖罚原因</th><th>得分</th><th width="200">奖罚单位</th><th colspan="2">操作</th>
+		</tr>
+        </table>
+        </form>
+        <!-- rewarding and punishment end -->
+
 
 
         <form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">

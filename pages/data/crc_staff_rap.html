@@ -1,0 +1,136 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+<script type="text/javascript">
+<?php
+    if (isset($_SESSION["uid"])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+    } else {
+        print 'var g_uid=unknow;';
+    }
+    if (isset($_SESSION["uid"], $_SESSION['action'], $_SESSION['pid'], $_SESSION['did'])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+        print 'var g_action="' . ($_SESSION["action"]) . '";';
+        print 'var g_pid="' . ($_SESSION["pid"]) . '";';
+        print 'var g_did="' . ($_SESSION["did"]) . '";';
+    } else {
+        print 'var g_uid=unknow;';
+        print 'var g_action=unknow;';
+        print 'var g_pid=unknow;';
+        print 'var g_did=unknow;';
+    }
+?>
+ 
+function changedcb(response) {
+    var index=response.indexOf('setrapresult=');
+    var data=JSON.parse(response.substr(index+13));
+
+    //alert(response);
+    //alert(response.substr(index+13));
+
+    if (data.ret == 0) {
+        if (data.action == 'add') {
+            document.getElementById("rap_ret").innerHTML="添加成功，您可以继续添加新记录。";
+            autofillformdata(document.forms['form_rap'], data);
+        } else {
+            document.getElementById("rap_ret").innerHTML="修改成功。";
+        }
+    } else {
+        if (data.action == 'add') {
+            document.getElementById("rap_ret").innerHTML="添加失败: " + data.retstr + "!";
+        } else {
+            document.getElementById("rap_ret").innerHTML="修改失败: " + data.retstr + "!";
+        }
+    }
+}
+
+function apply() {
+    var params = $('#form_rap').serialize();
+    ajaxRequest("POST", "/sms/pages/crc_data.php?method=staff&func=setrap", params, changedcb);
+}
+
+function showrap(response) {
+    var result=response;
+    var index=result.indexOf('getrapresult=');
+    var data=JSON.parse(result.substr(index+13));
+
+    //alert(result.substr(index+13));
+
+    if (data.ret == 0) {
+        autofillformdata(document.forms['form_rap'], data.data[0]);
+    }
+}
+
+function load()
+{
+    //autofilldata(g_data, 0);
+    document.getElementById("action").value=g_action;
+    document.getElementById("rap_uid").value=g_pid;
+    document.getElementById("rap_id").value=g_did;
+
+    if (g_action == 'edit') {
+        ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getrap&rap_uid=" + g_pid + "&rap_id=" + g_did, null, showrap);
+    } else {
+        document.getElementById("button").value="添加";
+    }
+}
+</script>
+
+
+
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<!-- fix parts end -->
+
+
+<form id="form_rap" name="formrap">
+<input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
+<input type="hidden" name="action", id="action">
+<input type="hidden" name="rap_uid" id="rap_uid">
+<input type="hidden" name="rap_id" id="rap_id" value="0">
+    <table class="tbl">
+		<tr>
+	        <th colspan="6">个人奖罚记录</th>
+		</tr>
+        <tr>
+            <td colspan="6" class="error" align="center" id='rap_ret'><b></b></td>
+        </tr>
+		<tr>
+        	<td align="right">时间(年): </td>
+            <td><input type="text" name="rap_date" size="4" value=""></input></td>
+
+
+        	<td align="right">级别: </td>
+            <td><select name="rap_level"><option value="4">国家级</option>
+                    <option value="3">省部级</option>
+                    <option value="2">地市级</option>
+                    <option value="1">公司级</option>
+                    <option value="0" selected="selected">无</option>
+                    </select></td>
+
+
+        	<td align="right">类别: </td>
+            <td><select name="rap_category"><option value="1">奖</option>
+                    <option value="0" selected="selected">罚</option>
+                    </select></td>
+        </tr>
+		<tr>
+        	<td align="right">奖罚原因: </td>
+            <td colspan="5"><textarea name="rap_reason" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        </tr>
+		<tr>
+        	<td align="right">奖罚单位: </td>
+            <td colspan="5"><textarea name="rap_entity" rows="2" cols="128" maxlength="256" value=""></textarea></td>
+        </tr>
+		<tr>
+      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+    	</tr>
+    </table>
+</form>
+
+
+<!-- fix parts start -->
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->

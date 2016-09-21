@@ -19,14 +19,14 @@
 	//******************************************************
 	// APP_ Constants
 	//******************************************************
-	define('APP_PROJECTNAME', 'Free Student Management System');
-	define('APP_DIVISION', 'FreeSMS');
+	define('APP_PROJECTNAME', 'Staff Management System');
+	define('APP_DIVISION', 'SMS');
 	define('APP_DEVELOPMENT_LEAD', 'Free SMS Team');
 	define('APP_VERSION', '2.0.0');
 	define('APP_CONTACT_NAME', 'Bogdan Cristea');
 	define('APP_CONTACT_EMAIL', 'cristeab@gmail.com');
-	define('APP_COPYRIGHT', 'This application is copyright &copy; 2003. Use of any code in part or whole without the written concent of FreeSMS Team is prohibited and against the law.');
-	define('APP_PATH', '/freesms/');	
+	define('APP_COPYRIGHT', 'This application is copyright &copy; 2016. Use of any code in part or whole without the written concent of SMS Team is prohibited and against the law.');
+	define('APP_PATH', '/sms/');	
 
 	//******************************************************
 	// MYSQL_ Constants (other)
@@ -47,6 +47,7 @@
 	define('MYSQL_FEEDBACK_QUESTIONS_TBL', 'crcdb.crc_feedback_questions');
 	define('MYSQL_FEEDBACK_ANSWERS_TBL', 'crcdb.crc_feedback_answers');
 	define('MYSQL_BI_TBL', 'crcdb.crc_bi');
+	define('MYSQL_RAP_TBL', 'crcdb.crc_rap');
 	define('MYSQL_WORKEX_TBL', 'crcdb.crc_workex');
 
 	//******************************************************

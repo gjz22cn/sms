@@ -162,6 +162,15 @@ print '[' . $title . ']';
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadminstatistics') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showscorestatistics&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+                } else if ($_GET['func'] == 'rap') {
+                    if (isset($_GET['action'], $_GET['pid'], $_GET['did'])) {
+                        $_SESSION['action'] = $_GET['action'];
+                        $_SESSION['pid'] = $_GET['pid'];
+                        $_SESSION['did'] = $_GET['did'];
+                    } else {
+                        $_SESSION['msg'] = "前端错误：缺少参数！";
+                    }
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=rap&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '&action=' . $_SESSION['action'] . '&pid=' . $_SESSION['pid'] . '&did=' . $_SESSION['did'] . '">';
                 }
             }
 /* james add end */

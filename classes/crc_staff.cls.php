@@ -26,32 +26,7 @@
 		var $m_startmonth;
 		var $m_endmonth;
 		var $m_status;		
-
-		var $m_data;
-		var $m_courseid;
-		var $m_coursename;
-		var $m_coursedesc;
-		var $m_startdate;
-		var $m_enddate;
-		var $m_daytime;
-		var $m_roomid;
-		var $m_roomname;
-		var $m_roomdesc;
-		var $m_active;
-		var $m_venueid;
-		var $m_coursefee;
-		var $m_scheduleid;
-		var $m_evaluation;
 		
-		var $m_firstname;
-		var $m_lastname;
-		var $m_gender;
-		var $m_email;
-		var $m_phone;
-		
-		var $m_courselist;
-		var $m_teacherlist;
-		var $m_studentlist;
 		
 		function crc_staff($debug) {
 			//******************************************
@@ -252,6 +227,153 @@
 			}
 			return $result;
         }
+
+        /* rewarding and punishment */
+		function fn_getrap($pid, $did) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_getrap}: Retreiving rap info. <br>";
+			}
+
+            $filterstr='rap_uid="' . $pid . '"';
+            if ($did != 0) {
+                $filterstr=$filterstr . ' and rap_id="' . $did . '"';
+            }
+
+			$result = null;
+			$db = new crc_mysql($this->_DEBUG);
+			$dbhandle = $db->fn_connect();
+			if ($dbhandle != false) {
+				$this->m_sql = 'select * ' . 
+                    'from ' . MYSQL_RAP_TBL .
+                    ' where ' . $filterstr;
+                $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_num_rows($resource) > 0) {
+                    $result['data'] = array();
+					while ($row=mysql_fetch_array($resource)) {
+                        $result['data'][] = $row;
+                    }
+                } else {
+					$this->lasterrnum = ERR_PROFILE_NOPROFILE_NUM;
+					$this->lasterrmsg = ERR_PROFILE_NOPROFILE_DESC;
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_staff::fn_getrap}: The sql command returned nothing. <br>';
+					}
+				}
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$this->lasterrmsg = mysql_error();
+				$this->lasterrnum = mysql_errno();
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_staff::fn_getrap}: ' . $this->lasterrmsg . '. <br>';
+				}
+			}
+			return $result;
+        }
+
+		function fn_setrap($post) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_setrap}: Setting rap information <br>";
+			}
+
+            if(!isset($post['action'], $post['rap_uid'])) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            if ($post['action'] != 'edit' && $post['action'] != 'add') {
+				$this->lasterrmsg = "Invalid param value!" . $post['action'];
+                return false;
+            }
+
+            if ($post['action'] == 'edit' && !isset($post['rap_id']) ) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+			$db = new crc_mysql($this->_DEBUG);
+			$db->fn_connect();
+			$result = true;
+			if ($db->m_mysqlhandle != false) {
+				$this->m_status = 'In progress';
+                $keys= array('rap_date','rap_level','rap_category','rap_reason','rap_entity');
+				
+				//set information
+                if ($post['action'] == 'add') {
+                    $keystr='rap_uid';
+                    $valstr=$post['rap_uid'];
+                    foreach ($keys as $key) {
+                        if (isset($post[$key])) {
+                            $keystr = $keystr . ', ' . $key;
+                            $valstr = $valstr . ', "' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'insert into ' . MYSQL_RAP_TBL . 
+                        '(' . $keystr . ')' .
+                        'values(' . $valstr . ')';
+                } else {
+                    $setstr='';
+                    foreach ($keys as $key) {
+                        if (isset($post[$key])) {
+                            $setstr = $setstr . ',' . $key . '="' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'update ' . MYSQL_RAP_TBL . 
+                        ' set ' . substr($setstr, 1) .
+                        ' where rap_id="' . $post['rap_id'] . '" and rap_uid="' . $post['rap_uid'] . '"';
+                }
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_staff::fn_setrap}: Could not update/insert rap information. <br>';
+					}
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = "Could not update/insert rap information";
+					return false;
+				}
+				
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$db->fn_disconnect();
+				$result = false;
+				$this->lasterrmsg = "Cannot connect to MySQL database";
+			}
+			return $result;
+		}
+
+        function fn_delrap($pid, $id) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_delrap}: delete one rap entry <br>";
+			}
+
+            if ( $pid == null || $id == null) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+			$result = false;
+            $db = new crc_mysql($this->_DEBUG);
+            $db->fn_connect();
+            $result = false;
+			if ($db->m_mysqlhandle != 0) {
+				$this->m_sql = 'delete from ' . MYSQL_RAP_TBL . 
+								' where (rap_uid = "' . $pid . '" and rap_id = "' . $id . '" ) ';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_admin::fn_delrap}: The sql command failed. <br>';
+					}
+				} else {
+                    $result = true;
+                }
+                $db->fn_freesql($resource);
+			}
+            $db->fn_disconnect();
+            return $result;
+        }
+        /* rewarding and punishment */
 
 		function fn_setworkex($post) {
 			//******************************************

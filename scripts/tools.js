@@ -197,63 +197,37 @@ function autofilldata(data, type)
     }
 }
 
-function autofillformdata(eform, data, type)
+function autofillformdata(eform, data)
 {
     var ff=eform;
-    if (type == 0) {
-        for (var i=0;i<ff.elements.length;i++) {
-            var ee=ff.elements[i];
+    for (var i=0;i<ff.elements.length;i++) {
+        var ee=ff.elements[i];
 
-            if (ee.name == "button") {
-                if (ee.type == "submit") {
-                    ee.value = "添加";
-                }
-            }
-            else if (!(ee.name in data)) {
-                continue;
-            }
+        if (!(ee.name in data)) {
+            continue;
+        }
 
-            if ("INPUT" == ee.tagName) {
-                if (ee.type == "hidden") {
-                    ee.value = data[ee.name];
-                }
+        if ("INPUT" == ee.tagName) {
+            if (ee.type == "text") {
+                ee.value = data[ee.name];
+            }
+            else if (ee.type == "hidden") {
+                ee.value = data[ee.name];
             }
         }
-    }
-    else if (type == 1) {
-        for (var i=0;i<ff.elements.length;i++) {
-            var ee=ff.elements[i];
-
-            if (ee.name == "button") {
-                if (ee.type == "submit") {
-                    ee.value = "修改";
-                }
-            }
-            else if (!(ee.name in data)) {
-                continue;
-            }
-
-            if ("INPUT" == ee.tagName) {
-                if (ee.type == "text") {
-                    ee.value = data[ee.name];
-                }
-                else if (ee.type == "hidden") {
-                    ee.value = data[ee.name];
-                }
-            }
-            else if ("TEXTAREA" == ee.tagName) {
-                    ee.value = data[ee.name];
-            }
-            else if ("SELECT" == ee.tagName) {
-                for (var j=0; j<ee.options.length; j++ ) {
-                    if (ee.options[j].value == data[ee.name]) {
-                        ee.selectedIndex=j;
-                    }
+        else if ("TEXTAREA" == ee.tagName) {
+            ee.value = data[ee.name];
+        }
+        else if ("SELECT" == ee.tagName) {
+            for (var j=0; j<ee.options.length; j++ ) {
+                if (ee.options[j].value == data[ee.name]) {
+                    ee.selectedIndex=j;
                 }
             }
         }
     }
 }
+
 function ajaxRequest(method, url, data, callback) {
     //创建XMLHttpRequest对象
     var xmlHttp = new XMLHttpRequest();
