@@ -1,21 +1,16 @@
 <script type="text/javascript" src="../scripts/jquery.min.js"></script>
 <script type="text/javascript">
 <?php
-if (isset($_SESSION["uid"])) {
+if (isset($_SESSION["uid"], $_SESSION["profileid"], $_SESSION["roleid"])) {
     print 'var g_uid="' . ($_SESSION["uid"]) . '";';
-} else {
-    print 'var g_uid=unknown;';
-}
-if (isset($_SESSION["profileid"])) {
     print 'var g_pid="' . ($_SESSION["profileid"]) . '";';
-} else {
-    print 'var g_pid=unknown;';
-}
-if (isset($_SESSION["roleid"])) {
     print 'var g_roleid="' . ($_SESSION["roleid"]) . '";';
 } else {
+    print 'var g_uid=unknown;';
+    print 'var g_pid=unknown;';
     print 'var g_roleid=unknown;';
 }
+
 if (isset($_SESSION["staffdata"])) {
     print 'var g_data=' . json_encode($_SESSION["staffdata"]) . ';';
 } else {
@@ -25,12 +20,17 @@ if (isset($_SESSION["staffdata"])) {
 
 var g_url;
 var g_staffpre="/sms/pages/crc_data.php?method=staff";
+var g_adminpre="/sms/pages/crc_data.php?method=admin";
 
 
-function showstaffinfo(spid) {
-    alert(spid);
+function showscoreinfo(spid) {
+    g_pid=spid;
+
     /* base info */
     ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
+
+    /* rap info */
+    rapinfo_reload();
 }
 
 function preparestafflist(response) {
@@ -53,14 +53,10 @@ function load() {
     g_url = temp_str.substr(0, temp_str.indexOf("/crc_staff.php"));
 
     if (g_roleid == '1') {
-        ajaxRequest("GET", "/sms/pages/crc_data.php?method=admin&func=getsscoreslist", null, preparestafflist);
+        ajaxRequest("GET", g_adminpre+"&func=getsscoreslist", null, preparestafflist);
+    } else {
+        showscoreinfo(g_pid);
     }
-
-    /* base info */
-    ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid, null, showbi);
-
-    /* rap info */
-    ajaxRequest("GET", g_staffpre+"&func=getrap&uid=" + g_uid + "&rap_uid=" + g_pid + "&rap_id=0", null, showrap);
 }
 
 function btnaction(type, action, pid, id) {
@@ -163,7 +159,7 @@ function OpenWindow(content, title, type, width, height) {
             if (isset($_SESSION["roleid"])) {
                 if ($_SESSION["roleid"] == '1') {
                    //include "data/crc_staff_select.html";
-                   print '<p>请选择一个员工<select id="stafflistselect" onchange="showstaffinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
+                   print '<p>请选择一个员工<select id="stafflistselect" onchange="showscoreinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
                 }
             }
        ?>

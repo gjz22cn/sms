@@ -28,10 +28,10 @@ function changedcb(response) {
 
     if (data.ret == 0) {
         if (data.action == 'add') {
-            document.getElementById("rap_ret").innerHTML="添加成功，您可以继续添加新记录。";
+            document.getElementById("rap_ret").innerHTML="添加成功，您可以继续添加新记录.";
             autofillformdata(document.forms['form_rap'], data);
         } else {
-            document.getElementById("rap_ret").innerHTML="修改成功。";
+            document.getElementById("rap_ret").innerHTML="修改成功.";
         }
     } else {
         if (data.action == 'add') {
@@ -93,7 +93,7 @@ function load()
 	        <th colspan="6">个人奖罚记录</th>
 		</tr>
         <tr>
-            <td colspan="6" class="error" align="center" id='rap_ret'><b></b></td>
+            <td colspan="6" class="error" align="left" id='rap_ret'><b></b></td>
         </tr>
 		<tr>
         	<td align="right">时间(年): </td>

@@ -3,11 +3,12 @@ function showrap(response) {
     var index = response.indexOf('getrapresult=');
     var data=JSON.parse(response.substr(index+13));
 
+    //alert(response);
     //alert(response.substr(index+13));
     if (data.action == 'del') {
         if(data.ret != 0) {
             alert("删除失败： "+data.retstr);
-            window.location.reload();            
+            rapinfo_reload();
         }
         return;
     }
@@ -49,6 +50,16 @@ function showrap(response) {
             td.innerHTML = '<input type="button" onclick="btnaction2(\'rap\', \'del\',' + g_pid + ',' + data.data[i].rap_id + ', this)" value="删除">';
         }
     }
+}
+
+function rapinfo_reload() {
+    var etable=document.getElementById("table_rap");
+
+    for (var i=etable.rows.length-1; i>1; i--) {
+        etable.deleteRow(i);
+    }
+
+    ajaxRequest("GET", g_staffpre+"&func=getrap&uid=" + g_uid + "&rap_uid=" + g_pid + "&rap_id=0", null, showrap);
 }
 </script>
 
