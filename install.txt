@@ -5,43 +5,27 @@ Since it's development in 2003, SMS has successfully offered educational organiz
 an easy to use and effective facility to manage courses, teachers and students.
 SMS provides the following features:
 
- - Support for profile based management: Administrator, Teacher and Student
- - Online teacher and student registration
- - Allow admin to add courses
- - Allow admin to add students and enroll them to one or more courses
- - Allow admin to edit students already entered into database
- - Allow admin to edit courses already entered into database
- - Allow teachers to manage student attendance
- - Allow teachers to display graphically course attendance and feedback
- - Allow students to check their enrollment and provide feedback for a course
+ - Support for profile based management: Administrator, Staff
  
 Features to implement:
 
  - Allow admin to perform sanity checks on the database
- - Allow students/admin to withdraw from an enrolled course
 
 From a technical perspective SMS is based on PHP5 and requires a MySQL database. This 
 demonstration site has been tested on: 
 
-openSUSE 11.4 with
- - Apache 2.2.17 (<a href="http://www.apache.org">www.apache.org</a>)
- - PHP 5.3.6 (<a href="http://www.php.net">www.php.net</a>)
- - MySQL 5.5.13 (<a href="http://www.mysql.com">www.mysql.com</a>)
+Ubuntu 16.04 with
+ - Apache 2.4.18 (<a href="http://www.apache.org">www.apache.org</a>)
+ - PHP 5.5.38 (<a href="http://www.php.net">www.php.net</a>)
+ - MySQL 5.7.15 (<a href="http://www.mysql.com">www.mysql.com</a>)
  
- and
- 
- Windows Seven 32 bits with
- - WampServer 2.1 (<a href="http://www.wampserver.com/">www.wampserver.net</a>) or
- - XAMPP 1.7.4 (<a href="http://www.apachefriends.org/en/xampp.html">http://www.apachefriends.org/en/xampp.html</a>)
-
 In order to install SMS, please use the following instructions:
 
 1. Download SMS: 
 ====================
-SMS can be downloaded at http://sourceforge.net/projects/sms/.
+SMS can be downloaded at https://github.com
 You need also a properly configured http server (e.g. Apache) capable
-of running php code and a MySQL server. On Windows OSs the recommended
-approach is to use WampServer or XAMPP.
+of running php code and a MySQL server.
 
 2. Extract SMS: 
 ===================
@@ -81,8 +65,6 @@ do not hesitate to check out the postings on the project page.
 For those of you who would like to help out, we are looking for
 volunteers on this project, please send us an email.
 
-Thank You,
-SMS Team.
 
 6. DB Setup:
 =======================
