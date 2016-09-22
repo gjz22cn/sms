@@ -241,3 +241,46 @@ CREATE TABLE `crc_workex` (
   `workex_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`workex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_projex`;
+CREATE TABLE `crc_projex` (
+  `projex_id` int(11) NOT NULL auto_increment,
+  `projex_uid` int(11) NOT NULL default '0',
+  `projex_dure` varchar(64) NOT NULL default '',
+  `projex_pname` varchar(128) NOT NULL default '',
+  `projex_level` varchar(8) NOT NULL default '0',
+  `projex_position` varchar(8) NOT NULL default '0',
+  `projex_ext1` int(4) NOT NULL default '0',
+  `projex_score` int(4) NOT NULL default '0',
+  `projex_comment` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`projex_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_tereex`;
+CREATE TABLE `crc_tereex` (
+  `tereex_id` int(11) NOT NULL auto_increment,
+  `tereex_uid` int(11) NOT NULL default '0',
+  `tereex_date` varchar(64) NOT NULL default '',
+  `tereex_name` varchar(128) NOT NULL default '',
+  `tereex_level` varchar(8) NOT NULL default '0',
+  `tereex_position` varchar(8) NOT NULL default '0',
+  `tereex_content` varchar(1024) NOT NULL default '',
+  `tereex_score` int(4) NOT NULL default '0',
+  `tereex_comment` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`tereex_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+DROP TABLE IF EXISTS `crc_bidex`;
+CREATE TABLE `crc_bidex` (
+  `bidex_id` int(11) NOT NULL auto_increment,
+  `bidex_uid` int(11) NOT NULL default '0',
+  `bidex_date` varchar(64) NOT NULL default '',
+  `bidex_pname` varchar(128) NOT NULL default '',
+  `bidex_level` varchar(8) NOT NULL default '0',
+  `bidex_position` varchar(8) NOT NULL default '0',
+  `bidex_content` varchar(1024) NOT NULL default '',
+  `bidex_score` int(4) NOT NULL default '0',
+  `bidex_result` int(4) NOT NULL default '0',
+  PRIMARY KEY  (`bidex_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;

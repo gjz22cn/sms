@@ -1,5 +1,6 @@
 <script type="text/javascript">
 function showrap(response) {
+    var tname = "rap";
     var index = response.indexOf('getrapresult=');
     var data=JSON.parse(response.substr(index+13));
 
@@ -14,7 +15,7 @@ function showrap(response) {
     }
     if (data.ret == 0) {
         var raplevel = {"4":"国家级","3":"省部级","2":"地市级","1":"公司级","0":"无"};
-        var etable=document.getElementById("table_rap");
+        var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             var tr = etable.insertRow(etable.rows.length);
             var td = tr.insertCell(tr.cells.length);
@@ -44,10 +45,10 @@ function showrap(response) {
             td.innerHTML = data.data[i].rap_entity;
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'rap\', \'edit\',' + g_pid + ',' + data.data[i].rap_id + ', this)" value="修改">';
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="修改">';
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'rap\', \'del\',' + g_pid + ',' + data.data[i].rap_id + ', this)" value="删除">';
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="删除">';
         }
     }
 }
@@ -59,7 +60,7 @@ function rapinfo_reload() {
         etable.deleteRow(i);
     }
 
-    ajaxRequest("GET", g_staffpre+"&func=getrap&uid=" + g_uid + "&rap_uid=" + g_pid + "&rap_id=0", null, showrap);
+    ajaxRequest("GET", g_staffpre+"&func=rap&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, showrap);
 }
 </script>
 

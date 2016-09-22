@@ -61,6 +61,79 @@
 
 		}
 
+		function fn_gettableentry($mysqltable, $table, $pid, $did) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_gettableentry table. }: Retreiving info table=" . $table . " pid=" . $pid . " id=" . $id . ". <br>";
+			}
+
+            $filterstr = $table . '_uid="' . $pid . '"';
+            if ($did != 0) {
+                $filterstr=$filterstr . ' and ' . $table . '_id="' . $did . '"';
+            }
+
+			$result = null;
+			$db = new crc_mysql($this->_DEBUG);
+			$dbhandle = $db->fn_connect();
+			if ($dbhandle != false) {
+				$this->m_sql = 'select * ' . 
+                    'from ' . $mysqltable .
+                    ' where ' . $filterstr;
+                $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_num_rows($resource) > 0) {
+                    $result['data'] = array();
+					while ($row=mysql_fetch_array($resource)) {
+                        $result['data'][] = $row;
+                    }
+                } else {
+					$this->lasterrnum = ERR_PROFILE_NOPROFILE_NUM;
+					$this->lasterrmsg = ERR_PROFILE_NOPROFILE_DESC;
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_staff::fn_gettableentry}: The sql command returned nothing. <br>';
+					}
+				}
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$this->lasterrmsg = mysql_error();
+				$this->lasterrnum = mysql_errno();
+				if ($this->_DEBUG) {
+					echo 'ERROR {crc_staff::fn_gettableentry}: ' . $this->lasterrmsg . '. <br>';
+				}
+			}
+			return $result;
+        }
+
+        function fn_deltableentry($mysqltable, $table, $pid, $id) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_deltableentry table. }: delete one " . $table . " entry pid=" . $pid . " id=" . $id . ". <br>";
+			}
+
+            if ( $pid == null || $id == null) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+			$result = false;
+            $db = new crc_mysql($this->_DEBUG);
+            $db->fn_connect();
+            $result = false;
+			if ($db->m_mysqlhandle != 0) {
+				$this->m_sql = 'delete from ' . $mysqltable . 
+								' where (' . $table . '_uid = "' . $pid . '" and ' . $table . '_id = "' . $id . '" ) ';
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_admin::fn_deltableentry}: The sql command failed. <br>';
+					}
+				} else {
+                    $result = true;
+                }
+                $db->fn_freesql($resource);
+			}
+            $db->fn_disconnect();
+            return $result;
+        }
+
 		function fn_getuserinfo($username) {
 
 			if ($this->_DEBUG) {
@@ -229,48 +302,6 @@
         }
 
         /* rewarding and punishment */
-		function fn_getrap($pid, $did) {
-			if ($this->_DEBUG) {
-				echo "DEBUG {crc_staff::fn_getrap}: Retreiving rap info. <br>";
-			}
-
-            $filterstr='rap_uid="' . $pid . '"';
-            if ($did != 0) {
-                $filterstr=$filterstr . ' and rap_id="' . $did . '"';
-            }
-
-			$result = null;
-			$db = new crc_mysql($this->_DEBUG);
-			$dbhandle = $db->fn_connect();
-			if ($dbhandle != false) {
-				$this->m_sql = 'select * ' . 
-                    'from ' . MYSQL_RAP_TBL .
-                    ' where ' . $filterstr;
-                $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
-                if (mysql_num_rows($resource) > 0) {
-                    $result['data'] = array();
-					while ($row=mysql_fetch_array($resource)) {
-                        $result['data'][] = $row;
-                    }
-                } else {
-					$this->lasterrnum = ERR_PROFILE_NOPROFILE_NUM;
-					$this->lasterrmsg = ERR_PROFILE_NOPROFILE_DESC;
-					if ($this->_DEBUG) {
-						echo 'ERROR {crc_staff::fn_getrap}: The sql command returned nothing. <br>';
-					}
-				}
-				$db->fn_freesql($resource);
-				$db->fn_disconnect();
-			} else {
-				$this->lasterrmsg = mysql_error();
-				$this->lasterrnum = mysql_errno();
-				if ($this->_DEBUG) {
-					echo 'ERROR {crc_staff::fn_getrap}: ' . $this->lasterrmsg . '. <br>';
-				}
-			}
-			return $result;
-        }
-
 		function fn_setrap($post) {
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_setrap}: Setting rap information <br>";
@@ -308,9 +339,7 @@
                             $valstr = $valstr . ', "' . $post[$key] . '"';
                         }
                     }
-                    $this->m_sql = 'insert into ' . MYSQL_RAP_TBL . 
-                        '(' . $keystr . ')' .
-                        'values(' . $valstr . ')';
+                    $this->m_sql = 'insert into ' . MYSQL_RAP_TBL . '(' . $keystr . ') values(' . $valstr . ')';
                 } else {
                     $setstr='';
                     foreach ($keys as $key) {
@@ -342,38 +371,83 @@
 			}
 			return $result;
 		}
+        /* rewarding and punishment end */
 
-        function fn_delrap($pid, $id) {
+        /* bidex start */
+		function fn_setbidex($post) {
+            $table = 'bidex';
+            $tuidname = $table . '_uid';
+            $tidname = $table . '_id';
+
 			if ($this->_DEBUG) {
-				echo "DEBUG {crc_staff::fn_delrap}: delete one rap entry <br>";
+				echo "DEBUG {crc_staff::fn_setbidex}: Setting bidex information <br>";
 			}
 
-            if ( $pid == null || $id == null) {
+            if(!isset($post['action'], $post[$tuidname])) {
 				$this->lasterrmsg = "Missing param!";
                 return false;
             }
 
-			$result = false;
-            $db = new crc_mysql($this->_DEBUG);
-            $db->fn_connect();
-            $result = false;
-			if ($db->m_mysqlhandle != 0) {
-				$this->m_sql = 'delete from ' . MYSQL_RAP_TBL . 
-								' where (rap_uid = "' . $pid . '" and rap_id = "' . $id . '" ) ';
-				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
-                if (mysql_errno() != 0) {
-					if ($this->_DEBUG) {
-						echo 'ERROR {crc_admin::fn_delrap}: The sql command failed. <br>';
-					}
-				} else {
-                    $result = true;
+            if ($post['action'] != 'edit' && $post['action'] != 'add') {
+				$this->lasterrmsg = "Invalid param value!" . $post['action'];
+                return false;
+            }
+
+            if ($post['action'] == 'edit' && !isset($post[$tidname]) ) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+			$db = new crc_mysql($this->_DEBUG);
+			$db->fn_connect();
+			$result = true;
+			if ($db->m_mysqlhandle != false) {
+				$this->m_status = 'In progress';
+                $keys= array('bidex_date','bidex_pname','bidex_level','bidex_position','bidex_content','bidex_result');
+				
+				//set information
+                if ($post['action'] == 'add') {
+                    $keystr = $tuidname;
+                    $valstr=$post[$tuidname];
+                    foreach ($keys as $key) {
+                        if (isset($post[$key])) {
+                            $keystr = $keystr . ', ' . $key;
+                            $valstr = $valstr . ', "' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'insert into ' . MYSQL_BIDEX_TBL . '(' . $keystr . ') values(' . $valstr . ')';
+                } else {
+                    $setstr='';
+                    foreach ($keys as $key) {
+                        if (isset($post[$key])) {
+                            $setstr = $setstr . ',' . $key . '="' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'update ' . MYSQL_BIDEX_TBL . 
+                        ' set ' . substr($setstr, 1) .
+                        ' where ' . $tidname .'="' . $post[$tidname] . '" and ' . $tuidname . '="' . $post[$tuidname] . '"';
                 }
-                $db->fn_freesql($resource);
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_staff::fn_setbidex}: Could not update/insert bidex information. <br>';
+					}
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = "Could not update/insert bidex information";
+					return false;
+				}
+				
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$db->fn_disconnect();
+				$result = false;
+				$this->lasterrmsg = "Cannot connect to MySQL database";
 			}
-            $db->fn_disconnect();
-            return $result;
-        }
-        /* rewarding and punishment */
+			return $result;
+		}
+        /* bidex end */
 
 		function fn_setworkex($post) {
 			//******************************************

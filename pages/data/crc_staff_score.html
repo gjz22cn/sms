@@ -31,6 +31,9 @@ function showscoreinfo(spid) {
 
     /* rap info */
     rapinfo_reload();
+
+    /* bidex info */
+    bidexinfo_reload();
 }
 
 function preparestafflist(response) {
@@ -81,7 +84,7 @@ function btnaction(type, action, pid, id) {
     }
 }
 
-function btnaction2(func, action, pid, did, r) {
+function btnaction2(func, action, pid, did, r, callback) {
     var newurl=g_url+'/crc_handler.php?method=staff';
 
     newurl+='&func='+func;
@@ -95,7 +98,7 @@ function btnaction2(func, action, pid, did, r) {
         var row=r.parentElement.parentElement;
         var etable=row.parentElement;
         etable.deleteRow(row.rowIndex);
-        ajaxRequest("GET", g_staffpre+"&func=delrap&uid=" + g_uid + "&rap_uid=" + pid + "&rap_id=" + did, null, showrap);
+        ajaxRequest("GET", g_staffpre+"&func="+func+"&action=del&uid=" + g_uid + "&pid=" + pid + "&did=" + did, null, callback);
     } else {
         OpenWindow(newurl, "test", 'iframe', 1000, 400);
     }
@@ -221,6 +224,12 @@ function OpenWindow(content, title, type, width, height) {
         </table>
         </form>
         <!-- work exp end -->
+
+        <!-- bid start -->
+        <?php
+            include "crc_staff_score_bidex.html";
+        ?>
+        <!-- bid end -->
     </td>
   </tr>
 </table>

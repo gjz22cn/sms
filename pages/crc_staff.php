@@ -19,15 +19,10 @@
     ?>
 </HEAD>
 <?php
-    if($_GET['method'] == 'workex') {
-        include "data/crc_staff_workex.html";
-    } else if($_GET['method'] == 'score') {
-        include "data/crc_staff_score.html";
-    } else if($_GET['method'] == 'showscorestatistics') {
+    if ($_GET['method'] == 'showscorestatistics') {
         include "data/crc_staff_showscores.html";
-    } else if($_GET['method'] == 'rap') {
-        include "data/crc_staff_rap.html";
     } else {
-        include "data/crc_unknown_main.html";
+        include "data/crc_staff_" . $_GET['method'] . ".html";
+        //include "data/crc_unknown_main.html";
     }
 ?>

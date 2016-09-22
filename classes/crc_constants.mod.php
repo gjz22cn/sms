@@ -49,6 +49,7 @@
 	define('MYSQL_BI_TBL', 'crcdb.crc_bi');
 	define('MYSQL_RAP_TBL', 'crcdb.crc_rap');
 	define('MYSQL_WORKEX_TBL', 'crcdb.crc_workex');
+	define('MYSQL_BIDEX_TBL', 'crcdb.crc_bidex');
 
 	//******************************************************
 	// ERR_ Constants

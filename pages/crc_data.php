@@ -31,17 +31,10 @@ if ($_GET['method'] == 'staff') {
         $result = $staff->fn_setbi($_POST);
         if ($result == false) {
             echo 'setbiresult={"ret":8008, "retstr":"修改基本情况信息失败!"}';
-        } else {
+        } else { 
             echo 'setbiresult={"ret":0, "retstr":"修改成功!"}';
         }
-    } else if ($_GET['func'] == 'getrap') {
-        $rapinfo = $staff->fn_getrap($_GET['rap_uid'], $_GET['rap_id']);
-        if ($rapinfo) {
-            $rapinfo['ret'] = 0;
-            echo 'getrapresult=' . json_encode($rapinfo);
-        } else {
-            echo 'getrapresult={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
-        }
+    /*
     } else if ($_GET['func'] == 'setrap') {
         $result = $staff->fn_setrap($_POST);
         if ($result == false) {
@@ -49,12 +42,36 @@ if ($_GET['method'] == 'staff') {
         } else {
             echo 'setrapresult={"ret":0, "action":"' . $_POST['action'] .'", "retstr":"修改成功!"}';
         }
-    } else if ($_GET['func'] == 'delrap') {
-        $result= $staff->fn_delrap($_GET['rap_uid'], $_GET['rap_id']);
-        if ($result == false) {
-            echo 'delscoredataresult={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
-        } else {
-            echo 'delscoredataresult={"ret":0, "action":"del", "retstr":"删除成功!"}';
+    */
+    } else {
+        if (isset($_GET['action'])) {
+            if ($_GET['action'] == 'get') {
+                $result= $staff->fn_gettableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $_GET['pid'], $_GET['did']);
+                if ($result) {
+                    $result['ret'] = 0;
+                    $result['action'] = 'get';
+                    echo 'get' . $_GET['func'] . 'result=' . json_encode($result);
+                } else {
+                    echo 'get' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                }
+            } else if ($_GET['action'] == 'del') {
+                $result= $staff->fn_deltableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $_GET['pid'], $_GET['did']);
+                if ($result == false) {
+                    echo 'del' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                } else {
+                    echo 'del' . $_GET['func'] . 'result={"ret":0, "action":"del", "retstr":"删除成功!"}';
+                }
+            }
+        } else if (isset($_POST['action'])) {
+            if ($_POST['action'] == 'add' || $_POST['action'] == 'edit') {
+                $funcname='fn_set' . $_GET['func'];
+                $result = $staff->$funcname($_POST);
+                if ($result == false) {
+                    echo 'set' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                } else {
+                    echo 'set' . $_GET['func'] . 'result={"ret":0, "action":"' . $_POST['action'] .'", "retstr":"修改成功!"}';
+                }
+            }
         }
     }
 } else if ($_GET['method'] == 'admin') {

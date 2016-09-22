@@ -17,64 +17,11 @@
         print 'var g_pid=unknow;';
         print 'var g_did=unknow;';
     }
-?>
  
-function changedcb(response) {
-    var index=response.indexOf('setrapresult=');
-    var data=JSON.parse(response.substr(index+13));
-
-    //alert(response);
-    //alert(response.substr(index+13));
-
-    if (data.ret == 0) {
-        if (data.action == 'add') {
-            document.getElementById("rap_ret").innerHTML="添加成功，您可以继续添加新记录.";
-            autofillformdata(document.forms['form_rap'], data);
-        } else {
-            document.getElementById("rap_ret").innerHTML="修改成功.";
-        }
-    } else {
-        if (data.action == 'add') {
-            document.getElementById("rap_ret").innerHTML="添加失败: " + data.retstr + "!";
-        } else {
-            document.getElementById("rap_ret").innerHTML="修改失败: " + data.retstr + "!";
-        }
-    }
-}
-
-function apply() {
-    var params = $('#form_rap').serialize();
-    ajaxRequest("POST", "/sms/pages/crc_data.php?method=staff&func=setrap", params, changedcb);
-}
-
-function showrap(response) {
-    var result=response;
-    var index=result.indexOf('getrapresult=');
-    var data=JSON.parse(result.substr(index+13));
-
-    //alert(result.substr(index+13));
-
-    if (data.ret == 0) {
-        autofillformdata(document.forms['form_rap'], data.data[0]);
-    }
-}
-
-function load()
-{
-    //autofilldata(g_data, 0);
-    document.getElementById("action").value=g_action;
-    document.getElementById("rap_uid").value=g_pid;
-    document.getElementById("rap_id").value=g_did;
-
-    if (g_action == 'edit') {
-        ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getrap&rap_uid=" + g_pid + "&rap_id=" + g_did, null, showrap);
-    } else {
-        document.getElementById("button").value="添加";
-    }
-}
+    print 'var g_tname="rap";';
+?>
 </script>
-
-
+<script type="text/javascript" src="../scripts/gentablefunc.js"></script>
 
 
 <!-- fix parts start -->

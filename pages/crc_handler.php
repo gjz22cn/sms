@@ -162,7 +162,8 @@ print '[' . $title . ']';
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadminstatistics') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showscorestatistics&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-                } else if ($_GET['func'] == 'rap') {
+                } else if ($_GET['func'] == 'rap' || $_GET['func'] == 'bidex' ) {
+                    /* TODO: all tables entry should be here */
                     if (isset($_GET['action'], $_GET['pid'], $_GET['did'])) {
                         $_SESSION['action'] = $_GET['action'];
                         $_SESSION['pid'] = $_GET['pid'];
@@ -170,7 +171,10 @@ print '[' . $title . ']';
                     } else {
                         $_SESSION['msg'] = "前端错误：缺少参数！";
                     }
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=rap&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '&action=' . $_SESSION['action'] . '&pid=' . $_SESSION['pid'] . '&did=' . $_SESSION['did'] . '">';
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=' . $_GET['func'] . 
+                        '&' . session_name() . '=' . session_id() . 
+                        '&uid=' . $_SESSION['uid'] . 
+                        '&action=' . $_SESSION['action'] . '&pid=' . $_SESSION['pid'] . '&did=' . $_SESSION['did'] . '">';
                 }
             }
 /* james add end */
@@ -232,161 +236,6 @@ print '[' . $title . ']';
 			} else {
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_unknown.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 			}
-		} else if ($_GET['method'] == 'schedule') {
-			$_SESSION['msg'] = "";
-
-			if ($_GET['func'] == 'get') {
-				//TODO this code is duplicated by 'method = teacher', 'func = getschedule'
-				$schedule = new crc_schedule(false);
-				$schedule->fn_getschedule($_SESSION['profileid'], $_SESSION['roleid']);
-				$_SESSION['scheduledata'] = $schedule->m_data;
-					
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_schedule.php?func=get&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'add') {
-
-				$schedule = new crc_schedule(false);
-				$schedule->fn_addschedule($_SESSION['profileid'], $_GET['schedule']);
-				$_SESSION['msg'] = 'Course successfully added!';
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_schedule.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else {
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_unknown.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-			}
-
-		} else if ($_GET['method'] == 'courses') {
-
-			if ($_GET['func'] == 'get') {
-
-				$courses = new crc_courses(false);
-				$courses->fn_getcourses($_SESSION['profileid']);
-				$_SESSION['coursesdata'] = $courses->m_data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_courses.php?func=get&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'remove') {
-
-				$courses = new crc_courses(false);
-				$courses->fn_removecourse($_SESSION['profileid'], $_GET['course']);
-				$_SESSION['msg'] = 'Course successfully removed!';
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_courses.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'courselist') {
-				
-				$admin = new crc_admin(false);
-				$_SESSION['coursesdata'] = $admin->fn_getcourselist(null);
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_courses.php?func=courselist&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				
-			} else if ($_GET['func'] == 'editenroll') {
-				
-				$profile = new crc_profile(false);
-				$profile->fn_getprofile($_SESSION['uid']);//obtain profile id
-				$_SESSION['profiledata'] = $profile->m_data;
-				$schedule = new crc_schedule(false);
-				$schedule->fn_getschedule($profile->m_data[0], 3, true);//obtain information for all courses
-				$_SESSION['coursesdata'] = $schedule->m_data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_courses.php?func=register&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				
-			} else if ($_GET['func'] == 'enroll') {
-				
-				$admin = new crc_admin(false);
-				$result_admin = $admin->fn_setstudentschedule(null, $_POST, $_SESSION['profiledata'][0]);
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_handler.php?method=courses&func=editenroll">';
-				
-			} else if ($_GET['func'] == 'editcourse') {
-				
-				$course = new crc_courses(false);
-				$_SESSION['coursesdata'] = $course->fn_getcourseinfo($_GET['courseid']);
-				$_SESSION['teacherscheduledata'] = $course->fn_getteacherlist(null, $_GET['courseid']);
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_courses.php?func=editcourse&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'updatecourse') {
-
-				$course = new crc_courses(false);
-				$result = $course->fn_setcourseinfo($_POST);
-				if ($result == false) {
-					$_SESSION['msg'] = $course->lasterrmsg;
-					echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_courses.php?func=editcourse&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				} else {
-					$_SESSION['msg'] = "\"" . $_POST['cname'] . "\" updated successfully!";
-					echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_handler.php?method=courses&func=courselist&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				}				
-				
-			} else {
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_unknown.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-			}
-
-		} else if ($_GET['method'] == 'teacher') {
-
-			$_SESSION['msg'] = "";
-
-			if ($_GET['func'] == 'getschedule') {
-
-				$schedule = new crc_schedule(false);
-				$schedule->fn_getschedule($_SESSION['profileid'], 2);//teacher role id
-				$_SESSION['teacherscheduledata'] = $schedule->m_data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_teacher.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				
-			} else if ($_GET['func'] == 'getstudents') {
-
-				$scheduleid = $_GET['scheduleid'];
-				$teacher = new crc_teacher(false);
-				$teacher->fn_getstudents($scheduleid);
-				$_SESSION['teacherstudentsdata'] = $teacher->m_data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_students.php?func=getstudents&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'getattendance') {
-
-				$scheduleid = $_GET['scheduleid'];
-				$profileid = $_GET['profileid'];
-				$teacher = new crc_teacher(false);
-				$teacher->fn_getattendance($profileid, $scheduleid);
-				$_SESSION['teacherattendancegetdata'] = $teacher->m_data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_attendance.php?func=getattendance&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-
-			} else if ($_GET['func'] == 'setattendance') {
-
-				$teacher = new crc_teacher(false);
-				$attendanceid = $_GET['id'];
-				$action = $_GET['action'];
-				$teacher->fn_setattendance($attendanceid, $action);
-					
-				$scheduleid = $_GET['scheduleid'];
-				$profileid = $_GET['profileid'];
-				$teacher->fn_getattendance($profileid, $scheduleid);
-				$_SESSION['teacherattendancegetdata'] = $teacher->m_data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_attendance.php?func=getattendance&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				
-			} else if ($_GET['func'] == 'setpresent') {
-
-				$teacher = new crc_teacher(false);
-				$action = $_GET['action'];
-				$scheduleid = $_GET['scheduleid'];
-				$day = $_GET['day']; 
-				$month = $_GET['month'];
-				$year = $_GET['year'];
-				$result = $teacher->fn_setpresent($action, $scheduleid, $day, $month, $year);
-				$data = $_SESSION['teacherstudentsdata'];
-				$found = false;
-				for($i = 0; $i < count($data); $i++) {
-					if($data[$i][7] == $scheduleid) {
-						$found = true;
-						break;
-					}
-				}
-				if ($found == true) {
-					if ($result == true) {
-						$data[$i][8] = $action;
-					}
-				}
-				$_SESSION['teacherstudentsdata'] = $data;
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_students.php?func=getstudents&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				
-			} else {
-				
-				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_unknown.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-				
-			}
-
 		} else if ($_GET['method'] == 'admin') {
 			$_SESSION['msg'] = "";
 
