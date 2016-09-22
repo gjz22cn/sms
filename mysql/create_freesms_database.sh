@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script is used to initialize an empty MySQL database suitable to be used by FreeSMS
+# This script is used to initialize an empty MySQL database suitable to be used by SMS
 # The mysql script file, 'crc_database_setup.sql', should be located in the same folder as this script
 # The default admin user name is 'admin' with password 'admin'
 
@@ -49,7 +49,7 @@ else
 fi
 
 echo -e "\n\t*********************************************************************************************"
-echo -e "\t* The default FreeSMS username is 'admin' with password 'admin'                             *"
+echo -e "\t* The default SMS username is 'admin' with password 'admin'                             *"
 echo -e "\t* Please change the default values once logged in from 'Edit profile' menu                  *"
 echo -e "\t* Make sure that the MySQL username and password match those found in crc_constants.mod.php *"
 echo -e "\t*********************************************************************************************\n"

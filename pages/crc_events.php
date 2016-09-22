@@ -11,7 +11,7 @@
 <HTML>
 	<HEAD>
 		<TITLE>
-			[FreeSMS: Events]
+			[SMS: Events]
 		</TITLE>
 		<!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->
 		<LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">

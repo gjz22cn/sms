@@ -11,7 +11,7 @@
 <HTML>
 	<HEAD>
 		<TITLE>
-			[FreeSMS: Evaluation]
+			[SMS: Evaluation]
 		</TITLE>
     <SCRIPT src="../scripts/tools.js" language="JavaScript" type="text/javascript"></SCRIPT>
 		<!--LINK HREF="../styles/crc_page_style.css" REL="stylesheet" TYPE="text/css"-->

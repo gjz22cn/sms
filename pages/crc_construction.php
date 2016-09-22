@@ -11,7 +11,7 @@
 <HTML>
 	<HEAD>
 		<TITLE>
-			[FreeSMS: Under Construction]
+			[SMS: Under Construction]
 		</TITLE>
 		<LINK HREF="../styles/crc_main.css" REL="stylesheet" TYPE="text/css">
 	</HEAD>

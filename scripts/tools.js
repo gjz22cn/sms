@@ -124,10 +124,10 @@ function verify(page) {
 			alert("Please enter a password for the root user of MySQL server");
 			dbsetup.password.focus();
 		} else if (dbsetup.username.value == "") {
-			alert("Please enter the username of FreeSMS database");
+			alert("Please enter the username of SMS database");
 			dbsetup.username.focus();
 		} else if (dbsetup.userpassword.value == "") {
-			alert("Please enter the password for user of FreeSMS database");
+			alert("Please enter the password for user of SMS database");
 			dbsetup.userpassword.focus();
 		} else {
 			dbsetup.submit();
