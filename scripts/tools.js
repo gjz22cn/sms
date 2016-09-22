@@ -228,6 +228,26 @@ function autofillformdata(eform, data)
     }
 }
 
+function resetformdata(eform)
+{
+    var ff=eform;
+    for (var i=0;i<ff.elements.length;i++) {
+        var ee=ff.elements[i];
+
+        if ("INPUT" == ee.tagName) {
+            if (ee.type == "text") {
+                ee.value = "";
+            }
+        }
+        else if ("TEXTAREA" == ee.tagName) {
+            ee.value = "";
+        }
+        else if ("SELECT" == ee.tagName) {
+            ee.selectedIndex=0;
+        }
+    }
+}
+
 function ajaxRequest(method, url, data, callback) {
     //创建XMLHttpRequest对象
     var xmlHttp = new XMLHttpRequest();

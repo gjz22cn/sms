@@ -10,7 +10,7 @@ function changedcb(response) {
     if (data.ret == 0) {
         if (data.action == 'add') {
             eres.innerHTML="添加成功，您可以继续添加新记录.";
-            autofillformdata(document.forms['form_bidex'], data);
+            resetformdata(document.forms['form_'+g_tname]);
         } else {
             eres.innerHTML="修改成功.";
         }
