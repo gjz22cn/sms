@@ -1,6 +1,8 @@
 <form name="login" action="crc_handler.php?method=login" method="post">
     <br><br><br><br><br><br>
 	<table align="center" border="0" width="360" cellpadding="6" cellspacing="0" class="std">		
+		<tr><th colspan="2"><em>用户登陆</em></th></tr>
+
 		<?php
             if(isset($_SESSION['msg'])) {
 			     $len = strlen($_SESSION['msg']);
@@ -13,7 +15,6 @@
             }
 		?>
 		
-		<tr><th colspan="2"><em>用户登陆</em></th></tr>
 		<tr>
 			<td align="right">用户名: </td>
 			<?php

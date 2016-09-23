@@ -9,18 +9,7 @@
 	//******************************************
 	// Name: crc_profile
 	//******************************************
-	//
 	// Desc: The Profile Object
-	// Developer: Free SMS team
-	// Email: shaffin_bhanji@hotmail.com
-	// Date: March 10th, 2003
-	// Version: 1.0.0
-	//
-	// Copyright
-	// =========
-	// This code is copyright, use in part or
-	// whole is prohibited without a written
-	// concent to the developer.
 	//******************************************
 
 	class crc_profile extends crc_object {
@@ -139,7 +128,7 @@
 				}
 				
 				$this->m_sql = 'update ' . MYSQL_PROFILES_TBL .
-								' SET profile_uid="' . $post['username'] . '", profile_pwd=SHA1("' . strtolower($post['password']) . '"), ' .
+								' SET profile_uid="' . $post['username'] . '", profile_pwd=SHA1("' . $post['password'] . '"), ' .
 								'profile_email="' . $post['email'] . 
 								'" where (profile_id = ' . $post['profileid'] . ')';
 				$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
@@ -258,9 +247,7 @@
 			$dbhandle = $db->fn_connect();
 			if ($dbhandle != false) {
 				//don't allow users with the same name
-				$this->m_sql = 'select * ' . 
-								'from ' . MYSQL_PROFILES_TBL . 
-								' where (profile_uid= "' . $username . '")';
+				$this->m_sql = 'select * ' . 'from ' . MYSQL_PROFILES_TBL . ' where profile_uid= "' . $username . '"';
 				$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 				if (mysql_num_rows($result) > 0) {
 					while ($row = mysql_fetch_array($result)) {
@@ -279,9 +266,7 @@
                 if ($isadd) {
                     $this->m_sql = 'insert into ' . MYSQL_PROFILES_TBL . 
                                     '(profile_uid,profile_pwd,profile_email,profile_role_id, profile_rdn) ' .
-									'values("' . $username .
-                                    '","' . strtolower($pwd) .
-									'","' . $email .
+									'values("' . $username . '",SHA1("' . $pwd . '"),"' . $email .
 									'","3","ou=don mills,ou=toronto,ou=ontario,ou=canada,o=crc world")';
                 } else {
                     if ($pwd == "******") {
@@ -290,14 +275,24 @@
                                 '" where (profile_id = ' . $pid . ')';
                     } else {
                         $this->m_sql = 'update ' . MYSQL_PROFILES_TBL .
-								' SET profile_uid="' . $username . '", profile_pwd=SHA1("' . strtolower($pwd) . '"), ' .
+								' SET profile_uid="' . $username . '", profile_pwd=SHA1("' . $pwd . '"), ' .
 								'profile_email="' . $email . 
                                 '" where (profile_id = ' . $pid . ')';
                     }
                 }
 				$result = $db->fn_runsql(MYSQL_DB, $this->m_sql);
 				if ($result) {
-                    $result = true;
+                    if ($this->fn_initstaffbi($db, $username) == false) {
+                        $this->lasterrnum = ERR_REGISTER_ADD_NUM;
+						$this->lasterrmsg = ERR_REGISTER_ADD_DESC;
+						if ($this->_DEBUG) {
+							echo 'ERROR {crc_profile::fn_setprofile}: Could create staff information. <br>';
+							echo 'ERROR {crc_profile::fn_setprofile}: Error number: ' . $this->lasterrnum . '. <br>';
+							echo 'ERROR {crc_profile::fn_setprofile}: Error description: ' . $this->lasterrmsg . '. <br>';
+						}
+                    } else {
+                        $result = true;
+                    }
 				} else {
 					$this->lasterrnum = ERR_PROFILE_UPDATE_NUM;
 					$this->lasterrmsg = ERR_PROFILE_UPDATE_DESC;
@@ -357,6 +352,46 @@
 			}
 			$db->fn_disconnect();
 			return $result;
+		}
+
+		function fn_initstaffbi($db, $username) {
+            $result = false;
+
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_profile::fn_initstaffbi}: init base info for user " . $profileid . "<br>";
+			}
+
+            if ($db->m_mysqlhandle == false) {
+                return $result;
+            }
+
+            $this->m_sql = 'select profile_id from ' . MYSQL_PROFILES_TBL . ' where profile_uid="' . $username . '"';
+            $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+            if (mysql_num_rows($resource) > 0) {
+                $row = mysql_fetch_row($resource);
+                $profileid = $row[0];
+
+				$this->m_sql = 'insert into ' . MYSQL_BI_TBL .
+                    '(bi_uid) select "' . $profileid .
+                    '" from dual where not exists (select bi_uid from ' . MYSQL_BI_TBL .
+                    ' where bi_uid="' . $profileid . '")';
+
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo 'ERROR {crc_profile::fn_initstaffbi}: Could not init base info. <br>';
+					}
+					$db->fn_freesql($resource);
+                } else {
+                    $result = true;
+                }
+            } else {
+                if ($this->_DEBUG) {
+                    echo 'ERROR {crc_profile::fn_initstaffbi}: The sql command returned nothing. <br>';
+                }
+            }
+
+            return $result;
 		}
 	}
 ?>

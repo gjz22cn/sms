@@ -77,7 +77,7 @@
 	define('ERR_MYSQL_DISCONNECT_DESC', 'Error disconnecting from MySQL server. The connection has been lost or does not exists.');	
 
 	define('ERR_LOGIN_NOUSER_NUM', '50000');
-	define('ERR_LOGIN_NOUSER_DESC', 'No such user exists! Re-enter a valid Username and/or Password or register yourself.');
+	define('ERR_LOGIN_NOUSER_DESC', '用户不存在,请确认用户名和密码是否正确!');
 	define('ERR_PROFILE_NOROLE_NUM', '50001');
 	define('ERR_PROFILE_NOROLE_DESC', 'No user found by the provided role id.');
 	define('ERR_PROFILE_NOPROFILE_NUM', '50002');

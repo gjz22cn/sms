@@ -7,7 +7,6 @@ if(isset($_REQUEST[session_name()])) {
 	session_start();
 }
 include_once('../classes/crc_login.cls.php');
-include_once('../classes/crc_register.cls.php');
 include_once('../classes/crc_profile.cls.php');
 include_once('../classes/crc_schedule.cls.php');
 include_once('../classes/crc_courses.cls.php');
@@ -92,14 +91,14 @@ print '[' . $title . ']';
 			if (isset($_GET['func'])) {
 				if ($_GET['func'] == 'add') {
 					$_SESSION['registerdata'] = $_POST;
-					//$register = new crc_register(false);
-					$register = new crc_register(true);
-					$result = $register->fn_register($_POST);
+					$profile= new crc_profile(true);
+					$result = $profile->fn_setacc(true, $_POST);
 					if ($result == false) {
 						$_SESSION['msg'] = $register->lasterrmsg;
 						echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_register.php?' . session_name() . '=' . session_id() . '&uid=' . $_POST['username'] . '">';
 					} else {
 						$_SESSION['registerdata'] = NULL;
+						$_SESSION['msg'] = "注册成功请登录.";
 						echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_login.php?' . session_name() . '=' . session_id() . '&uid=' . $_POST['username'] . '">';
 					}
 				} else {
