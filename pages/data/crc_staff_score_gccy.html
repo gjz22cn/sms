@@ -15,9 +15,9 @@ function showgccy(response) {
         return;
     }
     if (data.ret == 0) {
-        var gccylevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
-        var gccyposition = {"2":"主持","1":"骨干","0":"参与"};
-        var gccyresult = {"2":"中标","1":"未中标","0":"陪标"};
+        var gccycategory = {"2":"优质工程","1":"优质结构","0":"用户满意工程"};
+        var gccylevel = {"4":"鲁班奖","3":"国家级","2":"省部级","1":"地市级","0":"无"};
+        var gccyrole = {"1":"项目总工/质量总监","0":"其他技术质量人员"};
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             var tr = etable.insertRow(etable.rows.length);
@@ -25,7 +25,11 @@ function showgccy(response) {
             td.innerHTML = data.data[i].gccy_date;
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].gccy_pname;
+            if(data.data[i].gccy_category in gccycategory) {
+                td.innerHTML = gccycategory[data.data[i].gccy_category];
+            } else {
+                td.innerHTML = "用户满意工程";
+            }
 
             td = tr.insertCell(tr.cells.length);
             if(data.data[i].gccy_level in gccylevel) {
@@ -35,24 +39,20 @@ function showgccy(response) {
             }
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].gccy_position in gccyposition) {
-                td.innerHTML = gccyposition[data.data[i].gccy_position];
+            if(data.data[i].gccy_role in gccyrole) {
+                td.innerHTML = gccyrole[data.data[i].gccy_role];
             } else {
-                td.innerHTML = "参与";
+                td.innerHTML = "其他技术质量人员";
             }
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].gccy_content;
+            td.innerHTML = data.data[i].gccy_name;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = data.data[i].gccy_score;
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].gccy_result in gccyresult) {
-                td.innerHTML = gccyresult[data.data[i].gccy_result];
-            } else {
-                td.innerHTML = "陪标";
-            }
+            td.innerHTML = data.data[i].gccy_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].gccy_id+ ', this, show' +tname+ ')" value="修改">';

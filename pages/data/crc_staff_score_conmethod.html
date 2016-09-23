@@ -15,9 +15,8 @@ function showconmethod(response) {
         return;
     }
     if (data.ret == 0) {
-        var conmethodlevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
-        var conmethodposition = {"2":"主持","1":"骨干","0":"参与"};
-        var conmethodresult = {"2":"中标","1":"未中标","0":"陪标"};
+        var conmethodlevel = {"3":"国家级","2":"省部级","1":"地市级","0":"无"};
+        var conmethodrole = {"2":"项目总工","1":"项目技术部经理","0":"项目技术工程师"};
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             var tr = etable.insertRow(etable.rows.length);
@@ -25,7 +24,7 @@ function showconmethod(response) {
             td.innerHTML = data.data[i].conmethod_date;
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].conmethod_pname;
+            td.innerHTML = data.data[i].conmethod_no;
 
             td = tr.insertCell(tr.cells.length);
             if(data.data[i].conmethod_level in conmethodlevel) {
@@ -35,24 +34,20 @@ function showconmethod(response) {
             }
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].conmethod_position in conmethodposition) {
-                td.innerHTML = conmethodposition[data.data[i].conmethod_position];
+            if(data.data[i].conmethod_role in conmethodrole) {
+                td.innerHTML = conmethodrole[data.data[i].conmethod_role];
             } else {
-                td.innerHTML = "参与";
+                td.innerHTML = "项目技术工程师";
             }
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].conmethod_content;
+            td.innerHTML = data.data[i].conmethod_name;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = data.data[i].conmethod_score;
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].conmethod_result in conmethodresult) {
-                td.innerHTML = conmethodresult[data.data[i].conmethod_result];
-            } else {
-                td.innerHTML = "陪标";
-            }
+            td.innerHTML = data.data[i].conmethod_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].conmethod_id+ ', this, show' +tname+ ')" value="修改">';

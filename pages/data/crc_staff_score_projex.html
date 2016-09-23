@@ -16,13 +16,13 @@ function showprojex(response) {
     }
     if (data.ret == 0) {
         var projexlevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
-        var projexposition = {"2":"主持","1":"骨干","0":"参与"};
-        var projexresult = {"2":"中标","1":"未中标","0":"陪标"};
+        var projexposition = {"4":"项目总工","3":"项目副总工/质量总监","2":"项目部门经理","1":"项目技术质量工程师","0":"无"};
+        var projexcomment = {"2":"完整经历","1":"部分经历(计分)","0":"部分经历(不计分)"};
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             var tr = etable.insertRow(etable.rows.length);
             var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].projex_date;
+            td.innerHTML = data.data[i].projex_dure;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = data.data[i].projex_pname;
@@ -38,20 +38,17 @@ function showprojex(response) {
             if(data.data[i].projex_position in projexposition) {
                 td.innerHTML = projexposition[data.data[i].projex_position];
             } else {
-                td.innerHTML = "参与";
+                td.innerHTML = "无";
             }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].projex_content;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = data.data[i].projex_score;
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].projex_result in projexresult) {
-                td.innerHTML = projexresult[data.data[i].projex_result];
+            if(data.data[i].projex_comment in projexcomment) {
+                td.innerHTML = projexcomment[data.data[i].projex_comment];
             } else {
-                td.innerHTML = "陪标";
+                td.innerHTML = "部分经历(不计分)";
             }
 
             td = tr.insertCell(tr.cells.length);

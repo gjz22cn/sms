@@ -15,17 +15,13 @@ function showtereex(response) {
         return;
     }
     if (data.ret == 0) {
-        var tereexlevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
-        var tereexposition = {"2":"主持","1":"骨干","0":"参与"};
-        var tereexresult = {"2":"中标","1":"未中标","0":"陪标"};
+        var tereexlevel = {"4":"国家级","3":"省部级","2":"地市级","1":"公司级","0":"无"};
+        var tereexposition = {"2":"课题负责人","1":"课题骨干","0":"其他研究人员"};
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             var tr = etable.insertRow(etable.rows.length);
             var td = tr.insertCell(tr.cells.length);
             td.innerHTML = data.data[i].tereex_date;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].tereex_pname;
 
             td = tr.insertCell(tr.cells.length);
             if(data.data[i].tereex_level in tereexlevel) {
@@ -38,8 +34,11 @@ function showtereex(response) {
             if(data.data[i].tereex_position in tereexposition) {
                 td.innerHTML = tereexposition[data.data[i].tereex_position];
             } else {
-                td.innerHTML = "参与";
+                td.innerHTML = "其他研究人员";
             }
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].tereex_name;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = data.data[i].tereex_content;
@@ -48,11 +47,7 @@ function showtereex(response) {
             td.innerHTML = data.data[i].tereex_score;
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].tereex_result in tereexresult) {
-                td.innerHTML = tereexresult[data.data[i].tereex_result];
-            } else {
-                td.innerHTML = "陪标";
-            }
+            td.innerHTML = data.data[i].tereex_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].tereex_id+ ', this, show' +tname+ ')" value="修改">';
