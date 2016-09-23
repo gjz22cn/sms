@@ -1,0 +1,68 @@
+<script type="text/javascript">
+function sethead() {
+    var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid;
+    var params = { 'bi_uid':g_pid,
+        'bi_name':'', 'bi_birth':'', 'bi_fwd':'',
+        'bi_no':'', 'bi_gs':'', 'bi_major':'',
+        'bi_cpro':'', 'bi_cpos':'', 'bi_psca':'',
+        'bi_edu':'', 'bi_cwy':'', 'bi_wti':'',
+        'bi_owy':'', 'bi_eng':'', 'bi_bim':'',
+        'bi_cer':'', 'bi_cer2':'', 'bi_act':'',
+        'bi_actdesc':''};
+
+
+    for(var x in params) {
+        var ee=document.getElementsByName(x);
+        if(ee.length == 1) {
+            params[x]=ee[0].value;
+        }
+    }
+
+    //alert(JSON.stringify(params));
+
+    $.ajax({
+        type: "post",
+        url: url,
+        data: "bi_uid=" + g_pid + "&baseinfo=" + JSON.stringify(params),
+        success: function(msg){
+            var result=msg;
+            var index = result.indexOf('setbiresult=');
+            var res=JSON.parse(result.substr(index+12));
+            alert(res.retstr);
+        }
+    });
+}
+
+function showhead(response) {
+    var result=response;
+    var index = result.indexOf('getbiresult=');
+    var bidata=JSON.parse(result.substr(index+12));
+
+    //alert(result);
+    autofillformdata(document.forms['form_bi'], bidata);
+}
+</script>
+
+
+<!-- base info start -->
+<form id="form_head" name="form_head">
+    <table class="tbl">
+        <tr>
+            <td><select name="bi_psca"><option value="2">正式</option>
+                    <option value="0" selected="selected">劳务</option>
+                </select></td>
+            <td>序列</td>
+            <td><select name="bi_psca"><option value="2">技术</option>
+                    <option value="0">质量</option>
+                    <option value="0" selected="selected">资料</option>
+                </select></td>
+            <td>现职级</td>
+            <td><select name="bi_psca"><option value="2">D级</option>
+                    <option value="0" selected="selected">E、F级</option>
+                </select></td>
+            <td>总分</td>
+            <td><input type="text" name="bi_birth" size="8" value=""></td>
+        </tr>
+    </table>
+</form>
+<!-- base info end -->

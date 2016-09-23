@@ -163,15 +163,38 @@ function OpenWindow(content, title, type, width, height) {
                 if ($_SESSION["roleid"] == '1') {
                    //include "data/crc_staff_select.html";
                    print '<p>请选择一个员工<select id="stafflistselect" onchange="showscoreinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
+                } else {
+                   include "crc_staff_score_head.html";
                 }
             }
        ?>
 
+        <form name="score4" id="score1">
+            <table class="tbl">
+                <tr>
+                    <th colspan="5" align="left">一、个人基本情况</th>
+                    <th>得分</th>
+                    <th colspan="2"></th>
+                </tr>
+            </table>
+        </form>
         <?php
-            //base info
             include "crc_staff_score_bi.html";
-            //rewarding and punishment
             include "crc_staff_score_rap.html";
+        ?>
+
+
+        <form name="score4" id="score2">
+            <table class="tbl">
+                <tr>
+                    <th colspan="5" align="left">二、考核情况</th>
+                    <th>得分</th>
+                    <th colspan="2"></th>
+                </tr>
+            </table>
+        </form>
+        <?php
+            include "crc_staff_score_assessment.html";
         ?>
 
         <form name="score4" id="score3">
