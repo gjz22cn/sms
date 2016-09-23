@@ -1,0 +1,89 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+<script type="text/javascript">
+<?php
+    if (isset($_SESSION["uid"])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+    } else {
+        print 'var g_uid=unknow;';
+    }
+    if (isset($_SESSION["uid"], $_SESSION['action'], $_SESSION['pid'], $_SESSION['did'])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+        print 'var g_action="' . ($_SESSION["action"]) . '";';
+        print 'var g_pid="' . ($_SESSION["pid"]) . '";';
+        print 'var g_did="' . ($_SESSION["did"]) . '";';
+    } else {
+        print 'var g_uid="unknow";';
+        print 'var g_action="unknow";';
+        print 'var g_pid="unknow";';
+        print 'var g_did="unknow";';
+    }
+    print 'var g_tname="sfgc";';
+?>
+</script>
+<script type="text/javascript" src="../scripts/gentablefunc.js"></script>
+
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<!-- fix parts end -->
+
+
+<form id="form_sfgc" name="form_sfgc">
+<input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
+<input type="hidden" name="action", id="action">
+<input type="hidden" name="sfgc_uid" id="sfgc_uid">
+<input type="hidden" name="sfgc_id" id="sfgc_id" value="0">
+    <table class="tbl">
+		<tr>
+	        <th colspan="8">科技与BIM类奖项</th>
+		</tr>
+        <tr>
+            <td colspan="8" class="error" align="left" id='sfgc_ret'><b></b></td>
+        </tr>
+		<tr>
+        	<td align="right">时间: </td>
+            <td><input type="text" name="sfgc_date" size="4" value=""></input></td>
+
+        	<td align="right">级别: </td>
+            <td><select name="sfgc_level"><option value="3">国家级</option>
+                    <option value="2">省部级</option>
+                    <option value="1">地市级</option>
+                    <option value="0" selected="selected">无</option>
+                    </select></td>
+
+
+        	<td align="right">等级: </td>
+            <td><select name="sfgc_level2"><option value="2">一等奖</option>
+                    <option value="1">二等奖</option>
+                    <option value="0" selected="selected">三等奖</option>
+                    </select></td>
+
+        	<td align="right">角色: </td>
+            <td><select name="sfgc_role"><option value="2">项目总工</option>
+                    <option value="1">项目技术部经理</option>
+                    <option value="0" selected="selected">项目技术工程师</option>
+                    </select></td>
+        </tr>
+
+		<tr>
+        	<td align="right">获奖成果名称: </td>
+            <td colspan="7"><input type="text" name="sfgc_name" size="4" value=""></input></td>
+        </tr>
+
+		<tr>
+        	<td align="right">授奖单位: </td>
+            <td colspan="7"><textarea name="sfgc_entity" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        </tr>
+		<tr>
+      		<td colspan="8" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+    	</tr>
+    </table>
+</form>
+
+
+<!-- fix parts start -->
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->

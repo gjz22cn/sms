@@ -1,0 +1,89 @@
+<script type="text/javascript">
+function showprojex(response) {
+    var tname="projex";
+    var resultstr="get"+tname+"result=";
+    var index = response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+
+    //alert(response);
+    //alert(response.substr(index+13));
+    if (data.action == 'del') {
+        if(data.ret != 0) {
+            alert("删除失败： "+data.retstr);
+            projexinfo_reload();
+        }
+        return;
+    }
+    if (data.ret == 0) {
+        var projexlevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
+        var projexposition = {"2":"主持","1":"骨干","0":"参与"};
+        var projexresult = {"2":"中标","1":"未中标","0":"陪标"};
+        var etable=document.getElementById("table_"+tname);
+        for (var i=0; i<data.data.length; i++) {
+            var tr = etable.insertRow(etable.rows.length);
+            var td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].projex_date;
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].projex_pname;
+
+            td = tr.insertCell(tr.cells.length);
+            if(data.data[i].projex_level in projexlevel) {
+                td.innerHTML = projexlevel[data.data[i].projex_level];
+            } else {
+                td.innerHTML = "无";
+            }
+
+            td = tr.insertCell(tr.cells.length);
+            if(data.data[i].projex_position in projexposition) {
+                td.innerHTML = projexposition[data.data[i].projex_position];
+            } else {
+                td.innerHTML = "参与";
+            }
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].projex_content;
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = data.data[i].projex_score;
+
+            td = tr.insertCell(tr.cells.length);
+            if(data.data[i].projex_result in projexresult) {
+                td.innerHTML = projexresult[data.data[i].projex_result];
+            } else {
+                td.innerHTML = "陪标";
+            }
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].projex_id+ ', this, show' +tname+ ')" value="修改">';
+
+            td = tr.insertCell(tr.cells.length);
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\',' +g_pid+ ',' +data.data[i].projex_id+ ', this, show' +tname+ ')" value="删除">';
+        }
+    }
+}
+
+function projexinfo_reload() {
+    var tname="projex";
+    var etable=document.getElementById("table_"+tname);
+
+    for (var i=etable.rows.length-1; i>1; i--) {
+        etable.deleteRow(i);
+    }
+
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, showprojex);
+}
+</script>
+
+<form name="form_projex" id="form_projex">
+    <table class="tbl" id="table_projex">
+		<tr>
+            <th colspan="4" align="left">2、项目工作经历（本公司、五年内竣工的项目，未满1年半的项目仅计一个最高分，上限20分）<input type="button" onclick="btnaction2('projex', 'add', g_pid, '0', this)" value="添加"></th>
+            <th>小计</th>
+            <th></th><th colspan="2"></th>
+		</tr>
+		<tr>
+            <th>时间</th><th>项目名称</th><th>级别</th><th>职务</th><th>得分</th><th width="200">备注</th><th colspan="2">操作</th>
+		</tr>
+    </table>
+</form>

@@ -167,20 +167,22 @@ function OpenWindow(content, title, type, width, height) {
             }
        ?>
 
-        <!-- base info start -->
         <?php
+            //base info
             include "crc_staff_score_bi.html";
-        ?>
-        <!-- base info end -->
-
-
-        <!-- rewarding and punishment start -->
-        <?php
+            //rewarding and punishment
             include "crc_staff_score_rap.html";
         ?>
-        <!-- rewarding and punishment end -->
 
-
+        <form name="score4" id="score3">
+            <table class="tbl">
+                <tr>
+                    <th colspan="5" align="left">三、业务经历</th>
+                    <th>得分</th>
+                    <th colspan="2"></th>
+                </tr>
+            </table>
+        </form>
 
         <!-- work exp start TODO: need move to crc_staff_score_workex.html and ajax is prefferred -->
         <form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
@@ -189,11 +191,6 @@ function OpenWindow(content, title, type, width, height) {
         <input type="hidden" name="workex_uid">
         <input type="hidden" name="workex_id">
         <table class="tbl">
-		<tr>
-            <th colspan="5" align="left">三、业务经历</th>
-            <th>得分</th>
-            <th colspan="2"></th>
-		</tr>
 		<tr>
             <th colspan="5" align="left">1、公司部门工作经历<input type="button" onclick="btnaction('workex', 'add', g_pid, '1')" value="添加"></th>
             <th>小计</th>
@@ -225,11 +222,31 @@ function OpenWindow(content, title, type, width, height) {
         </form>
         <!-- work exp end -->
 
-        <!-- bid start -->
         <?php
+            include "crc_staff_score_projex.html";
+            include "crc_staff_score_tereex.html";
             include "crc_staff_score_bidex.html";
         ?>
-        <!-- bid end -->
+
+        <form name="score4" id="score4">
+            <table class="tbl">
+                <tr>
+                    <th colspan="5" align="left">四、科技成果与创优（两年内，2014.8.31至今）</th>
+                    <th>得分</th>
+                    <th colspan="2"></th>
+                </tr>
+            </table>
+        </form>
+
+        <?php
+            include "crc_staff_score_sten.html";
+            include "crc_staff_score_sgzzsjj.html";
+            include "crc_staff_score_sfgc.html";
+            include "crc_staff_score_patent.html";
+            include "crc_staff_score_conmethod.html";
+            include "crc_staff_score_gccy.html";
+            include "crc_staff_score_qcta.html";
+        ?>
     </td>
   </tr>
 </table>

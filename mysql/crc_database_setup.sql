@@ -252,7 +252,7 @@ CREATE TABLE `crc_projex` (
   `projex_position` varchar(8) NOT NULL default '0',
   `projex_ext1` int(4) NOT NULL default '0',
   `projex_score` int(4) NOT NULL default '0',
-  `projex_comment` varchar(512) NOT NULL default '',
+  `projex_comment` int(4) NOT NULL default '2',
   PRIMARY KEY  (`projex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -283,4 +283,102 @@ CREATE TABLE `crc_bidex` (
   `bidex_score` int(4) NOT NULL default '0',
   `bidex_result` int(4) NOT NULL default '0',
   PRIMARY KEY  (`bidex_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_sten`;
+CREATE TABLE `crc_sten` (
+  `sten_id` int(11) NOT NULL auto_increment,
+  `sten_uid` int(11) NOT NULL default '0',
+  `sten_date` varchar(64) NOT NULL default '',
+  `sten_level` int(4) NOT NULL default '0',
+  `sten_level2` int(4) NOT NULL default '0',
+  `sten_role` int(4) NOT NULL default '0',
+  `sten_name` varchar(256) NOT NULL default '',
+  `sten_score` int(4) NOT NULL default '0',
+  `sten_entity` varchar(256) NOT NULL default '',
+  PRIMARY KEY  (`sten_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_sgzzsjj`;
+CREATE TABLE `crc_sgzzsjj` (
+  `sgzzsjj_id` int(11) NOT NULL auto_increment,
+  `sgzzsjj_uid` int(11) NOT NULL default '0',
+  `sgzzsjj_date` varchar(64) NOT NULL default '',
+  `sgzzsjj_level` int(4) NOT NULL default '0',
+  `sgzzsjj_level2` int(4) NOT NULL default '0',
+  `sgzzsjj_name` varchar(256) NOT NULL default '',
+  `sgzzsjj_score` int(4) NOT NULL default '0',
+  `sgzzsjj_comment` int(4) NOT NULL default '0',
+  PRIMARY KEY  (`sgzzsjj_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_sfgc`;
+CREATE TABLE `crc_sfgc` (
+  `sfgc_id` int(11) NOT NULL auto_increment,
+  `sfgc_uid` int(11) NOT NULL default '0',
+  `sfgc_acceptdate` varchar(64) NOT NULL default '',
+  `sfgc_acceptunit` varchar(256) NOT NULL default '',
+  `sfgc_level` int(4) NOT NULL default '0',
+  `sfgc_role` int(4) NOT NULL default '0',
+  `sfgc_pname` varchar(256) NOT NULL default '',
+  `sfgc_score` int(4) NOT NULL default '0',
+  `sfgc_comment` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`sfgc_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_patent`;
+CREATE TABLE `crc_patent` (
+  `patent_id` int(11) NOT NULL auto_increment,
+  `patent_uid` int(11) NOT NULL default '0',
+  `patent_grantdate` varchar(64) NOT NULL default '',
+  `patent_no` varchar(256) NOT NULL default '',
+  `patent_actegory` int(4) NOT NULL default '0',
+  `patent_role` int(4) NOT NULL default '0',
+  `patent_name` varchar(256) NOT NULL default '',
+  `patent_score` int(4) NOT NULL default '0',
+  `patent_comment` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`patent_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_conmethod`;
+CREATE TABLE `crc_conmethod` (
+  `conmethod_id` int(11) NOT NULL auto_increment,
+  `conmethod_uid` int(11) NOT NULL default '0',
+  `conmethod_date` varchar(64) NOT NULL default '',
+  `conmethod_no` varchar(256) NOT NULL default '',
+  `conmethod_level` int(4) NOT NULL default '0',
+  `conmethod_role` int(4) NOT NULL default '0',
+  `conmethod_name` varchar(256) NOT NULL default '',
+  `conmethod_score` int(4) NOT NULL default '0',
+  `conmethod_comment` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`conmethod_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_gccy`;
+CREATE TABLE `crc_gccy` (
+  `gccy_id` int(11) NOT NULL auto_increment,
+  `gccy_uid` int(11) NOT NULL default '0',
+  `gccy_date` varchar(64) NOT NULL default '',
+  `gccy_category` int(4) NOT NULL default '0',
+  `gccy_level` int(4) NOT NULL default '0',
+  `gccy_role` int(4) NOT NULL default '0',
+  `gccy_pname` varchar(256) NOT NULL default '',
+  `gccy_score` int(4) NOT NULL default '0',
+  `gccy_comment` int(4) NOT NULL default '0',
+  PRIMARY KEY  (`gccy_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+DROP TABLE IF EXISTS `crc_qcta`;
+CREATE TABLE `crc_qcta` (
+  `qcta_id` int(11) NOT NULL auto_increment,
+  `qcta_uid` int(11) NOT NULL default '0',
+  `qcta_winningdate` varchar(64) NOT NULL default '',
+  `qcta_entity` int(4) NOT NULL default '0',
+  `qcta_level` int(4) NOT NULL default '0',
+  `qcta_role` int(4) NOT NULL default '0',
+  `qcta_name` varchar(256) NOT NULL default '',
+  `qcta_score` int(4) NOT NULL default '0',
+  `qcta_comment` varchar(512) NOT NULL default '',
+  PRIMARY KEY  (`qcta_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;

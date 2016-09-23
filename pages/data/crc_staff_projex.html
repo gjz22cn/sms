@@ -1,0 +1,84 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+<script type="text/javascript">
+<?php
+    if (isset($_SESSION["uid"])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+    } else {
+        print 'var g_uid=unknow;';
+    }
+    if (isset($_SESSION["uid"], $_SESSION['action'], $_SESSION['pid'], $_SESSION['did'])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+        print 'var g_action="' . ($_SESSION["action"]) . '";';
+        print 'var g_pid="' . ($_SESSION["pid"]) . '";';
+        print 'var g_did="' . ($_SESSION["did"]) . '";';
+    } else {
+        print 'var g_uid="unknow";';
+        print 'var g_action="unknow";';
+        print 'var g_pid="unknow";';
+        print 'var g_did="unknow";';
+    }
+    print 'var g_tname="projex";';
+?>
+</script>
+<script type="text/javascript" src="../scripts/gentablefunc.js"></script>
+
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<!-- fix parts end -->
+
+
+<form id="form_projex" name="form_projex">
+<input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
+<input type="hidden" name="action", id="action">
+<input type="hidden" name="projex_uid" id="projex_uid">
+<input type="hidden" name="projex_id" id="projex_id" value="0">
+    <table class="tbl">
+		<tr>
+	        <th colspan="6">项目工作经历</th>
+		</tr>
+        <tr>
+            <td colspan="6" class="error" align="left" id='projex_ret'><b></b></td>
+        </tr>
+		<tr>
+        	<td align="right">时间: </td>
+            <td><input type="text" name="projex_dure" size="4" value=""></input></td>
+
+        	<td align="right">项目名称: </td>
+            <td colspan="3"><input type="text" name="projex_pname" size="4" value=""></input></td>
+        </tr>
+		<tr>
+        	<td align="right">级别: </td>
+            <td><select name="projex_level"><option value="3">特大型</option>
+                    <option value="2">大型</option>
+                    <option value="1">中小型</option>
+                    <option value="0" selected="selected">无</option>
+                    </select></td>
+
+
+        	<td align="right">职务: </td>
+            <td><select name="projex_position"><option value="4">项目总工</option>
+                    <option value="3">项目副总工/质量总监</option>
+                    <option value="2">项目部门经理</option>
+                    <option value="1">项目技术质量工程师</option>
+                    <option value="0" selected="selected">无</option>
+                    </select></td>
+        	<td align="right">备注: </td>
+            <td><select name="projex_comment"><option value="2">完整经历</option>
+                    <option value="1">部分经历(计分)</option>
+                    <option value="0" selected="selected">部分经历(不计分)</option>
+                    </select></td>
+        </tr>
+		<tr>
+      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+    	</tr>
+    </table>
+</form>
+
+
+<!-- fix parts start -->
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->

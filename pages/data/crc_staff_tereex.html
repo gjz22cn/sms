@@ -1,0 +1,90 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+<script type="text/javascript">
+<?php
+    if (isset($_SESSION["uid"])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+    } else {
+        print 'var g_uid=unknow;';
+    }
+    if (isset($_SESSION["uid"], $_SESSION['action'], $_SESSION['pid'], $_SESSION['did'])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+        print 'var g_action="' . ($_SESSION["action"]) . '";';
+        print 'var g_pid="' . ($_SESSION["pid"]) . '";';
+        print 'var g_did="' . ($_SESSION["did"]) . '";';
+    } else {
+        print 'var g_uid="unknow";';
+        print 'var g_action="unknow";';
+        print 'var g_pid="unknow";';
+        print 'var g_did="unknow";';
+    }
+    print 'var g_tname="tereex";';
+?>
+</script>
+<script type="text/javascript" src="../scripts/gentablefunc.js"></script>
+
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<!-- fix parts end -->
+
+
+<form id="form_tereex" name="form_tereex">
+<input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
+<input type="hidden" name="action", id="action">
+<input type="hidden" name="tereex_uid" id="tereex_uid">
+<input type="hidden" name="tereex_id" id="tereex_id" value="0">
+    <table class="tbl">
+		<tr>
+	        <th colspan="6">科技研发经历</th>
+		</tr>
+        <tr>
+            <td colspan="6" class="error" align="left" id='tereex_ret'><b></b></td>
+        </tr>
+		<tr>
+        	<td align="right">验收时间: </td>
+            <td><input type="text" name="tereex_date" size="4" value=""></input></td>
+
+        	<td align="right">级别: </td>
+            <td><select name="tereex_level"><option value="4">国家级</option>
+                    <option value="3">省部级</option>
+                    <option value="2">地市级</option>
+                    <option value="1">公司级</option>
+                    <option value="0" selected="selected">无</option>
+                    </select></td>
+
+
+        	<td align="right">人员分类: </td>
+            <td><select name="tereex_position"><option value="2">课题负责人</option>
+                    <option value="1">课题骨干</option>
+                    <option value="0" selected="selected">其他研究人员</option>
+                    </select></td>
+        </tr>
+
+		<tr>
+        	<td align="right">课题名称: </td>
+            <td colspan="5"><input type="text" name="tereex_name" size="4" value=""></input></td>
+        </tr>
+
+		<tr>
+        	<td align="right">主要工作内容: </td>
+            <td colspan="5"><textarea name="tereex_content" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        </tr>
+
+		<tr>
+        	<td align="right">备注: </td>
+            <td colspan="5"><textarea name="tereex_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        </tr>
+
+		<tr>
+      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+    	</tr>
+    </table>
+</form>
+
+
+<!-- fix parts start -->
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->
