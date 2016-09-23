@@ -121,40 +121,7 @@ print '[' . $title . ']';
                 $_SESSION['uid'] = $staff->m_uid;
                 $_SESSION['roleid'] = $staff->m_roleid;
 
-                if ($_GET['func'] == 'showaddworkex') {
-                    $_SESSION['workexdata'] = $staff->m_workexdata;
-                    $_SESSION['workexdata']['action'] = 'add';
-                    $_SESSION['workexdata']['workex_uid'] = $staff->m_profileid;
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-                } else if ($_GET['func'] == 'updateworkex') {
-                    $result = $staff->fn_setworkex($_POST);
-                    if($result == false) {
-                        $_SESSION['msg'] = $staff->lasterrmsg;
-                    } else {
-                        if ($_POST['action'] == 'add') {
-                            //$_SESSION['workexdata'] = '';
-                            $_SESSION['workexdata']['action'] = 'add';
-                            $_SESSION['msg'] = "添加成功";
-                        } else {
-                            $_SESSION['workexdata'] = $staff->fn_getworkexentry($_POST['action']['workex_uid'], $_POST['action']['workex_id']);
-                            $_SESSION['workexdata']['action'] = 'edit';
-                            $_SESSION['msg'] = "更新成功";
-                        }
-                    }
-                    $_SESSION['workexdata']['workex_uid'] = $staff->m_profileid;
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-                } else if ($_GET['func'] == 'showeditworkex') {
-                    if (!isset($_GET['uid']) || !isset($_GET['workex_id']) || !isset($_GET['action'])) {
-                    }
-                    $_SESSION['workexdata'] = $staff->fn_getworkexentry($_GET['workex_uid'], $_GET['workex_id']);
-                    $_SESSION['workexdata']['action'] = 'edit';
-                    $_SESSION['workexdata']['workex_uid'] = $staff->m_profileid;
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=workex&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-                } else if ($_GET['func'] == 'deleteworkex') {
-                    $result = $staff->fn_deleteworkexentry($_GET['workex_uid'], $_GET['workex_id']);
-                    $_SESSION['staffdata'] = $staff->fn_getalldata($_GET['workex_uid']);
-                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
-                } else if ($_GET['func'] == 'score') {
+                if ($_GET['func'] == 'score') {
                     $_SESSION['staffdata'] = $staff->fn_getalldata($_SESSION['profileid']);
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadmin') {
@@ -162,9 +129,6 @@ print '[' . $title . ']';
                 } else if ($_GET['func'] == 'scoreadminstatistics') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showscorestatistics&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else {
-                //} else if ($_GET['func'] == 'rap' || $_GET['func'] == 'bidex' ) {
-                    /* rap, bidex, projex */
-                    /* TODO: all tables entry should be here */
                     if (isset($_GET['action'], $_GET['pid'], $_GET['did'])) {
                         $_SESSION['action'] = $_GET['action'];
                         $_SESSION['pid'] = $_GET['pid'];

@@ -36,47 +36,43 @@
 <input type="hidden" name="sgzzsjj_id" id="sgzzsjj_id" value="0">
     <table class="tbl">
 		<tr>
-	        <th colspan="8">科技与BIM类奖项</th>
+	        <th colspan="6">施工组织设计</th>
 		</tr>
         <tr>
-            <td colspan="8" class="error" align="left" id='sgzzsjj_ret'><b></b></td>
+            <td colspan="6" class="error" align="left" id='sgzzsjj_ret'><b></b></td>
         </tr>
 		<tr>
         	<td align="right">时间: </td>
             <td><input type="text" name="sgzzsjj_date" size="4" value=""></input></td>
 
         	<td align="right">级别: </td>
-            <td><select name="sgzzsjj_level"><option value="3">国家级</option>
-                    <option value="2">省部级</option>
-                    <option value="1">地市级</option>
+            <td><select name="sgzzsjj_level"><option value="3">总公司级</option>
+                    <option value="2">局级</option>
+                    <option value="1">公司级</option>
                     <option value="0" selected="selected">无</option>
                     </select></td>
 
 
         	<td align="right">等级: </td>
-            <td><select name="sgzzsjj_level2"><option value="2">一等奖</option>
-                    <option value="1">二等奖</option>
-                    <option value="0" selected="selected">三等奖</option>
-                    </select></td>
-
-        	<td align="right">角色: </td>
-            <td><select name="sgzzsjj_role"><option value="2">项目总工</option>
-                    <option value="1">项目技术部经理</option>
-                    <option value="0" selected="selected">项目技术工程师</option>
+            <td><select name="sgzzsjj_level2"><option value="1">一等奖</option>
+                    <option value="0" selected="selected">其他奖</option>
                     </select></td>
         </tr>
 
 		<tr>
         	<td align="right">获奖成果名称: </td>
-            <td colspan="7"><input type="text" name="sgzzsjj_name" size="4" value=""></input></td>
+            <td colspan="5"><input type="text" name="sgzzsjj_name" size="4" value=""></input></td>
         </tr>
 
 		<tr>
-        	<td align="right">授奖单位: </td>
-            <td colspan="7"><textarea name="sgzzsjj_entity" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        	<td align="right">备注: </td>
+            <td colspan="5"><select name="sgzzsjj_comment"><option value="2">施组方案奖</option>
+                    <option value="1">优秀工法奖</option>
+                    <option value="0" selected="selected">优秀专利奖</option>
+                    </select></td>
         </tr>
 		<tr>
-      		<td colspan="8" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
     	</tr>
     </table>
 </form>

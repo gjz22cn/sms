@@ -64,8 +64,7 @@ if ($_GET['method'] == 'staff') {
             }
         } else if (isset($_POST['action'])) {
             if ($_POST['action'] == 'add' || $_POST['action'] == 'edit') {
-                $funcname='fn_set' . $_GET['func'];
-                $result = $staff->$funcname($_POST);
+                $result = $staff->fn_settableentry($_POST, $_GET['func']) {
                 if ($result == false) {
                     echo 'set' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
                 } else {

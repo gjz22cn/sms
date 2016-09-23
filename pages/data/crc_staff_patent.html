@@ -17,7 +17,7 @@
         print 'var g_pid="unknow";';
         print 'var g_did="unknow";';
     }
-    print 'var g_tname="sten";';
+    print 'var g_tname="patent";';
 ?>
 </script>
 <script type="text/javascript" src="../scripts/gentablefunc.js"></script>
@@ -29,51 +29,46 @@
 <!-- fix parts end -->
 
 
-<form id="form_sten" name="form_sten">
+<form id="form_patent" name="form_patent">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
 <input type="hidden" name="action", id="action">
-<input type="hidden" name="sten_uid" id="sten_uid">
-<input type="hidden" name="sten_id" id="sten_id" value="0">
+<input type="hidden" name="patent_uid" id="patent_uid">
+<input type="hidden" name="patent_id" id="patent_id" value="0">
     <table class="tbl">
 		<tr>
-	        <th colspan="8">科技与BIM类奖项</th>
+	        <th colspan="8">专利</th>
 		</tr>
         <tr>
-            <td colspan="8" class="error" align="left" id='sten_ret'><b></b></td>
+            <td colspan="8" class="error" align="left" id='patent_ret'><b></b></td>
         </tr>
 		<tr>
-        	<td align="right">时间: </td>
-            <td><input type="text" name="sten_date" size="4" value=""></input></td>
+        	<td align="right">授权时间: </td>
+            <td><input type="text" name="patent_grantdate" size="4" value=""></input></td>
 
-        	<td align="right">级别: </td>
-            <td><select name="sten_level"><option value="3">国家级</option>
-                    <option value="2">省部级</option>
-                    <option value="1">地市级</option>
+        	<td align="right">专利号: </td>
+            <td><input type="text" name="patent_no" size="4" value=""></input></td>
+
+        	<td align="right">专利类别: </td>
+            <td><select name="patent_category"><option value="2">发明</option>
+                    <option value="1">实用新型</option>
                     <option value="0" selected="selected">无</option>
                     </select></td>
 
-
-        	<td align="right">等级: </td>
-            <td><select name="sten_level2"><option value="2">一等奖</option>
-                    <option value="1">二等奖</option>
-                    <option value="0" selected="selected">三等奖</option>
-                    </select></td>
-
         	<td align="right">角色: </td>
-            <td><select name="sten_role"><option value="2">项目总工</option>
-                    <option value="1">项目技术部经理</option>
-                    <option value="0" selected="selected">项目技术工程师</option>
+            <td><select name="patent_role"><option value="2">前两位</option>
+                    <option value="1">三四位</option>
+                    <option value="0" selected="selected">无</option>
                     </select></td>
         </tr>
 
 		<tr>
-        	<td align="right">获奖成果名称: </td>
-            <td colspan="7"><input type="text" name="sten_name" size="4" value=""></input></td>
+        	<td align="right">专利名称: </td>
+            <td colspan="7"><input type="text" name="patent_name" size="4" value=""></input></td>
         </tr>
 
 		<tr>
-        	<td align="right">授奖单位: </td>
-            <td colspan="7"><textarea name="sten_entity" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        	<td align="right">备注: </td>
+            <td colspan="7"><textarea name="patent_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
         </tr>
 		<tr>
       		<td colspan="8" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>

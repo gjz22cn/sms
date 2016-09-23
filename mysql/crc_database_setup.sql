@@ -332,7 +332,7 @@ CREATE TABLE `crc_patent` (
   `patent_uid` int(11) NOT NULL default '0',
   `patent_grantdate` varchar(64) NOT NULL default '',
   `patent_no` varchar(256) NOT NULL default '',
-  `patent_actegory` int(4) NOT NULL default '0',
+  `patent_category` int(4) NOT NULL default '0',
   `patent_role` int(4) NOT NULL default '0',
   `patent_name` varchar(256) NOT NULL default '',
   `patent_score` int(4) NOT NULL default '0',

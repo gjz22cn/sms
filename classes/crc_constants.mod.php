@@ -47,9 +47,19 @@
 	define('MYSQL_FEEDBACK_QUESTIONS_TBL', 'crcdb.crc_feedback_questions');
 	define('MYSQL_FEEDBACK_ANSWERS_TBL', 'crcdb.crc_feedback_answers');
 	define('MYSQL_BI_TBL', 'crcdb.crc_bi');
-	define('MYSQL_RAP_TBL', 'crcdb.crc_rap');
-	define('MYSQL_WORKEX_TBL', 'crcdb.crc_workex');
-	define('MYSQL_BIDEX_TBL', 'crcdb.crc_bidex');
+    define('MYSQL_RAP_TBL', 'crcdb.crc_rap');
+    define('MYSQL_WORKEX_TBL', 'crcdb.crc_workex');
+    define('MYSQL_PROJEX_TBL', 'crcdb.crc_projex');
+    define('MYSQL_TEREEX_TBL', 'crcdb.crc_tereex');
+    define('MYSQL_BIDEX_TBL', 'crcdb.crc_bidex');
+    define('MYSQL_STEN_TBL', 'crcdb.crc_sten');
+    define('MYSQL_SGZZSJJ_TBL', 'crcdb.crc_sgzzjj');
+    define('MYSQL_SFGC_TBL', 'crcdb.crc_sfgc');
+    define('MYSQL_PATENT_TBL', 'crcdb.crc_patent');
+    define('MYSQL_CONMETHOD_TBL', 'crcdb.crc_conmenthod');
+    define('MYSQL_GCCY_TBL', 'crcdb.crc_gccy');
+    define('MYSQL_QCTA_TBL', 'crcdb.crc_qcta');
+
 
 	//******************************************************
 	// ERR_ Constants

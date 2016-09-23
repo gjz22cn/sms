@@ -36,44 +36,43 @@
 <input type="hidden" name="gccy_id" id="gccy_id" value="0">
     <table class="tbl">
 		<tr>
-	        <th colspan="8">科技与BIM类奖项</th>
+	        <th colspan="8">工程创优</th>
 		</tr>
         <tr>
             <td colspan="8" class="error" align="left" id='gccy_ret'><b></b></td>
         </tr>
 		<tr>
-        	<td align="right">时间: </td>
+        	<td align="right">验收时间: </td>
             <td><input type="text" name="gccy_date" size="4" value=""></input></td>
 
+        	<td align="right">类别: </td>
+            <td><select name="gccy_category"><option value="2">优质工程</option>
+                    <option value="1">优质结构</option>
+                    <option value="0" selected="selected">用户满意工程</option>
+                    </select></td>
+
         	<td align="right">级别: </td>
-            <td><select name="gccy_level"><option value="3">国家级</option>
+            <td><select name="gccy_level"><option value="4">鲁班奖</option>
+                    <option value="3">国家级</option>
                     <option value="2">省部级</option>
                     <option value="1">地市级</option>
                     <option value="0" selected="selected">无</option>
                     </select></td>
 
-
-        	<td align="right">等级: </td>
-            <td><select name="gccy_level2"><option value="2">一等奖</option>
-                    <option value="1">二等奖</option>
-                    <option value="0" selected="selected">三等奖</option>
-                    </select></td>
-
         	<td align="right">角色: </td>
-            <td><select name="gccy_role"><option value="2">项目总工</option>
-                    <option value="1">项目技术部经理</option>
-                    <option value="0" selected="selected">项目技术工程师</option>
+            <td><select name="gccy_role"><option value="1">项目总工/质量总监</option>
+                    <option value="0" selected="selected">其他技术质量人员</option>
                     </select></td>
         </tr>
 
 		<tr>
-        	<td align="right">获奖成果名称: </td>
-            <td colspan="7"><input type="text" name="gccy_name" size="4" value=""></input></td>
+        	<td align="right">项目名称: </td>
+            <td colspan="7"><input type="text" name="gccy_pname" size="4" value=""></input></td>
         </tr>
 
 		<tr>
-        	<td align="right">授奖单位: </td>
-            <td colspan="7"><textarea name="gccy_entity" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+        	<td align="right">备注: </td>
+            <td colspan="7"><textarea name="gccy_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
         </tr>
 		<tr>
       		<td colspan="8" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>

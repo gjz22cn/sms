@@ -22,10 +22,11 @@
 		var $m_uid;		
 		var $m_roleid;
 		var $m_alldata;
-		var $m_workexdata;
 		var $m_startmonth;
 		var $m_endmonth;
 		var $m_status;		
+        var $m_mysqltable;
+        var $m_keys;
 		
 		
 		function crc_staff($debug) {
@@ -41,18 +42,6 @@
 			$this->_DEBUG = $debug;
 			
             $this->m_uid = 0;
-            $this->m_workexdata['action'] = 'add';
-            $this->m_workexdata['workex_id'] = '';
-            $this->m_workexdata['workex_uid'] = '';
-			$this->m_workexdata['syear'] = '';
-			$this->m_workexdata['smonth'] = '';
-			$this->m_workexdata['eyear'] = '';
-			$this->m_workexdata['emonth'] = '';
-			$this->m_workexdata['workex_year'] = '';
-			$this->m_workexdata['workex_position'] = '';
-			$this->m_workexdata['workex_desc'] = '';
-			$this->m_workexdata['workex_score'] = '';
-			$this->m_workexdata['workex_comment'] = '';
 
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::constructor}: The class \"crc_staff\" was successfuly created. <br>";
@@ -60,6 +49,50 @@
 			}
 
 		}
+
+        function crc_fngetmysqltblandkeysbytablename($table) {
+            if ($table == "rap") {
+                $this->m_mysqltable = MYSQL_RAP_TBL;
+                $this->m_keys= array('rap_date','rap_level','rap_category','rap_reason','rap_entity');
+            } else if ($table == "workex") {
+                $this->m_mysqltable = MYSQL_WORKEX_TBL;
+                $this->m_keys= array(`workex_dure`, `workex_year`, `workex_position`, `workex_desc`, `workex_comment`);
+            } else if ($table == "projex") {
+                $this->m_mysqltable = MYSQL_PROJEX_TBL;
+                $this->m_keys= array(`projex_dure`, `projex_pname`, `projex_level`, `projex_position`, `projex_ext1`, `projex_comment`);
+            } else if ($table == "tereex") {
+                $this->m_mysqltable = MYSQL_TEREEX_TBL;
+                $this->m_keys= array(`tereex_date`, `tereex_name`, `tereex_level`, `tereex_position`, `tereex_content`, `tereex_comment`);
+            } else if ($table == "bidex") {
+                $this->m_mysqltable = MYSQL_BIDEX_TBL;
+                $this->m_keys= array('bidex_date','bidex_pname','bidex_level','bidex_position','bidex_content','bidex_result');
+            } else if ($table == "sten") {
+                $this->m_mysqltable = MYSQL_STEN_TBL;
+                $this->m_keys= array(`sten_date`,`sten_level`,`sten_level2`,`sten_role`,`sten_name`,`sten_entity`);
+            } else if ($table == "sgzzsjj") {
+                $this->m_mysqltable = MYSQL_SGZZSJJ_TBL;
+                $this->m_keys= array(`sgzzsjj_date`,`sgzzsjj_level`,`sgzzsjj_level2`,`sgzzsjj_name`,`sgzzsjj_comment`);
+            } else if ($table == "sfgc") {
+                $this->m_mysqltable = MYSQL_SFGC_TBL;
+                $this->m_keys= array(`sfgc_acceptdate`,`sfgc_acceptunit`,`sfgc_level`,`sfgc_role`,`sfgc_pname`,`sfgc_comment`);
+            } else if ($table == "patent") {
+                $this->m_mysqltable = MYSQL_PATENT_TBL;
+                $this->m_keys= array(`patent_grantdate`,`patent_no`,`patent_category`,`patent_role`,`patent_name`,`patent_comment`);
+            } else if ($table == "conmethod") {
+                $this->m_mysqltable = MYSQL_CONMETHOD_TBL;
+                $this->m_keys= array(`conmethod_date`,`conmethod_no`,`conmethod_level`,`conmethod_role`,`conmethod_name`,`conmethod_comment`);
+            } else if ($table == "gccy") {
+                $this->m_mysqltable = MYSQL_GCCY_TBL;
+                $this->m_keys= array(`gccy_date`,`gccy_category`,`gccy_level`,`gccy_role`,`gccy_pname`,`gccy_comment`);
+            } else if ($table == "qcta") {
+                $this->m_mysqltable = MYSQL_QCTA_TBL;
+                $this->m_keys= array(`qcta_winningdate`,`qcta_entity`,`qcta_level`,`qcta_role`,`qcta_name`,`qcta_comment`);
+            } else {
+                return false;
+            }
+
+            return true;
+        }
 
 		function fn_gettableentry($mysqltable, $table, $pid, $did) {
 			if ($this->_DEBUG) {
@@ -102,6 +135,86 @@
 			}
 			return $result;
         }
+
+		function fn_settableentry($post, $table) {
+            $tuidname = $table . '_uid';
+            $tidname = $table . '_id';
+
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_settableentry}: Setting " . $table . " information. <br>";
+			}
+
+            if (crc_fngetmysqltblandkeysbytablename($table) == false) {
+                if ($this->_DEBUG) {
+                    echo "DEBUG {crc_staff::fn_settableentry}: unknown table name:" . $table . ". <br>";
+                }
+                $this->lasterrmsg = "unknown table name: " . $table;
+                return false;
+            }
+
+            if(!isset($post['action'], $post[$tuidname])) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            if ($post['action'] != 'edit' && $post['action'] != 'add') {
+				$this->lasterrmsg = "Invalid param value!" . $post['action'];
+                return false;
+            }
+
+            if ($post['action'] == 'edit' && !isset($post[$tidname]) ) {
+				$this->lasterrmsg = "Missing param: " . $tidname . "!";
+                return false;
+            }
+
+			$db = new crc_mysql($this->_DEBUG);
+			$db->fn_connect();
+			$result = true;
+			if ($db->m_mysqlhandle != false) {
+				$this->m_status = 'In progress';
+				
+				//set information
+                if ($post['action'] == 'add') {
+                    $keystr = $tuidname;
+                    $valstr=$post[$tuidname];
+                    foreach ($this->m_keys as $key) {
+                        if (isset($post[$key])) {
+                            $keystr = $keystr . ', ' . $key;
+                            $valstr = $valstr . ', "' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'insert into ' . $this->m_mysqltable . '(' . $keystr . ') values(' . $valstr . ')';
+                } else {
+                    $setstr='';
+                    foreach ($this->m_keys as $key) {
+                        if (isset($post[$key])) {
+                            $setstr = $setstr . ',' . $key . '="' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'update ' . $this->m_mysqltable . 
+                        ' set ' . substr($setstr, 1) .
+                        ' where ' . $tidname .'="' . $post[$tidname] . '" and ' . $tuidname . '="' . $post[$tuidname] . '"';
+                }
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo "ERROR {crc_staff::fn_settableentry}: Could not update/insert " . $table . " information. <br>";
+					}
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = "Could not update/insert " . $table . " information";
+					return false;
+				}
+				
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$db->fn_disconnect();
+				$result = false;
+				$this->lasterrmsg = "Cannot connect to MySQL database";
+			}
+			return $result;
+		}
 
         function fn_deltableentry($mysqltable, $table, $pid, $id) {
 			if ($this->_DEBUG) {
@@ -301,7 +414,7 @@
 			return $result;
         }
 
-        /* rewarding and punishment */
+
 		function fn_setrap($post) {
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_setrap}: Setting rap information <br>";
@@ -371,9 +484,7 @@
 			}
 			return $result;
 		}
-        /* rewarding and punishment end */
 
-        /* bidex start */
 		function fn_setbidex($post) {
             $table = 'bidex';
             $tuidname = $table . '_uid';
@@ -447,7 +558,6 @@
 			}
 			return $result;
 		}
-        /* bidex end */
 
 		function fn_setworkex($post) {
 			//******************************************
