@@ -1,3 +1,4 @@
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
 <script type="text/javascript">
 <?php
     if (isset($_SESSION["uid"])) {
@@ -5,34 +6,22 @@
     } else {
         print 'var g_uid=unknow;';
     }
-    if (isset($_SESSION["workexdata"])) {
-        print 'var g_data=' . json_encode($_SESSION["workexdata"]) . ';';
+    if (isset($_SESSION["uid"], $_SESSION['action'], $_SESSION['pid'], $_SESSION['did'])) {
+        print 'var g_uid="' . ($_SESSION["uid"]) . '";';
+        print 'var g_action="' . ($_SESSION["action"]) . '";';
+        print 'var g_pid="' . ($_SESSION["pid"]) . '";';
+        print 'var g_did="' . ($_SESSION["did"]) . '";';
     } else {
-        print 'var g_data=unknow;';
+        print 'var g_uid=unknow;';
+        print 'var g_action=unknow;';
+        print 'var g_pid=unknow;';
+        print 'var g_did=unknow;';
     }
+ 
+    print 'var g_tname="workex";';
 ?>
-
-
-function load()
-{
-    var ee=document.getElementById("staffworkex");
-
-    ee.action = "crc_handler.php?method=staff&func=updateworkex" + "&uid=" + g_uid;
-
-    if (!("action" in g_data)) {
-        return;
-    }
-
-    //alert(JSON.stringify(g_data));
-    if (g_data.action == "add") {
-        autofilldata(g_data, 0);
-    } else if (g_data.action == "edit") {
-        autofilldata(g_data, 1);
-    }
-}
 </script>
-
-
+<script type="text/javascript" src="../scripts/gentablefunc.js"></script>
 
 
 <!-- fix parts start -->
@@ -40,58 +29,47 @@ function load()
 <CENTER>
 <!-- fix parts end -->
 
-<form id="staffworkex" name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
+
+<form id="form_workex" name="form_workex">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
-<input type="hidden" name="action">
-<input type="hidden" name="workex_uid">
-<input type="hidden" name="workex_id">
+<input type="hidden" name="action", id="action">
+<input type="hidden" name="workex_uid" id="workex_uid">
+<input type="hidden" name="workex_id" id="workex_id" value="0">
     <table class="tbl">
-        <?php
-            if (isset($_SESSION['msg'])) {
-               $len = strlen($_SESSION['msg']);
-            } else {
-               $len = 0;
-            }
-            if ($len > 0) {
-                print('<tr><td colspan="2" class="error" align="center"><b>' . $_SESSION['msg'] . '</b></td></tr>');
-                $_SESSION['msg'] = "";
-            }      
-        ?>
 		<tr>
-	        <th colspan="2">公司部门工作经历</th>
+	        <th colspan="6">公司部门工作经历</th>
 		</tr>
-		<tr>
-        	<td align="right"><span class="error">*</span>起始时间: </td>
-        	<td><input type="text" name="syear" size="4" value="">-<input type="text" name="smonth" size="2" value="">~<input type="text" name="eyear" size="4" value="">-<input type="text" name="emonth" size="2" value="">(YYYY-MM)~(YYYY-MM)
-        	</td>
+        <tr>
+            <td colspan="6" class="error" align="left" id='workex_ret'><b></b></td>
         </tr>
-    	<tr>
-        	<td align="right"><span class="error">*</span>年数: </td>
-        	<td><input type="text" name="workex_year" size="5" value=""></td>
-        </tr>
+
 		<tr>
-        	<td align="right"><span class="error">*</span>职务: </td>
-            <td><select name="workex_position"><option value="4">部门正职</option>
+        	<td align="right">时间: </td>
+            <td><input type="text" name="workex_date" size="4" value=""></input></td>
+
+            
+        	<td align="right">年数: </td>
+            <td><input type="text" name="workex_date" size="4" value=""></input></td>
+
+        	<td align="right">职务: </td>
+            <td><select name="workex_level"><option value="4">部门正职</option>
                     <option value="3">部门副职</option>
                     <option value="2">业务经理</option>
                     <option value="1">业务主办及以下</option>
                     <option value="0" selected="selected">无</option>
                     </select></td>
         </tr>
+
 		<tr>
-        	<td align="right">描述: </td>
-            <td><textarea name="workex_desc" rows="8" cols="128" maxlength="1024" value=""></textarea></td>
-        </tr>
-    	<tr>
-        	<td align="right"><span class="error">*</span>分数: </td>
-        	<td><input type="text" name="workex_score" size="5" value=""></td>
+        	<td align="right">主要工作内容: </td>
+            <td colspan="5"><textarea name="workex_reason" rows="8" cols="128" maxlength="512" value=""></textarea></td>
         </tr>
 		<tr>
         	<td align="right">备注: </td>
-            <td><textarea name="workex_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+            <td colspan="5"><textarea name="workex_entity" rows="2" cols="128" maxlength="256" value=""></textarea></td>
         </tr>
 		<tr>
-      		<td colspan="2" align="center"><BR/><input type="submit" name="button" value="提交" onclick="javascript:verify(\'staffworkex\');"></td>
+      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
     	</tr>
     </table>
 </form>

@@ -172,9 +172,7 @@ function OpenWindow(content, title, type, width, height) {
         <form name="score4" id="score1">
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">一、个人基本情况</th>
-                    <th>得分</th>
-                    <th colspan="2"></th>
+                    <th colspan="5" align="left">一、个人基本情况</th><th>得分</th><th colspan="2"></th>
                 </tr>
             </table>
         </form>
@@ -187,9 +185,7 @@ function OpenWindow(content, title, type, width, height) {
         <form name="score4" id="score2">
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">二、考核情况</th>
-                    <th>得分</th>
-                    <th colspan="2"></th>
+                    <th colspan="5" align="left">二、考核情况</th><th>得分</th><th colspan="2"></th>
                 </tr>
             </table>
         </form>
@@ -200,52 +196,13 @@ function OpenWindow(content, title, type, width, height) {
         <form name="score4" id="score3">
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">三、业务经历</th>
-                    <th>得分</th>
-                    <th colspan="2"></th>
+                    <th colspan="5" align="left">三、业务经历</th><th>得分</th><th colspan="2"></th>
                 </tr>
             </table>
         </form>
 
-        <!-- work exp start TODO: need move to crc_staff_score_workex.html and ajax is prefferred -->
-        <form name="staffworkex" action="crc_handler.php?method=staff&func=updateworkex" method="post">
-        <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
-        <input type="hidden" name="action">
-        <input type="hidden" name="workex_uid">
-        <input type="hidden" name="workex_id">
-        <table class="scoretbl">
-		<tr>
-            <th colspan="5" align="left">1、公司部门工作经历<input type="button" onclick="btnaction('workex', 'add', g_pid, '1')" value="添加"></th>
-            <th>小计</th>
-            <th colspan="2"></th>
-		</tr>
-		<tr>
-            <th>起始时间</th><th>年数</th><th>职务</th><th width="400">描述</th><th>得分</th><th width="200">备注</th><th colspan="2">操作</th>
-            <!--<th colspan="2"></th>-->
-		</tr>
-        <script type="text/javascript">
-        if (g_data && 'workex' in g_data) {
-            var workex = g_data.workex;
-            for(var i=0; i<workex.length; i++)  
-            {
-                document.write('<tr>');
-                document.write('<td>' + workex[i].workex_dure + '</td>');
-                document.write('<td>' + workex[i].workex_year + '</td>');
-                document.write('<td>' + workex[i].workex_position + '</td>');
-                document.write('<td style="word-wrap:break-word" width="400">' + workex[i].workex_desc + '</td>');
-                document.write('<td>' + workex[i].workex_score + '</td>');
-                document.write('<td style="word-wrap:break-word" width="200">' + workex[i].workex_comment + '</td>');
-                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'edit\',' + g_pid + ',' + workex[i].workex_id + ')" value="修改"></td>');
-                document.write('<td><input type="button" onclick="btnaction(\'workex\', \'delete\',' + g_pid + ',' + workex[i].workex_id + ')" value="删除"></td>');
-                document.write('</tr>');
-            }  
-        }  
-        </script>
-        </table>
-        </form>
-        <!-- work exp end -->
-
         <?php
+            include "crc_staff_score_workex.html";
             include "crc_staff_score_projex.html";
             include "crc_staff_score_tereex.html";
             include "crc_staff_score_bidex.html";
@@ -254,9 +211,7 @@ function OpenWindow(content, title, type, width, height) {
         <form name="score4" id="score4">
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">四、科技成果与创优（两年内，2014.8.31至今）</th>
-                    <th>得分</th>
-                    <th colspan="2"></th>
+                    <th colspan="5" align="left">四、科技成果与创优（两年内，2014.8.31至今）</th><th>得分</th><th colspan="2"></th>
                 </tr>
             </table>
         </form>
