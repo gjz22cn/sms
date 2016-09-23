@@ -192,6 +192,32 @@ table.tbl td {
 	background-color: #ffffff;
 }
 
+/* table score style */
+table.scoretbl {
+    width:1024;
+	background: #a5cbf7;
+}
+
+table.scoretbl TH {
+	background-color: #08245b;
+	color: #ffffff;
+	list-style-type: disc;
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+	font-weight: normal;
+}
+
+table.scoretbl td {
+	background-color: #ffffff;
+}
+
+table.scoretbl TH.ope {
+    width:10;
+}
+table.scoretbl td.ope {
+    width:420;
+}
+
 /* a 'standard' table */
 table.std {
 	border: solid #08245b 2px;
