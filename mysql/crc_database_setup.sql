@@ -374,7 +374,7 @@ CREATE TABLE `crc_qcta` (
   `qcta_id` int(11) NOT NULL auto_increment,
   `qcta_uid` int(11) NOT NULL default '0',
   `qcta_winningdate` varchar(64) NOT NULL default '',
-  `qcta_entity` int(4) NOT NULL default '0',
+  `qcta_entity` varchar(256) NOT NULL default '0',
   `qcta_level` int(4) NOT NULL default '0',
   `qcta_role` int(4) NOT NULL default '0',
   `qcta_name` varchar(256) NOT NULL default '',

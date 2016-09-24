@@ -50,43 +50,43 @@
 
 		}
 
-        function crc_fngetmysqltblandkeysbytablename($table) {
+        function fn_getmysqltblandkeysbytablename($table) {
             if ($table == "rap") {
                 $this->m_mysqltable = MYSQL_RAP_TBL;
                 $this->m_keys= array('rap_date','rap_level','rap_category','rap_reason','rap_entity');
             } else if ($table == "workex") {
                 $this->m_mysqltable = MYSQL_WORKEX_TBL;
-                $this->m_keys= array(`workex_dure`, `workex_year`, `workex_position`, `workex_desc`, `workex_comment`);
+                $this->m_keys= array('workex_dure', 'workex_year', 'workex_position', 'workex_desc', 'workex_comment');
             } else if ($table == "projex") {
                 $this->m_mysqltable = MYSQL_PROJEX_TBL;
-                $this->m_keys= array(`projex_dure`, `projex_pname`, `projex_level`, `projex_position`, `projex_ext1`, `projex_comment`);
+                $this->m_keys= array('projex_dure', 'projex_pname', 'projex_level', 'projex_position', 'projex_ext1', 'projex_comment');
             } else if ($table == "tereex") {
                 $this->m_mysqltable = MYSQL_TEREEX_TBL;
-                $this->m_keys= array(`tereex_date`, `tereex_name`, `tereex_level`, `tereex_position`, `tereex_content`, `tereex_comment`);
+                $this->m_keys= array('tereex_date', 'tereex_name', 'tereex_level', 'tereex_position', 'tereex_content', 'tereex_comment');
             } else if ($table == "bidex") {
                 $this->m_mysqltable = MYSQL_BIDEX_TBL;
                 $this->m_keys= array('bidex_date','bidex_pname','bidex_level','bidex_position','bidex_content','bidex_result');
             } else if ($table == "sten") {
                 $this->m_mysqltable = MYSQL_STEN_TBL;
-                $this->m_keys= array(`sten_date`,`sten_level`,`sten_level2`,`sten_role`,`sten_name`,`sten_entity`);
+                $this->m_keys= array('sten_date','sten_level','sten_level2','sten_role','sten_name','sten_entity');
             } else if ($table == "sgzzsjj") {
                 $this->m_mysqltable = MYSQL_SGZZSJJ_TBL;
-                $this->m_keys= array(`sgzzsjj_date`,`sgzzsjj_level`,`sgzzsjj_level2`,`sgzzsjj_name`,`sgzzsjj_comment`);
+                $this->m_keys= array('sgzzsjj_date','sgzzsjj_level','sgzzsjj_level2','sgzzsjj_name','sgzzsjj_comment');
             } else if ($table == "sfgc") {
                 $this->m_mysqltable = MYSQL_SFGC_TBL;
-                $this->m_keys= array(`sfgc_acceptdate`,`sfgc_acceptunit`,`sfgc_level`,`sfgc_role`,`sfgc_pname`,`sfgc_comment`);
+                $this->m_keys= array('sfgc_acceptdate','sfgc_acceptunit','sfgc_level','sfgc_role','sfgc_pname','sfgc_comment');
             } else if ($table == "patent") {
                 $this->m_mysqltable = MYSQL_PATENT_TBL;
-                $this->m_keys= array(`patent_grantdate`,`patent_no`,`patent_category`,`patent_role`,`patent_name`,`patent_comment`);
+                $this->m_keys= array('patent_grantdate','patent_no','patent_category','patent_role','patent_name','patent_comment');
             } else if ($table == "conmethod") {
                 $this->m_mysqltable = MYSQL_CONMETHOD_TBL;
-                $this->m_keys= array(`conmethod_date`,`conmethod_no`,`conmethod_level`,`conmethod_role`,`conmethod_name`,`conmethod_comment`);
+                $this->m_keys= array('conmethod_date','conmethod_no','conmethod_level','conmethod_role','conmethod_name','conmethod_comment');
             } else if ($table == "gccy") {
                 $this->m_mysqltable = MYSQL_GCCY_TBL;
-                $this->m_keys= array(`gccy_date`,`gccy_category`,`gccy_level`,`gccy_role`,`gccy_pname`,`gccy_comment`);
+                $this->m_keys= array('gccy_date','gccy_category','gccy_level','gccy_role','gccy_pname','gccy_comment');
             } else if ($table == "qcta") {
                 $this->m_mysqltable = MYSQL_QCTA_TBL;
-                $this->m_keys= array(`qcta_winningdate`,`qcta_entity`,`qcta_level`,`qcta_role`,`qcta_name`,`qcta_comment`);
+                $this->m_keys= array('qcta_winningdate','qcta_entity','qcta_level','qcta_role','qcta_name','qcta_comment');
             } else {
                 return false;
             }
@@ -144,7 +144,7 @@
 				echo "DEBUG {crc_staff::fn_settableentry}: Setting " . $table . " information. <br>";
 			}
 
-            if (crc_fngetmysqltblandkeysbytablename($table) == false) {
+            if ($this->fn_getmysqltblandkeysbytablename($table) == false) {
                 if ($this->_DEBUG) {
                     echo "DEBUG {crc_staff::fn_settableentry}: unknown table name:" . $table . ". <br>";
                 }

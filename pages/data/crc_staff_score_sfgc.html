@@ -34,7 +34,7 @@ function showsfgc(response) {
             }
 
             td = tr.insertCell(tr.cells.length);
-            if(data.data[i].sfgc_role in sfgrole) {
+            if(data.data[i].sfgc_role in sfgcrole) {
                 td.innerHTML = sfgcrole[data.data[i].sfgc_role];
             } else {
                 td.innerHTML = "其他技术人员";

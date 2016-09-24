@@ -34,6 +34,7 @@ function showdata(response) {
     var index=response.indexOf(resultstr);
     var data=JSON.parse(response.substr(index+resultstr.length));
 
+    alert(response);
     //alert(result.substr(index+13));
 
     if (data.ret == 0) {

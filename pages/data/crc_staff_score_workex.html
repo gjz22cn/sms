@@ -1,8 +1,9 @@
 <script type="text/javascript">
 function showworkex(response) {
     var tname = "workex";
-    var index = response.indexOf('getworkexresult=');
-    var data=JSON.parse(response.substr(index+13));
+    var resultstr="get"+tname+"result=";
+    var index = response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
 
     //alert(response);
     //alert(response.substr(index+13));
@@ -26,7 +27,7 @@ function showworkex(response) {
 
             td = tr.insertCell(tr.cells.length);
             if(data.data[i].workex_position in workexposition) {
-                td.innerHTML = workexlevel[data.data[i].workex_position];
+                td.innerHTML = workexposition[data.data[i].workex_position];
             } else {
                 td.innerHTML = "无";
             }

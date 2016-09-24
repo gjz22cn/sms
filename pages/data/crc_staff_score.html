@@ -29,11 +29,19 @@ function showscoreinfo(spid) {
     /* base info */
     ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
 
-    /* rap info */
     rapinfo_reload();
-
-    /* bidex info */
+    workexinfo_reload();
+    projexinfo_reload();
+    tereexinfo_reload();
     bidexinfo_reload();
+
+    steninfo_reload();
+    sgzzsjjinfo_reload();
+    sfgcinfo_reload();
+    patentinfo_reload();
+    conmethodinfo_reload();
+    gccyinfo_reload();
+    qctainfo_reload();
 }
 
 function preparestafflist(response) {
