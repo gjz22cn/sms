@@ -51,7 +51,13 @@
 		}
 
         function fn_getmysqltblandkeysbytablename($table) {
-            if ($table == "rap") {
+            /* TODO: gen from mysql table itself? */
+            if ($table == "bi") {
+                $this->m_mysqltable = MYSQL_BI_TBL;
+                $this->m_keys= array('bi_name','bi_birth','bi_fwd','bi_no','bi_gs','bi_major','bi_cpro','bi_cpos','bi_psca',
+                    'bi_ppscore','bi_edu','bi_eduscore','bi_cwy','bi_wti','bi_wtiscore','bi_owy','bi_eng','bi_engscore',
+                    'bi_wyscore','bi_bim','bi_bimscore','bi_cer','bi_cer2','bi_cerscore','bi_act','bi_actscore','bi_actdesc','bi_tscore');
+            } else if ($table == "rap") {
                 $this->m_mysqltable = MYSQL_RAP_TBL;
                 $this->m_keys= array('rap_date','rap_level','rap_category','rap_reason','rap_entity');
             } else if ($table == "assess") {

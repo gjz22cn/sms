@@ -27,7 +27,7 @@ function showscoreinfo(spid) {
     g_pid=spid;
 
     /* base info */
-    ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
+    biinfo_reload();
     rapinfo_reload();
 
     assessinfo_reload();
