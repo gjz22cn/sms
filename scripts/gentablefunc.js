@@ -1,5 +1,5 @@
 function changedcb(response) {
-    var resultstr="set"+g_tname+"result=";
+    var resultstr=g_tname+"result=";
     var index=response.indexOf(resultstr);
     var data=JSON.parse(response.substr(index+resultstr.length));
     var eres=document.getElementById(g_tname+"_ret");
@@ -30,14 +30,16 @@ function apply() {
 }
 
 function showdata(response) {
-    var resultstr="get"+g_tname+"result=";
+    var resultstr=g_tname+"result=";
     var index=response.indexOf(resultstr);
     var data=JSON.parse(response.substr(index+resultstr.length));
 
     //alert(response);
 
     if (data.ret == 0) {
-        autofillformdata(document.forms['form_'+g_tname], data.data[0]);
+        if (data.action == 'get') {
+            autofillformdata(document.forms['form_'+g_tname], data.data[0]);
+        }
     }
 }
 

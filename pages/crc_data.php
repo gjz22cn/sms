@@ -50,25 +50,32 @@ if ($_GET['method'] == 'staff') {
                 if ($result) {
                     $result['ret'] = 0;
                     $result['action'] = 'get';
-                    echo 'get' . $_GET['func'] . 'result=' . json_encode($result);
+                    echo $_GET['func'] . 'result=' . json_encode($result);
                 } else {
-                    echo 'get' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                    echo $_GET['func'] . 'result={"ret":8008, "action":"get", "retstr":"' . $staff->lasterrmsg . '"}';
                 }
             } else if ($_GET['action'] == 'del') {
                 $result= $staff->fn_deltableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $_GET['pid'], $_GET['did']);
                 if ($result == false) {
-                    echo 'del' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                    echo $_GET['func'] . 'result={"ret":8008, "action":"del", "retstr":"' . $staff->lasterrmsg . '"}';
                 } else {
-                    echo 'del' . $_GET['func'] . 'result={"ret":0, "action":"del", "retstr":"删除成功!"}';
+                    echo $_GET['func'] . 'result={"ret":0, "action":"del", "retstr":"删除成功!"}';
                 }
             }
         } else if (isset($_POST['action'])) {
             if ($_POST['action'] == 'add' || $_POST['action'] == 'edit') {
                 $result = $staff->fn_settableentry($_POST, $_GET['func']);
                 if ($result == false) {
-                    echo 'set' . $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                    echo $_GET['func'] . 'result={"ret":8008, "action":"' . $_POST['action'] . '", "retstr":"' . $staff->lasterrmsg . '"}';
                 } else {
-                    echo 'set' . $_GET['func'] . 'result={"ret":0, "action":"' . $_POST['action'] .'", "retstr":"修改成功!"}';
+                    echo $_GET['func'] . 'result={"ret":0, "action":"' . $_POST['action'] . '", "retstr":"修改成功!"}';
+                }
+            } else if ($_POST['action'] == 'update') {
+                $result = $staff->fn_updatetblentry($_POST, $_GET['func']);
+                if ($result == false) {
+                    echo $_GET['func'] . 'result={"ret":8008, "retstr":"' . $staff->lasterrmsg . '"}';
+                } else {
+                    echo $_GET['func'] . 'result={"ret":0, "action":"' . $_POST['action'] .'", "retstr":"修改成功!"}';
                 }
             }
         }

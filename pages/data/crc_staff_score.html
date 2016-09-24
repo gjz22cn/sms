@@ -28,8 +28,10 @@ function showscoreinfo(spid) {
 
     /* base info */
     ajaxRequest("GET", g_staffpre+"&func=getbi&uid=" + g_uid + "&bi_uid=" + spid, null, showbi);
-
     rapinfo_reload();
+
+    assessinfo_reload();
+
     workexinfo_reload();
     projexinfo_reload();
     tereexinfo_reload();

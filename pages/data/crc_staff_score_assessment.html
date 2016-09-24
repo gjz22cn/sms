@@ -1,89 +1,90 @@
 <script type="text/javascript">
-function setassessment() {
-    var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid;
-    var params = { 'assess_uid':g_pid,
-        'assess_name':'', 'bi_birth':'', 'bi_fwd':'',
-        'assess_no':'', 'bi_gs':'', 'bi_major':'',
-        'assess_cpro':'', 'bi_cpos':'', 'bi_psca':'',
-        'assess_edu':'', 'bi_cwy':'', 'bi_wti':'',
-        'assess_owy':'', 'bi_eng':'', 'bi_bim':'',
-        'assess_cer':'', 'bi_cer2':'', 'bi_act':'',
-        'assess_actdesc':''};
+function assessinfocb(response) {
+    var tname = "assess";
+    var resultstr=tname+"result=";
+    var index=response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+    var eres=document.getElementById(tname+"_ret");
 
+    alert(response);
 
-    for(var x in params) {
-        var ee=document.getElementsByName(x);
-        if(ee.length == 1) {
-            params[x]=ee[0].value;
+    if (data.ret == 0) {
+        if (data.action == 'get') {
+            if (data.data.length > 0) {
+                autofillformdata(document.forms['form_'+tname], data.data[0]);
+            }
+        } else {
+            eres.innerHTML="修改成功.";
+        }
+    } else {
+        if (data.action == 'get') {
+            eres.innerHTML="获取信息失败: " + data.retstr + "!";
+        } else {
+            eres.innerHTML="修改失败: " + data.retstr + "!";
         }
     }
-
-    //alert(JSON.stringify(params));
-
-    $.ajax({
-        type: "post",
-        url: url,
-        data: "assess_uid=" + g_pid + "&baseinfo=" + JSON.stringify(params),
-        success: function(msg){
-            var result=msg;
-            var index = result.indexOf('setbiresult=');
-            var res=JSON.parse(result.substr(index+12));
-            alert(res.retstr);
-        }
-    });
 }
 
-function showassessment(response) {
-    var result=response;
-    var index = result.indexOf('getbiresult=');
-    var bidata=JSON.parse(result.substr(index+12));
+function setassessment() {
+    var tname = "assess";
+    var url = g_staffpre+"&func="+tname+"&action=update&uid=" + g_uid + "&pid=" + g_pid;
+    var params = $('#form_'+tname).serialize();
 
-    //alert(result);
-    autofillformdata(document.forms['form_bi'], bidata);
+    params += "&action=update&"+tname+"_uid=" + g_pid;
+    alert(params);
+    ajaxRequest("POST", g_staffpre+"&func="+tname+"&uid="+g_uid, params, assessinfocb);
+}
+
+function assessinfo_reload() {
+    var tname="assess";
+
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, assessinfocb);
 }
 </script>
 
 
-<!-- base info start -->
-<form id="form_assessment" name="form_assessment">
+<form id="form_assess" name="form_assess">
+<input type="hidden" name="assess_id" id="assess_id" value="0">
     <table class="scoretbl">
         <tr>
             <td>上年度考核成绩</td>
-            <td><select name="assess_psca"><option value="2">A</option>
-                    <option value="1">B</option>
-                    <option value="0" selected="selected">其他</option>
+            <td><select name="assess_lyar"><option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="其他" selected="selected">其他</option>
                 </select></td>
             <td>考核得分</td>
-            <td><input type="text" name="assess_birth" size="8" value=""></td>
+            <td id="assess_lyarscore" name="assess_lyarscore"></td>
             <td></td>
         </tr>
         <tr>
             <td>近一次序列考试成绩</td>
-            <td><input type="text" name="assess_fwd" size="8" value=""></td>
+            <td><input type="text" name="assess_nxkr" size="8" value=""></td>
             <td>考试得分</td>
-            <td><input type="text" name="assess_fwd" size="8" value=""></td>
+            <td id="assess_nxkrscore" name="assess_nxkrscore"></td>
             <td></td>
         </tr>
         <tr>
             <td>人才培养考核</td>
             <td>徒弟当年提前转正或晋升</td>
-            <td><select name="assess_cpos"><option value="9">提前转正1人</option>
-                    <option value="8">提前转正2人及以上</option>
-                    <option value="7">晋升1人</option>
-                    <option value="6">晋升2人及以上</option>
-                    <option value="0" selected="selected">无</option>
+            <td><select name="assess_tdzzjs"><option value="提前转正1人">提前转正1人</option>
+                    <option value="提前转正2人及以上">提前转正2人及以上</option>
+                    <option value="晋升1人">晋升1人</option>
+                    <option value="晋升2人及以上">晋升2人及以上</option>
+                    <option value="无" selected="selected">无</option>
                 </select></td>
             <td>人才培养得分</td>
-            <td><input type="text" name="assess_major" size="8" value=""></td>
+            <td id="assess_tdzzjsscore" name="assess_tdzzjsscore"></td>
         </tr>
         <tr>
             <td></td>
             <td>提前转正或晋升徒弟姓名</td>
-            <td colspan="3"><input type="text" name="assess_cpro" size="8" value=""></td>
+            <td colspan="3"><input type="text" name="assess_tdxm" size="8" value=""></td>
         </tr>
         <tr>
-            <td colspan="5" align="center"><input id="assess_setbtn" type="button" onclick="setbi()" value="保存考核信息"></td>
+            <td colspan="5" class="error" align="left" id='assess_ret'><b></b></td>
+        </tr>
+        <tr>
+            <td colspan="5" align="center"><input id="assess_btn" type="button" onclick="setassessment()" value="保存考核信息"></td>
         </tr>
     </table>
 </form>
-<!-- base info end -->

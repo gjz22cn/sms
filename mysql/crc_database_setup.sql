@@ -229,6 +229,20 @@ CREATE TABLE `crc_rap` (
   PRIMARY KEY  (`rap_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
+DROP TABLE IF EXISTS `crc_assess`;
+CREATE TABLE `crc_assess` (
+  `assess_id` int(11) NOT NULL auto_increment,
+  `assess_uid` int(11) NOT NULL default '0',
+  `assess_lyar` varchar(32) NOT NULL default '其他',
+  `assess_lyarscore` int(4) NOT NULL default '0',
+  `assess_nxkr` int(4) NOT NULL default '0',
+  `assess_nxkrscore` int(4) NOT NULL default '0',
+  `assess_tdzzjs` varchar(64) NOT NULL default '无',
+  `assess_tdzzjsscore` int(4) NOT NULL default '0',
+  `assess_tdxm` varchar(256) NOT NULL default '',
+  PRIMARY KEY  (`assess_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 DROP TABLE IF EXISTS `crc_workex`;
 CREATE TABLE `crc_workex` (
   `workex_id` int(11) NOT NULL auto_increment,

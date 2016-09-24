@@ -21,10 +21,10 @@
 	//******************************************************
 	define('APP_PROJECTNAME', 'Staff Management System');
 	define('APP_DIVISION', 'SMS');
-	define('APP_DEVELOPMENT_LEAD', 'Free SMS Team');
+	define('APP_DEVELOPMENT_LEAD', 'SMS Team');
 	define('APP_VERSION', '2.0.0');
-	define('APP_CONTACT_NAME', 'Bogdan Cristea');
-	define('APP_CONTACT_EMAIL', 'cristeab@gmail.com');
+	define('APP_CONTACT_NAME', 'James');
+	define('APP_CONTACT_EMAIL', 'gjz22cn@gmail.com');
 	define('APP_COPYRIGHT', 'This application is copyright &copy; 2016. Use of any code in part or whole without the written concent of SMS Team is prohibited and against the law.');
 	define('APP_PATH', '/sms/');	
 
@@ -48,6 +48,7 @@
 	define('MYSQL_FEEDBACK_ANSWERS_TBL', 'crcdb.crc_feedback_answers');
 	define('MYSQL_BI_TBL', 'crcdb.crc_bi');
     define('MYSQL_RAP_TBL', 'crcdb.crc_rap');
+    define('MYSQL_ASSESS_TBL', 'crcdb.crc_assess');
     define('MYSQL_WORKEX_TBL', 'crcdb.crc_workex');
     define('MYSQL_PROJEX_TBL', 'crcdb.crc_projex');
     define('MYSQL_TEREEX_TBL', 'crcdb.crc_tereex');

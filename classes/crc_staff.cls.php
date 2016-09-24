@@ -54,6 +54,9 @@
             if ($table == "rap") {
                 $this->m_mysqltable = MYSQL_RAP_TBL;
                 $this->m_keys= array('rap_date','rap_level','rap_category','rap_reason','rap_entity');
+            } else if ($table == "assess") {
+                $this->m_mysqltable = MYSQL_ASSESS_TBL;
+                $this->m_keys= array('assess_lyar','assess_lyarscore','assess_nxkr','assess_nxkrscore','assess_tdzzjs','assess_tdzzjsscore','assess_tdxm');
             } else if ($table == "workex") {
                 $this->m_mysqltable = MYSQL_WORKEX_TBL;
                 $this->m_keys= array('workex_dure', 'workex_year', 'workex_position', 'workex_desc', 'workex_comment');
@@ -199,6 +202,88 @@
 				if (mysql_errno() != 0) {
 					if ($this->_DEBUG) {
 						echo "ERROR {crc_staff::fn_settableentry}: Could not update/insert " . $table . " information. <br>";
+					}
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = "Could not update/insert " . $table . " information";
+					return false;
+				}
+				
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$db->fn_disconnect();
+				$result = false;
+				$this->lasterrmsg = "Cannot connect to MySQL database";
+			}
+			return $result;
+		}
+
+		function fn_updatetblentry($post, $table) {
+            $isadd = false;
+            $tuidname = $table . '_uid';
+            $tidname = $table . '_id';
+
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_updatetblentry}: Setting " . $table . " information. <br>";
+			}
+
+            if ($this->fn_getmysqltblandkeysbytablename($table) == false) {
+                if ($this->_DEBUG) {
+                    echo "DEBUG {crc_staff::fn_updatetblentry}: unknown table name:" . $table . ". <br>";
+                }
+                $this->lasterrmsg = "unknown table name: " . $table;
+                return false;
+            }
+
+            if(!isset($post['action'], $post[$tuidname])) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            if ($post['action'] != 'update') {
+				$this->lasterrmsg = "Invalid param value!" . $post['action'];
+                return false;
+            }
+
+            if (isset($post[$tidname])) {
+                if ($post[$tidname] == 0) {
+                    $isadd = true;
+                }
+            }
+
+			$db = new crc_mysql($this->_DEBUG);
+			$db->fn_connect();
+			$result = true;
+			if ($db->m_mysqlhandle != false) {
+				$this->m_status = 'In progress';
+				
+				//set information
+                if ($isadd) {
+                    $keystr = $tuidname;
+                    $valstr=$post[$tuidname];
+                    foreach ($this->m_keys as $key) {
+                        if (isset($post[$key])) {
+                            $keystr = $keystr . ', ' . $key;
+                            $valstr = $valstr . ', "' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'insert into ' . $this->m_mysqltable . '(' . $keystr . ') values(' . $valstr . ')';
+                } else {
+                    $setstr='';
+                    foreach ($this->m_keys as $key) {
+                        if (isset($post[$key])) {
+                            $setstr = $setstr . ',' . $key . '="' . $post[$key] . '"';
+                        }
+                    }
+                    $this->m_sql = 'update ' . $this->m_mysqltable . 
+                        ' set ' . substr($setstr, 1) .
+                        ' where ' . $tidname .'="' . $post[$tidname] . '" and ' . $tuidname . '="' . $post[$tuidname] . '"';
+                }
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo "ERROR {crc_staff::fn_updatetblentry}: Could not update/insert " . $table . " information. <br>";
 					}
 					$db->fn_freesql($resource);
 					$db->fn_disconnect();

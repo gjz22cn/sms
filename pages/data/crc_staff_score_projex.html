@@ -1,7 +1,7 @@
 <script type="text/javascript">
 function showprojex(response) {
     var tname="projex";
-    var resultstr="get"+tname+"result=";
+    var resultstr=tname+"result=";
     var index = response.indexOf(resultstr);
     var data=JSON.parse(response.substr(index+resultstr.length));
 
