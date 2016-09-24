@@ -6,7 +6,7 @@ function assessinfocb(response) {
     var data=JSON.parse(response.substr(index+resultstr.length));
     var eres=document.getElementById(tname+"_ret");
 
-    alert(response);
+    //alert(response);
 
     if (data.ret == 0) {
         if (data.action == 'get') {
@@ -25,13 +25,36 @@ function assessinfocb(response) {
     }
 }
 
+function isInteger(obj) {
+    return parseInt(obj, 10) === obj;
+}
+
 function setassessment() {
     var tname = "assess";
+    var eform = document.form_assess;
     var url = g_staffpre+"&func="+tname+"&action=update&uid=" + g_uid + "&pid=" + g_pid;
     var params = $('#form_'+tname).serialize();
+    var lyarscore = {"A":10, "B":6};
+    var tdzzjsscore = {"提前转正1人":2, "提前转正2人及以上":3, "晋升1人":5, "晋升2人及以上":8};
+    var score1=0,score2=0,score3=0,ts=0;
 
     params += "&action=update&"+tname+"_uid=" + g_pid;
-    alert(params);
+    if (eform.assess_lyar.value in lyarscore) {
+        score1 = lyarscore[eform.assess_lyar.value];
+    }
+
+    if (/(^[1-9]\d*$)/.test(eform.assess_nxkr.value)) { 
+        score2 = eform.assess_nxkr.value * 0.2;
+    }
+
+    if (eform.assess_tdzzjs.value in tdzzjsscore) {
+        score3 = tdzzjsscore[eform.assess_tdzzjs.value];
+    }
+
+    ts = score1+score2+score3;
+
+    params += "&assess_lyarscore="+score1+"&assess_nxkrscore="+score2+"&assess_tdzzjsscore="+score3+"&assess_tscore="+ts;
+    //alert(params);
     ajaxRequest("POST", g_staffpre+"&func="+tname+"&uid="+g_uid, params, assessinfocb);
 }
 
@@ -53,14 +76,14 @@ function assessinfo_reload() {
                     <option value="其他" selected="selected">其他</option>
                 </select></td>
             <td>考核得分</td>
-            <td id="assess_lyarscore" name="assess_lyarscore"></td>
+            <td id="assess_lyarscore"></td>
             <td></td>
         </tr>
         <tr>
             <td>近一次序列考试成绩</td>
             <td><input type="text" name="assess_nxkr" size="8" value=""></td>
             <td>考试得分</td>
-            <td id="assess_nxkrscore" name="assess_nxkrscore"></td>
+            <td id="assess_nxkrscore"></td>
             <td></td>
         </tr>
         <tr>
@@ -73,7 +96,7 @@ function assessinfo_reload() {
                     <option value="无" selected="selected">无</option>
                 </select></td>
             <td>人才培养得分</td>
-            <td id="assess_tdzzjsscore" name="assess_tdzzjsscore"></td>
+            <td id="assess_tdzzjsscore"></td>
         </tr>
         <tr>
             <td></td>

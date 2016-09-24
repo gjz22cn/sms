@@ -226,6 +226,18 @@ function autofillformdata(eform, data)
             }
         }
     }
+
+    if (ff.name == "form_assess" || ff.name == "form_bi") {
+        for (var key in data) {
+            if (key.indexOf("score") >= 0) {
+                //alert(key);
+                var ee = document.getElementById(key);
+                if (ee) {
+                    ee.innerHTML = data[key];
+                }
+            }
+        }
+    }
 }
 
 function resetformdata(eform)

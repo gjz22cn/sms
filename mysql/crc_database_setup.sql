@@ -234,12 +234,13 @@ CREATE TABLE `crc_assess` (
   `assess_id` int(11) NOT NULL auto_increment,
   `assess_uid` int(11) NOT NULL default '0',
   `assess_lyar` varchar(32) NOT NULL default '其他',
-  `assess_lyarscore` int(4) NOT NULL default '0',
+  `assess_lyarscore` float(6,2) NOT NULL default '0',
   `assess_nxkr` int(4) NOT NULL default '0',
-  `assess_nxkrscore` int(4) NOT NULL default '0',
+  `assess_nxkrscore` float(6,2) NOT NULL default '0',
   `assess_tdzzjs` varchar(64) NOT NULL default '无',
-  `assess_tdzzjsscore` int(4) NOT NULL default '0',
+  `assess_tdzzjsscore` float(6,2) NOT NULL default '0',
   `assess_tdxm` varchar(256) NOT NULL default '',
+  `assess_tscore` float(6,2) NOT NULL default '0',
   PRIMARY KEY  (`assess_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
