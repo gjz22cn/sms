@@ -122,7 +122,8 @@ print '[' . $title . ']';
                 $_SESSION['roleid'] = $staff->m_roleid;
 
                 if ($_GET['func'] == 'score') {
-                    $_SESSION['staffdata'] = $staff->fn_getalldata($_SESSION['profileid']);
+                    //$_SESSION['staffdata'] = $staff->fn_getalldata($_SESSION['profileid']);
+                    $_SESSION['staffdata'] = "";
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadmin') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';

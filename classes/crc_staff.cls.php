@@ -450,6 +450,7 @@
 			//******************************************
 			// Update the base information
 			//******************************************
+            return;
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_setbi}: Setting base information <br>";
 			}
@@ -507,6 +508,7 @@
 
 
 		function fn_setrap($post) {
+            return;
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_setrap}: Setting rap information <br>";
 			}
@@ -577,6 +579,7 @@
 		}
 
 		function fn_setbidex($post) {
+            return;
             $table = 'bidex';
             $tuidname = $table . '_uid';
             $tidname = $table . '_id';
@@ -651,6 +654,7 @@
 		}
 
 		function fn_setworkex($post) {
+            return;
 			//******************************************
 			// Update the workex information
 			//******************************************
@@ -783,6 +787,7 @@
         }
 
         function fn_getworkexentry($workex_uid, $workex_id) {
+            return;
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_getworkexentry}: Get one workex entry <br>";
 			}
@@ -848,6 +853,7 @@
         }
 
         function fn_deleteworkexentry($workex_uid, $workex_id) {
+            return;
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_deleteworkexentry}: delete one workex entry <br>";
 			}

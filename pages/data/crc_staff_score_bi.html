@@ -41,7 +41,6 @@ function setbi() {
 
     params += "&action=update&"+tname+"_uid=" + g_pid;
 
-    alert(eform.bi_cpos.value);
     if (eform.bi_cpos.value in ppscore) {
         if (eform.bi_psca.value in ppscore[eform.bi_cpos.value]) {
             pps_score = ppscore[eform.bi_cpos.value][eform.bi_psca.value];
@@ -81,7 +80,7 @@ function setbi() {
     }
 
     if (/(^[1-9]\d*$)/.test(eform.bi_act.value)) { 
-        act_score = eform.bi_act.value * 0.2;
+        act_score = eform.bi_act.value;
     }
 
     ts = pps_score+edu_score+gn_score+zc_score+eng_score+bim_score+cer_score+act_score;
@@ -89,7 +88,8 @@ function setbi() {
     params += "&bi_ppscore="+pps_score+"&bi_eduscore="+edu_score+"&bi_wyscore="+gn_score;
     params += "&bi_wtiscore="+zc_score+"&bi_engscore="+eng_score+"&bi_bimscore="+bim_score+"&bi_cerscore="+cer_score+"&bi_actscore="+act_score;
     params += "&bi_tscore="+ts;
-    alert(params);
+    
+    //alert(params);
     ajaxRequest("POST", g_staffpre+"&func="+tname+"&uid="+g_uid, params, biinfocb);
 }
 

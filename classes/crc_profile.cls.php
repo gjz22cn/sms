@@ -355,6 +355,7 @@
 		}
 
 		function fn_initstaffbi($db, $username) {
+            return true;
             $result = false;
 
 			if ($this->_DEBUG) {
