@@ -15,41 +15,17 @@ function showsgzzsjj(response) {
         return;
     }
     if (data.ret == 0) {
-        var sgzzsjjlevel = {"3":"总公司级","2":"局级","1":"公司级","0":"无"};
-        var sgzzsjjlevel2 = {"1":"一等奖","0":"其他奖"};
-        var sgzzsjjcomment = {"2":"施组方案奖","1":"优秀工法奖","0":"优秀专利奖"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sgzzsjj_date;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].sgzzsjj_level in sgzzsjjlevel) {
-                td.innerHTML = sgzzsjjlevel[data.data[i].sgzzsjj_level];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].sgzzsjj_level2 in sgzzsjjlevel2) {
-                td.innerHTML = sgzzsjjlevel2[data.data[i].sgzzsjj_level2];
-            } else {
-                td.innerHTML = "其他奖";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sgzzsjj_name;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sgzzsjj_score;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].sgzzsjj_comment in sgzzsjjcomment) {
-                td.innerHTML = sgzzsjjcomment[data.data[i].sgzzsjj_comment];
-            } else {
-                td.innerHTML = "优秀专利奖";
-            }
+            tr = etable.insertRow(etable.rows.length);
+            
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sgzzsjj_date;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sgzzsjj_level;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sgzzsjj_level2;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sgzzsjj_name;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sgzzsjj_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sgzzsjj_date;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].sgzzsjj_id+ ', this, show' +tname+ ')" value="修改">';

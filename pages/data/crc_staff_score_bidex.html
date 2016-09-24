@@ -15,44 +15,18 @@ function showbidex(response) {
         return;
     }
     if (data.ret == 0) {
-        var bidexlevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
-        var bidexposition = {"2":"主持","1":"骨干","0":"参与"};
-        var bidexresult = {"2":"中标","1":"未中标","0":"陪标"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].bidex_date;
+            tr = etable.insertRow(etable.rows.length);
 
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].bidex_pname;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].bidex_level in bidexlevel) {
-                td.innerHTML = bidexlevel[data.data[i].bidex_level];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].bidex_position in bidexposition) {
-                td.innerHTML = bidexposition[data.data[i].bidex_position];
-            } else {
-                td.innerHTML = "参与";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].bidex_content;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].bidex_score;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].bidex_result in bidexresult) {
-                td.innerHTML = bidexresult[data.data[i].bidex_result];
-            } else {
-                td.innerHTML = "陪标";
-            }
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_date;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_pname;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_level;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_position;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_content;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_result;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].bidex_id+ ', this, show' +tname+ ')" value="修改">';

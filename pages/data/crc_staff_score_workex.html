@@ -15,31 +15,17 @@ function showworkex(response) {
         return;
     }
     if (data.ret == 0) {
-        var workexposition = {"4":"部门正职","3":"部门副职","2":"业务经理","1":"业务主办及以下","0":"无"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].workex_dure;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].workex_year;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].workex_position in workexposition) {
-                td.innerHTML = workexposition[data.data[i].workex_position];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].workex_desc;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].workex_score;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].workex_comment;
+            tr = etable.insertRow(etable.rows.length);
+            
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].workex_dure;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].workex_year;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].workex_position;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].workex_desc;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].workex_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].workex_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' + g_pid + ', ' + data.data[i].workex_id + ', this, show' + tname + ')" value="修改">';

@@ -15,39 +15,18 @@ function showsfgc(response) {
         return;
     }
     if (data.ret == 0) {
-        var sfgclevel = {"3":"国家级","2":"省部级","1":"地市级","0":"无"};
-        var sfgcrole = {"1":"项目总工","0":"其他技术人员"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sfgc_acceptdate;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sfgc_acceptunit;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].sfgc_level in sfgclevel) {
-                td.innerHTML = sfgclevel[data.data[i].sfgc_level];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].sfgc_role in sfgcrole) {
-                td.innerHTML = sfgcrole[data.data[i].sfgc_role];
-            } else {
-                td.innerHTML = "其他技术人员";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sfgc_pname;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sfgc_score;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].sfgc_comment;
+            tr = etable.insertRow(etable.rows.length);
+            
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_acceptdate;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_acceptunit;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_level;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_role;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_pname;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sfgc_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].sfgc_id+ ', this, show' +tname+ ')" value="修改">';

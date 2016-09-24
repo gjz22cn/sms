@@ -15,39 +15,18 @@ function showpatent(response) {
         return;
     }
     if (data.ret == 0) {
-        var patentcategory = {"2":"发明","1":"实用新型","0":"无"};
-        var patentrole = {"2":"前两位","1":"三四位","0":"无"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].patent_grantdate;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].patent_no;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].patent_category in patentcategory) {
-                td.innerHTML = patentcategory[data.data[i].patent_category];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].patent_role in patentrole) {
-                td.innerHTML = patentrole[data.data[i].patent_role];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].patent_name;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].patent_score;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].patent_comment;
+            tr = etable.insertRow(etable.rows.length);
+            
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_grantdate;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_no;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_category;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_role;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_name;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].patent_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].patent_id+ ', this, show' +tname+ ')" value="修改">';

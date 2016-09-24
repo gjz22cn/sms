@@ -14,35 +14,17 @@ function showrap(response) {
         return;
     }
     if (data.ret == 0) {
-        var raplevel = {"4":"国家级","3":"省部级","2":"地市级","1":"公司级","0":"无"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].rap_date;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].rap_level in raplevel) {
-                td.innerHTML = raplevel[data.data[i].rap_level];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            if (data.data[i].rap_category == '1') {
-                td.innerHTML = '奖';
-            } else {
-                td.innerHTML = '罚';
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].rap_reason;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].rap_score;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].rap_entity;
+            tr = etable.insertRow(etable.rows.length);
+            
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_date;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_level;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_category;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_reason;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_entity;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="修改">';

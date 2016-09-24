@@ -15,41 +15,17 @@ function showprojex(response) {
         return;
     }
     if (data.ret == 0) {
-        var projexlevel = {"3":"特大型","2":"大型","1":"中小型","0":"无"};
-        var projexposition = {"4":"项目总工","3":"项目副总工/质量总监","2":"项目部门经理","1":"项目技术质量工程师","0":"无"};
-        var projexcomment = {"2":"完整经历","1":"部分经历(计分)","0":"部分经历(不计分)"};
+        var tr; var td;
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
-            var tr = etable.insertRow(etable.rows.length);
-            var td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].projex_dure;
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].projex_pname;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].projex_level in projexlevel) {
-                td.innerHTML = projexlevel[data.data[i].projex_level];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].projex_position in projexposition) {
-                td.innerHTML = projexposition[data.data[i].projex_position];
-            } else {
-                td.innerHTML = "无";
-            }
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = data.data[i].projex_score;
-
-            td = tr.insertCell(tr.cells.length);
-            if(data.data[i].projex_comment in projexcomment) {
-                td.innerHTML = projexcomment[data.data[i].projex_comment];
-            } else {
-                td.innerHTML = "部分经历(不计分)";
-            }
+            tr = etable.insertRow(etable.rows.length);
+            
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].projex_dure;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].projex_pname;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].projex_level;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].projex_position;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].projex_score;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].projex_comment;
 
             td = tr.insertCell(tr.cells.length);
             td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].projex_id+ ', this, show' +tname+ ')" value="修改">';

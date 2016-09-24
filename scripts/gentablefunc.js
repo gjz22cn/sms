@@ -34,8 +34,7 @@ function showdata(response) {
     var index=response.indexOf(resultstr);
     var data=JSON.parse(response.substr(index+resultstr.length));
 
-    alert(response);
-    //alert(result.substr(index+13));
+    //alert(response);
 
     if (data.ret == 0) {
         autofillformdata(document.forms['form_'+g_tname], data.data[0]);
