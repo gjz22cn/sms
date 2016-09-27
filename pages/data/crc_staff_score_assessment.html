@@ -25,31 +25,13 @@ function assessinfocb(response) {
     }
 }
 
-function setassessment() {
+function setassess() {
     var tname = "assess";
     var eform = document.form_assess;
     var url = g_staffpre+"&func="+tname+"&action=update&uid=" + g_uid + "&pid=" + g_pid;
     var params = $('#form_'+tname).serialize();
-    var lyarscore = {"A":10, "B":6};
-    var tdzzjsscore = {"提前转正1人":2, "提前转正2人及以上":3, "晋升1人":5, "晋升2人及以上":8};
-    var score1=0,score2=0,score3=0,ts=0;
 
     params += "&action=update&"+tname+"_uid=" + g_pid;
-    if (eform.assess_lyar.value in lyarscore) {
-        score1 = lyarscore[eform.assess_lyar.value];
-    }
-
-    if (/(^[1-9]\d*$)/.test(eform.assess_nxkr.value)) { 
-        score2 = eform.assess_nxkr.value * 0.2;
-    }
-
-    if (eform.assess_tdzzjs.value in tdzzjsscore) {
-        score3 = tdzzjsscore[eform.assess_tdzzjs.value];
-    }
-
-    ts = score1+score2+score3;
-
-    params += "&assess_lyarscore="+score1+"&assess_nxkrscore="+score2+"&assess_tdzzjsscore="+score3+"&assess_tscore="+ts;
     //alert(params);
     ajaxRequest("POST", g_staffpre+"&func="+tname+"&uid="+g_uid, params, assessinfocb);
 }
@@ -103,7 +85,7 @@ function assessinfo_reload() {
             <td colspan="5" class="error" align="left" id='assess_ret'><b></b></td>
         </tr>
         <tr>
-            <td colspan="5" align="center"><input id="assess_btn" type="button" onclick="setassessment()" value="保存考核信息"></td>
+            <td colspan="5" align="center"><input id="assess_btn" type="button" onclick="setassess()" value="保存考核信息"></td>
         </tr>
     </table>
 </form>

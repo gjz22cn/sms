@@ -41,12 +41,32 @@ function showhead(response) {
     //alert(result);
     autofillformdata(document.forms['form_bi'], bidata);
 }
+
+function calcscorecb(response) {
+    var tname = "calcscore";
+    var resultstr=tname+"result=";
+    var index=response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+    var eres=document.getElementById(tname+"_ret");
+
+    alert(response);
+
+    if (data.ret == 0) {
+        fillscores(data);
+    } else {
+        eres.innerHTML="算分失败: " + data.retstr + "!";
+    }
+}
+
+function calcstaffscore() {
+    ajaxRequest("GET", g_staffpre+"&func=calcscore&uid=" + g_uid + "&pid=" + g_pid, null, calcscorecb);
+}
 </script>
 
 
 <!-- base info start -->
 <form id="form_head" name="form_head">
-    <table class="tbl">
+    <table class="scoretbl">
         <tr>
             <td><select name="head_psca"><option value="2">正式</option>
                     <option value="0" selected="selected">劳务</option>
@@ -61,7 +81,11 @@ function showhead(response) {
                     <option value="0" selected="selected">E、F级</option>
                 </select></td>
             <td>总分</td>
-            <td><input type="text" name="head_birth" size="8" value=""></td>
+            <td id="score0"></td>
+        </tr>
+        <tr>
+            <td colspan="6" id="calcscore_ret"></td>
+            <td><input type="button" name="head_calcscore" size="8" value="算分" onclick="calcstaffscore()"></td>
         </tr>
     </table>
 </form>

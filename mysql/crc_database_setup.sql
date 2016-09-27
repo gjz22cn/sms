@@ -210,10 +210,10 @@ CREATE TABLE `crc_bi` (
   `bi_cer` varchar(64) NOT NULL default '无',
   `bi_cer2` varchar(4) NOT NULL default '否',
   `bi_cerscore` float(6,2) NOT NULL default '0',
-  `bi_act` varchar(8) NOT NULL default '0',
+  `bi_act` int(4) NOT NULL default '0',
   `bi_actscore` float(6,2) NOT NULL default '0',
   `bi_actdesc` varchar(1024) NOT NULL default '',
-  `bi_tscore` float(6,2) NOT NULL default '0',
+  `bi_score` float(6,2) NOT NULL default '0',
   PRIMARY KEY  (`bi_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -225,7 +225,7 @@ CREATE TABLE `crc_rap` (
   `rap_level` varchar(32) NOT NULL default '无',
   `rap_category` varchar(8) NOT NULL default '罚',
   `rap_reason` varchar(512) NOT NULL default '',
-  `rap_score` int(4) NOT NULL default '0',
+  `rap_score` float(6,2) NOT NULL default '0',
   `rap_entity` varchar(256) NOT NULL default '',
   PRIMARY KEY  (`rap_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -241,7 +241,7 @@ CREATE TABLE `crc_assess` (
   `assess_tdzzjs` varchar(64) NOT NULL default '无',
   `assess_tdzzjsscore` float(6,2) NOT NULL default '0',
   `assess_tdxm` varchar(256) NOT NULL default '',
-  `assess_tscore` float(6,2) NOT NULL default '0',
+  `assess_score` float(6,2) NOT NULL default '0',
   PRIMARY KEY  (`assess_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -253,7 +253,7 @@ CREATE TABLE `crc_workex` (
   `workex_year` int(4) NOT NULL default '0',
   `workex_position` varchar(64) NOT NULL default '无',
   `workex_desc` varchar(1024) NOT NULL default '',
-  `workex_score` int(4) NOT NULL default '0',
+  `workex_score` float(6,2) NOT NULL default '0',
   `workex_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`workex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -267,7 +267,7 @@ CREATE TABLE `crc_projex` (
   `projex_level` varchar(64) NOT NULL default '无',
   `projex_position` varchar(64) NOT NULL default '无',
   `projex_ext1` int(4) NOT NULL default '0',
-  `projex_score` int(4) NOT NULL default '0',
+  `projex_score` float(6,2) NOT NULL default '0',
   `projex_comment` varchar(64) NOT NULL default '部分经历(不计分)',
   PRIMARY KEY  (`projex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -281,7 +281,7 @@ CREATE TABLE `crc_tereex` (
   `tereex_level` varchar(32) NOT NULL default '无',
   `tereex_position` varchar(64) NOT NULL default '其他研究人员',
   `tereex_content` varchar(1024) NOT NULL default '',
-  `tereex_score` int(4) NOT NULL default '0',
+  `tereex_score` float(6,2) NOT NULL default '0',
   `tereex_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`tereex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -296,7 +296,7 @@ CREATE TABLE `crc_bidex` (
   `bidex_level` varchar(32) NOT NULL default '无',
   `bidex_position` varchar(32) NOT NULL default '参与',
   `bidex_content` varchar(1024) NOT NULL default '',
-  `bidex_score` int(4) NOT NULL default '0',
+  `bidex_score` float(6,2) NOT NULL default '0',
   `bidex_result` varchar(32) NOT NULL default '陪标',
   PRIMARY KEY  (`bidex_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -310,7 +310,7 @@ CREATE TABLE `crc_sten` (
   `sten_level2` varchar(32) NOT NULL default '三等奖',
   `sten_role` varchar(64) NOT NULL default '项目技术工程师',
   `sten_name` varchar(256) NOT NULL default '',
-  `sten_score` int(4) NOT NULL default '0',
+  `sten_score` float(6,2) NOT NULL default '0',
   `sten_entity` varchar(256) NOT NULL default '',
   PRIMARY KEY  (`sten_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -323,7 +323,7 @@ CREATE TABLE `crc_sgzzsjj` (
   `sgzzsjj_level` varchar(32) NOT NULL default '无',
   `sgzzsjj_level2` varchar(32) NOT NULL default '其他奖',
   `sgzzsjj_name` varchar(256) NOT NULL default '',
-  `sgzzsjj_score` int(4) NOT NULL default '0',
+  `sgzzsjj_score` float(6,2) NOT NULL default '0',
   `sgzzsjj_comment` varchar(32) NOT NULL default '优秀专利奖',
   PRIMARY KEY  (`sgzzsjj_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -337,7 +337,7 @@ CREATE TABLE `crc_sfgc` (
   `sfgc_level` varchar(32) NOT NULL default '无',
   `sfgc_role` varchar(32) NOT NULL default '其他技术人员',
   `sfgc_pname` varchar(256) NOT NULL default '',
-  `sfgc_score` int(4) NOT NULL default '0',
+  `sfgc_score` float(6,2) NOT NULL default '0',
   `sfgc_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`sfgc_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -351,7 +351,7 @@ CREATE TABLE `crc_patent` (
   `patent_category` varchar(32) NOT NULL default '无',
   `patent_role` varchar(32) NOT NULL default '无',
   `patent_name` varchar(256) NOT NULL default '',
-  `patent_score` int(4) NOT NULL default '0',
+  `patent_score` float(6,2) NOT NULL default '0',
   `patent_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`patent_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -365,7 +365,7 @@ CREATE TABLE `crc_conmethod` (
   `conmethod_level` varchar(32) NOT NULL default '无',
   `conmethod_role` varchar(64) NOT NULL default '项目技术工程师',
   `conmethod_name` varchar(256) NOT NULL default '',
-  `conmethod_score` int(4) NOT NULL default '0',
+  `conmethod_score` float(6,2) NOT NULL default '0',
   `conmethod_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`conmethod_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -379,7 +379,7 @@ CREATE TABLE `crc_gccy` (
   `gccy_level` varchar(32) NOT NULL default '无',
   `gccy_role` varchar(64) NOT NULL default '其他技术质量人员',
   `gccy_pname` varchar(256) NOT NULL default '',
-  `gccy_score` int(4) NOT NULL default '0',
+  `gccy_score` float(6,2) NOT NULL default '0',
   `gccy_comment` int(4) NOT NULL default '0',
   PRIMARY KEY  (`gccy_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -394,7 +394,7 @@ CREATE TABLE `crc_qcta` (
   `qcta_level` varchar(32) NOT NULL default '无',
   `qcta_role` varchar(64) NOT NULL default '项目技术工程师',
   `qcta_name` varchar(256) NOT NULL default '',
-  `qcta_score` int(4) NOT NULL default '0',
+  `qcta_score` float(6,2) NOT NULL default '0',
   `qcta_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`qcta_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;

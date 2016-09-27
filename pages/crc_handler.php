@@ -240,7 +240,6 @@ print '[' . $title . ']';
 				echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_admin.php?method=addstudent&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
 								
 			} else if ($_GET['func'] == 'dbsetup') {
-				
 				$dbsetup = new crc_dbsetup(false);
 				$result = $dbsetup->fn_dbsetup($_POST['database'], $_POST['password'], $_POST['username'], $_POST['userpassword']);
 				if ($result == false) {
@@ -249,7 +248,6 @@ print '[' . $title . ']';
 					$_SESSION['msg'] = "success";
 				}
 				echo '<meta http-equiv="refresh" content="0;URL=../mysql/setup.php?' . session_name() . '=' . session_id() . '">';
-				
 			} else {
 				
 				echo '<meta http-equiv="refresh" content="0;URL=crc_unknown.php?' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';

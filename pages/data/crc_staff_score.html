@@ -173,16 +173,16 @@ function OpenWindow(content, title, type, width, height) {
                 if ($_SESSION["roleid"] == '1') {
                    //include "data/crc_staff_select.html";
                    print '<p>请选择一个员工<select id="stafflistselect" onchange="showscoreinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
-                } else {
-                   include "crc_staff_score_head.html";
                 }
+            
+                include "crc_staff_score_head.html";
             }
        ?>
 
-        <form name="score4" id="score1">
+        <form>
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">一、个人基本情况</th><th>得分</th><th colspan="2"></th>
+                    <th colspan="5" align="left">一、个人基本情况</th><th>得分</th><th colspan="2" id="score1"></th>
                 </tr>
             </table>
         </form>
@@ -192,10 +192,10 @@ function OpenWindow(content, title, type, width, height) {
         ?>
 
 
-        <form name="score4" id="score2">
+        <form>
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">二、考核情况</th><th>得分</th><th colspan="2"></th>
+                    <th colspan="5" align="left">二、考核情况</th><th>得分</th><th colspan="2" id="score2"></th>
                 </tr>
             </table>
         </form>
@@ -203,10 +203,10 @@ function OpenWindow(content, title, type, width, height) {
             include "crc_staff_score_assessment.html";
         ?>
 
-        <form name="score4" id="score3">
+        <form>
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">三、业务经历</th><th>得分</th><th colspan="2"></th>
+                    <th colspan="5" align="left">三、业务经历</th><th>得分</th><th colspan="2" id="score3"></th>
                 </tr>
             </table>
         </form>
@@ -218,10 +218,10 @@ function OpenWindow(content, title, type, width, height) {
             include "crc_staff_score_bidex.html";
         ?>
 
-        <form name="score4" id="score4">
+        <form>
             <table class="scoretbl">
                 <tr>
-                    <th colspan="5" align="left">四、科技成果与创优（两年内，2014.8.31至今）</th><th>得分</th><th colspan="2"></th>
+                    <th colspan="5" align="left">四、科技成果与创优（两年内，2014.8.31至今）</th><th>得分</th><th colspan="2" id="score4"></th>
                 </tr>
             </table>
         </form>

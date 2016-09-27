@@ -30,66 +30,9 @@ function setbi() {
     var eform = document.form_bi;
     var url = g_staffpre+"&func="+tname+"&action=update&uid=" + g_uid + "&pid=" + g_pid;
     var params = $('#form_'+tname).serialize();
-    var ppscore = {"项目总工":{"特大型":8,"大型":6,"中小型":4},"项目质量总监":{"特大型":6,"大型":4,"中小型":3}};
-    var eduscore = {"博士及以上":5, "硕士":4, "本科":3, "大专及以下":1};
-    var gnscore = {"12年以上":10,"8-12年（不含）":8,"4-8年（不含）":6,"4年以下":4};
-    var gnscore1 = {"12年以上":4,"8-12年（不含）":3,"4-8年（不含）":2,"4年以下":1};
-    var zcscore = {"教授级高工":10,"高级工程师":8,"中级工程师":5};
-    var bimscore = {"一级":5,"二级":10,"三级":20};
-    var score1=0,score2=0,ts=0;
-    var pps_score=0,edu_score=0,gn_score=0,zc_score=0,eng_score=0,bim_score=0,cer_score=0,act_score=0;
 
     params += "&action=update&"+tname+"_uid=" + g_pid;
 
-    if (eform.bi_cpos.value in ppscore) {
-        if (eform.bi_psca.value in ppscore[eform.bi_cpos.value]) {
-            pps_score = ppscore[eform.bi_cpos.value][eform.bi_psca.value];
-        }
-    }
-
-    if (eform.bi_edu.value in eduscore) {
-        edu_score = eduscore[eform.bi_edu.value];
-    }
-
-    if (eform.bi_cwy.value in gnscore) {
-        score1 = gnscore[eform.bi_cwy.value];
-    }
-    if (eform.bi_owy.value in gnscore1) {
-        score2 = gnscore1[eform.bi_owy.value];
-    }
-    gn_score = score1 + score2;
-
-    if (eform.bi_wti.value in zcscore) {
-        zc_score = zcscore[eform.bi_wti.value];
-    }
-
-    if (eform.bi_eng.value == "是") {
-        eng_score = 3;
-    }
-
-    if (eform.bi_bim.value in bimscore) {
-        bim_score = bimscore[eform.bi_bim.value];
-    }
-
-    if (eform.bi_cer2.value != "无") {
-        if (eform.bi_cer2.value == "是") {
-            cer_score = 7;
-        } else {
-            cer_score = 6;
-        }
-    }
-
-    if (/(^[1-9]\d*$)/.test(eform.bi_act.value)) { 
-        act_score = eform.bi_act.value;
-    }
-
-    ts = pps_score+edu_score+gn_score+zc_score+eng_score+bim_score+cer_score+act_score;
-
-    params += "&bi_ppscore="+pps_score+"&bi_eduscore="+edu_score+"&bi_wyscore="+gn_score;
-    params += "&bi_wtiscore="+zc_score+"&bi_engscore="+eng_score+"&bi_bimscore="+bim_score+"&bi_cerscore="+cer_score+"&bi_actscore="+act_score;
-    params += "&bi_tscore="+ts;
-    
-    //alert(params);
     ajaxRequest("POST", g_staffpre+"&func="+tname+"&uid="+g_uid, params, biinfocb);
 }
 
@@ -106,7 +49,7 @@ function biinfo_reload() {
         <tr>
             <th colspan="5" align="left">1、基本情况</th>
             <th>得分</th>
-            <th></th>
+            <th id="bi_tscore"></th>
         </tr>
         <tr>
             <td>姓名</td>

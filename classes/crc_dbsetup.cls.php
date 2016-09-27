@@ -10,7 +10,7 @@
 	// Name: crc_dbsetup
 	//******************************************
 	//
-	// Desc: Creates and initializes the FreeSMS database
+	// Desc: Creates and initializes the SMS database
 	// Developer: Bogdan Cristea
 	// Email: cristeab@gmail.com
 	// Date: Oct 1st, 2010
@@ -32,7 +32,7 @@
 			// Initialization by constructor
 			//******************************************
 			$this->classname = 'crc_dbsetup';
-			$this->classdescription = 'Creates and initializes the FreeSMS database.';
+			$this->classdescription = 'Creates and initializes the SMS database.';
 			$this->classversion = '1.0.0';
 			$this->classdate = 'October 1st, 2010';
 			$this->classdevelopername = 'Bogdan Cristea';
@@ -48,11 +48,11 @@
 
 		function fn_dbsetup($dbname, $rootpwd, $username, $userpwd) {
 			//******************************************
-			// Setup FreeSMS database
+			// Setup SMS database
 			//******************************************
 
 			if ($this->_DEBUG) {
-				echo "DEBUG {crc_dbsetup::fn_dbsetup}: Setting up FreeSMS database <br>";
+				echo "DEBUG {crc_dbsetup::fn_dbsetup}: Setting up SMS database <br>";
 			}
 
 			if (($dbname == "") || ($rootpwd == "") || ($username == "") || ($userpwd == "")) {

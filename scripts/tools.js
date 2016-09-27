@@ -45,67 +45,9 @@ function verify(page) {
 			editprofile.submit();
 		}
 	} else if (page == "adminaddcourse") {
-		if (adminaddcourse.cname.value == "") {
-			alert("Please enter a valid 'Course Name'!");
-			adminaddcourse.cname.focus();
-		} else if (adminaddcourse.sday.value == "") {
-			alert("Please enter a valid 'Start Day'!");
-			adminaddcourse.sday.focus();
-		} else if (adminaddcourse.smonth.value == "") {
-			alert("Please enter a valid 'Start Month'!");
-			adminaddcourse.smonth.focus();
-		} else if (adminaddcourse.syear.value == "") {
-			alert("Please enter a valid 'Start Year'!");
-			adminaddcourse.syear.focus();
-		} else if (adminaddcourse.eday.value == "") {
-			alert("Please enter a valid 'End Day'!");
-			adminaddcourse.eday.focus();
-		} else if (adminaddcourse.emonth.value == "") {
-			alert("Please enter a valid 'End Month'!");
-			adminaddcourse.emonth.focus();
-		} else if (adminaddcourse.eyear.value == "") {
-			alert("Please enter a valid 'End Year'!");
-			adminaddcourse.eyear.focus();
-		}else if (adminaddcourse.daytime.value == "") {
-			alert("Please enter a valid 'Day Time'!");
-			adminaddcourse.daytime.focus();
-		} else if (adminaddcourse.roomname.value == "") {
-			alert("Please enter a valid 'Room'!");
-			adminaddcourse.room.focus();
-		} else {
-			adminaddcourse.submit();
-		}
+        adminaddcourse.submit();
 	} else if (page == "editcourse") {
-		if (editcourse.cname.value == "") {
-			alert("Please enter a valid 'Course Name'!");
-			editcourse.cname.focus();
-		} else if (editcourse.sday.value == "") {
-			alert("Please enter a valid 'Start Day'!");
-			editcourse.sday.focus();
-		} else if (editcourse.smonth.value == "") {
-			alert("Please enter a valid 'Start Month'!");
-			editcourse.smonth.focus();
-		} else if (editcourse.syear.value == "") {
-			alert("Please enter a valid 'Start Year'!");
-			editcourse.syear.focus();
-		} else if (editcourse.eday.value == "") {
-			alert("Please enter a valid 'End Day'!");
-			editcourse.eday.focus();
-		} else if (editcourse.emonth.value == "") {
-			alert("Please enter a valid 'End Month'!");
-			editcourse.emonth.focus();
-		} else if (editcourse.eyear.value == "") {
-			alert("Please enter a valid 'End Year'!");
-			editcourse.eyear.focus();
-		}else if (editcourse.daytime.value == "") {
-			alert("Please enter a valid 'Day Time'!");
-			editcourse.daytime.focus();
-		} else if (editcourse.roomname.value == "") {
-			alert("Please enter a valid 'Room'!");
-			editcourse.room.focus();
-		} else {
-			editcourse.submit();
-		}		
+        editcourse.submit();
 	} else if (page == "adminaddstudent") {
 		if (adminaddstudent.fname.value == "") {
 			alert("Please enter a valid 'Given Name'!");
@@ -192,6 +134,19 @@ function autofilldata(data, type)
                         ee.selectedIndex=j;
                     }
                 }
+            }
+        }
+    }
+}
+
+function fillscores(data)
+{
+    for (var key in data) {
+        if (key.indexOf("score") >= 0) {
+            //alert(key);
+            var ee = document.getElementById(key);
+            if (ee) {
+                ee.innerHTML = data[key];
             }
         }
     }

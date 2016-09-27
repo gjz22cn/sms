@@ -11,9 +11,18 @@ include_once('../classes/crc_profile.cls.php');
 include_once('../classes/crc_staff.cls.php');
 
 if ($_GET['method'] == 'staff') {
-    //$staff = new crc_staff(false);
-    $staff = new crc_staff(true);
-    if (isset($_GET['func'])) {
+    $staff = new crc_staff(false);
+    //$staff = new crc_staff(true);
+    if ($_GET['func'] == 'calcscore') {
+        $result = $staff->fn_calcstaffscore($_GET['pid']);
+        if ($result) {
+            $staff->m_tscores['ret'] = 0;
+            $staff->m_tscores['action'] = 'calcscore';
+            echo $_GET['func'] . 'result=' . json_encode($staff->m_tscores);
+        } else {
+            echo $_GET['func'] . 'result={"ret":8008, "action":"calcscore", "retstr":"' . $staff->lasterrmsg . '"}';
+        }
+    } else {
         if (isset($_GET['action'])) {
             if ($_GET['action'] == 'get') {
                 $result= $staff->fn_gettableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $_GET['pid'], $_GET['did']);

@@ -27,6 +27,10 @@
 		var $m_status;		
         var $m_mysqltable;
         var $m_keys;
+
+        var $m_tscores;
+        var $m_tables=array('bi','rap','assess','workex','projex','tereex','bidex','sten','sgzzsjj','sfgc','patent','conmethod','gccy','qcta');
+        var $m_tempscore;
 		
 		
 		function crc_staff($debug) {
@@ -40,6 +44,16 @@
 			$this->classdevelopername = 'james';
 			$this->classdeveloperemail = 'gjz22cn@hotmail.com';
 			$this->_DEBUG = $debug;
+
+            foreach ($this->m_tables as $table) {
+                $this->m_tscores[$table . '_tscore'] = 0;
+            }
+
+            $this->m_tscores['score0'] = 0;
+            $this->m_tscores['score1'] = 0;
+            $this->m_tscores['score2'] = 0;
+            $this->m_tscores['score3'] = 0;
+            $this->m_tscores['score4'] = 0;
 			
             $this->m_uid = 0;
 
@@ -411,39 +425,325 @@
             return $this->m_alldata;
         }
 
-        function fn_getbione($pid) {
+        function fn_calcstaffscore($pid) {
 			if ($this->_DEBUG) {
-				echo "DEBUG {crc_staff::fn_getbione}: Get baseinfo data. <br>";
+				echo "DEBUG {crc_staff::fn_calcstaffscore}: Get baseinfo data. <br>";
 			}
 
             $db = new crc_mysql($this->_DEBUG);
             $db->fn_connect();
-            $result = null;
-            $closedb = true;
-			if ($db->m_mysqlhandle != 0) {
-				$this->m_sql = 'select * ' .
-								'from ' . MYSQL_BI_TBL . 
-								' where (bi_uid="' . $pid . '")';
-				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
-				if (mysql_num_rows($resource) > 0) {
-                    if($row=mysql_fetch_array($resource)){
-                        $result=$row;
+			if ($db->m_mysqlhandle == 0) {
+                $this->lasterrmsg = "db->m_mysqlhandle is null!";
+                return false;
+            }
+
+            foreach ($this->m_tables as $table) {
+                if ($this->fn_calcscoretable($db, $pid, $table) == false) {
+                    $db->fn_disconnect();
+                    return false;
+                }
+            }
+            $db->fn_disconnect();
+            $this->lasterrmsg = "";
+            $this->m_tscores['score1'] = $this->m_tscores['bi_tscore']+$this->m_tscores['rap_tscore'];
+            $this->m_tscores['score2'] = $this->m_tscores['assess_tscore'];
+            $this->m_tscores['score3'] = $this->m_tscores['workex_tscore']+$this->m_tscores['projex_tscore']+
+                $this->m_tscores['tereex_tscore']+$this->m_tscores['bidex_tscore'];
+            $this->m_tscores['score4'] = $this->m_tscores['sten_tscore']+$this->m_tscores['sgzzsjj_tscore']+
+                $this->m_tscores['sfgc_tscore']+$this->m_tscores['patent_tscore']+
+                $this->m_tscores['conmethod_tscore']+$this->m_tscores['gccy_tscore'];
+                $this->m_tscores['qcta_tscore'];
+            $this->m_tscores['score0'] = $this->m_tscores['score1'] + $this->m_tscores['score2'] + $this->m_tscores['score3'] + $this->m_tscores['score4'] ;
+            return true;
+        }
+
+        function fn_calctablescore($table, $row) {
+            $resultext=null;
+            $score = 0;
+            if ($table == "bi") {
+                $ppscore = '{"项目总工":{"特大型":8,"大型":6,"中小型":4},"项目质量总监":{"特大型":6,"大型":4,"中小型":3}}';
+                $eduscore = '{"博士及以上":5, "硕士":4, "本科":3, "大专及以下":1}';
+                $gnscore = '{"12年以上":10,"8-12年（不含）":8,"4-8年（不含）":6,"4年以下":4}';
+                $gnscore1 = '{"12年以上":4,"8-12年（不含）":3,"4-8年（不含）":2,"4年以下":1}';
+                $zcscore = '{"教授级高工":10,"高级工程师":8,"中级工程师":5}';
+                $bimscore = '{"一级":5,"二级":10,"三级":20}';
+
+                $ppscore = json_decode($ppscore, true);
+                $eduscore = json_decode($eduscore, true);
+                $gnscore = json_decode($gnscore, true);
+                $gnscore1 = json_decode($gnscore1, true);
+                $zcscore = json_decode($zcscore, true);
+                $bimscore = json_decode($bimscore, true);
+
+                $score1=0;$score2=0;
+                $pps_score=0;$edu_score=0;$gn_score=0;$zc_score=0;$eng_score=0;$bim_score=0;$cer_score=0;$act_score=0;
+
+                if (isset($ppscore[$row['bi_cpos']])) {
+                    if (isset($ppscore[$row['bi_cpos']][$row['bi_psca']])) {
+                        $pps_score = [$row['bi_cpos']][$row['bi_psca']];
                     }
-				} else {
-					if ($this->_DEBUG) {
-						echo 'ERROR {crc_admin::fn_getbione}: The sql command returned nothing. <br>';
-					}
-				}
-				if ($closedb == true) {
-					$db->fn_freesql($resource);
-					$db->fn_disconnect();
-				}
-			} else {
-				if ($closedb == true) {
-					$db->fn_disconnect();
-				}
-			}
+                }
+
+                if (isset($eduscore[$row['bi_edu']])) {
+                    $edu_score = $eduscore[$row['bi_edu']];
+                }
+
+                if (isset($gnscore[$row['bi_cwy']])) {
+                    $score1 = $gnscore[$row['bi_cwy']];
+                }
+                if (isset($gnscore1[$row['bi_owy']])) {
+                    $score2 = $gnscore1[$row['bi_owy']];
+                }
+                $gn_score = $score1 + $score2;
+
+                if (isset($zcscore[$row['bi_wti']])) {
+                    $zc_score = $zcscore[$row['bi_wti']];
+                }
+
+                if ($row['bi_eng'] == "是") {
+                    $eng_score = 3;
+                }
+
+                if (isset($bimscore[$row['bi_bim']])) {
+                    $bim_score = $bimscore[$row['bi_bim']];
+                }
+
+                if ($row['bi_cer'] != "无") {
+                    if ($row['bi_cer2'] == "是") {
+                        $cer_score = 7;
+                    } else {
+                        $cer_score = 6;
+                    }
+                }
+
+                $act_score = $row['bi_act'];
+
+                $score = $pps_score+$edu_score+$gn_score+$zc_score+$eng_score+$bim_score+$cer_score+$act_score;
+
+                $resultext = 'bi_ppscore="' . $pps_score . '",bi_eduscore="' . $edu_score . '",bi_wyscore="' . $gn_score .
+                    '",bi_wtiscore="' . $zc_score . '",bi_engscore="' . $eng_score . '",bi_bimscore="' . $bim_score . 
+                    '",bi_cerscore="' . $cer_score . '",bi_actscore="' . $act_score . '"';
+            } else if ($table == "rap") {
+                $sv='{"国家级":10, "省部级":8, "地市级":6, "公司级":2}';
+                $sv = json_decode($sv, true);
+
+                if (isset($sv[$row[3]])) {
+                    $score = $sv[$row[3]];
+                }
+                if ($row[4] == "罚") {
+                    $score = 0 - $score;
+                }
+            } else if ($table == "assess") {
+                $lyarscore = '{"A":10, "B":6}';
+                $tdzzjsscore = '{"提前转正1人":2, "提前转正2人及以上":3, "晋升1人":5, "晋升2人及以上":8}';
+                $lyarscore = json_decode($lyarscore, true);
+                $tdzzjsscore = json_decode($tdzzjsscore, true);
+                $score1=0;$score2=0;$score3=0;
+
+                if (isset($lyarscore[$row['assess_lyar']])) {
+                    $score1 = $lyarscore[$row['assess_lyar']];
+                }
+
+                $score2 = $row['assess_nxkr'];
+
+                if (isset($tdzzjsscore[$row['assess_tdzzjs']])) {
+                    $score3 = $tdzzjsscore[$row['assess_tdzzjs']];
+                }
+
+                $score = $score1 + $score2 + $score3;
+
+                $resultext = 'assess_lyarscore="' . $score1 . '",assess_nxkrscore="' . $score2 . '",assess_tdzzjsscore="' . $score3 . '"';
+
+            } else if ($table == "workex") {
+                $kv='{"部门正职":2,"部门副职":1}';
+                $kv = json_decode($kv, true);
+                $k=0;
+                $s = $row[3];
+                if (isset($kv[$row[4]])) {
+                    $k = $kv[$row[4]];
+                }
+                $score = $s * $k;
+            } else if ($table == "projex") {
+                if ($row[8] == '完整经历') {
+                    $sv='{"项目总工":{"特大型":10,"大型":8,"中小型":6},
+                         "项目副总工/质量总监":{"特大型":6,"大型":4,"中小型":3},
+                         "项目部门经理":{"特大型":4,"大型":3,"中小型":2},
+                         "项目技术/质量工程师":{"特大型":2,"大型":2,"中小型":1}}';
+                    $sv = json_decode($sv, true);
+                    if (isset($sv[$row[5]])) {
+                        if (isset($sv[$row[5]][$row[4]])) {
+                            $score = $sv[$row[5]][$row[4]];
+                        }
+                    }
+                }
+            } else if ($table == "tereex") {
+                $sv='{"课题负责人":{"国家级":8,"省部级":6,"地市级":4,"公司级":2},
+                     "课题骨干":{"国家级":4,"省部级":3,"地市级":2,"公司级":1},
+                     "其他参与人员":{"国家级":2,"省部级":2,"地市级":1,"公司级":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+            } else if ($table == "bidex") {
+                $sv='{"主持":{"特大型":5,"大型":4,"中小型":3},
+                    "骨干":{"特大型":3,"大型":2,"中小型":2},
+                    "参与":{"特大型":1,"大型":1,"中小型":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+            } else if ($table == "sten") {
+                if ($row[3] == "国家级") {
+                    $sv='{"项目总工":{"一等奖":20,"二等奖":14,"三等奖":10},
+                        "项目技术部经理":{"一等奖":15,"二等奖":10,"三等奖":7},
+                        "项目技术工程师":{"一等奖":10,"二等奖":8,"三等奖":5}}';
+                    $sv = json_decode($sv, true);
+                    if (isset($sv[$row[5]])) {
+                        if (isset($sv[$row[5]][$row[4]])) {
+                            $score = $sv[$row[5]][$row[4]];
+                        }
+                    }
+                } else if ($row[3] == "省部级") {
+                    $sv='{"项目总工":{"一等奖":7,"二等奖":6,"三等奖":5},
+                        "项目技术部经理":{"一等奖":5,"二等奖":4,"三等奖":3},
+                        "项目技术工程师":{"一等奖":4,"二等奖":3,"三等奖":2}}';
+                    $sv = json_decode($sv, true);
+                    if (isset($sv[$row[5]])) {
+                        if (isset($sv[$row[5]][$row[4]])) {
+                            $score = $sv[$row[5]][$row[4]];
+                        }
+                    }
+                } else if ($row[3] == "地市级") {
+                    $sv='{"项目总工":{"一等奖":3,"二等奖":2,"三等奖":1},
+                        "项目技术部经理":{"一等奖":2,"二等奖":1,"三等奖":1},
+                        "项目技术工程师":{"一等奖":1,"二等奖":1,"三等奖":1}}';
+                    $sv = json_decode($sv, true);
+                    if (isset($sv[$row[5]])) {
+                        if (isset($sv[$row[5]][$row[4]])) {
+                            $score = $sv[$row[5]][$row[4]];
+                        }
+                    }
+                }
+            } else if ($table == "sgzzsjj") {
+                $sv='{"一等奖":{"总公司级":4,"局级":3,"公司级":2},
+                    "其他奖":{"总公司级":2,"局级":1,"公司级":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[4]])) {
+                    if (isset($sv[$row[4]][$row[3]])) {
+                        $score = $sv[$row[4]][$row[3]];
+                    }
+                }
+            } else if ($table == "sfgc") {
+                $sv='{"项目总工":{"国家级":5,"省部级":3,"地市级":2},
+                    "其他技术人员":{"国家级":3,"省部级":2,"地市级":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+            } else if ($table == "patent") {
+                $sv='{"前两位":{"发明":6,"实用新型/外观设计":2},
+                    "三四位":{"发明":3,"实用新型/外观设计":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+            } else if ($table == "conmethod") {
+                $sv='{"前两位":{"国家级":4,"省部级":3,"地市级":2,"公司级":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+            } else if ($table == "gccy") {
+                $sv='{"项目总工/质量总监":{"鲁班奖":10,"国家级":8,"省部级":4,"地市级":2},
+                     "其他技术质量人员":{"鲁班奖":5,"国家级":4,"省部级":2,"地市级":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+                if ($row[3] != "优质工程") {
+                    $k = 0.5;
+                    $score = $score * $k;
+                }
+            } else if ($table == "qcta") {
+                $sv='{"项目总工/质量总监":{"国家级":4,"省部级":3,"地市级":2,"公司级":1},
+                     "发布人":{"国家级":3,"省部级":2,"地市级":1,"公司级":1},
+                     "其他参与人员":{"国家级":2,"省部级":1,"地市级":1,"公司级":1}}';
+                $sv = json_decode($sv, true);
+                if (isset($sv[$row[5]])) {
+                    if (isset($sv[$row[5]][$row[4]])) {
+                        $score = $sv[$row[5]][$row[4]];
+                    }
+                }
+            }
+            $this->m_tempscore = $score;
+            $result = $table . '_score="' . $score . '"';
+            if ($resultext) {
+                $result = $result . ',' . $resultext;
+            }
             return $result;
+        }
+
+
+        function fn_calcscoretable($db, $pid, $table) {
+            if($db == null) {
+                $this->lasterrmsg = "db is null!";
+                return false;
+            }
+
+            if ($db->m_mysqlhandle == 0) {
+                $this->lasterrmsg = "db->m_mysqlhandle is null!";
+                return false;
+            }
+
+            if ($this->fn_getmysqltblandkeysbytablename($table) == false) {
+                if ($this->_DEBUG) {
+                    echo "DEBUG {crc_staff::fn_calcscoretable}: unknown table name:" . $table . ". <br>";
+                }
+                $this->lasterrmsg = "unknown table name: " . $table;
+                return false;
+            }
+
+            $this->m_sql = 'select * ' . 'from ' . $this->m_mysqltable . ' where ' . $table . '_uid="' . $pid . '"';
+            $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			
+            if (mysql_errno() != 0) {
+                $this->lasterrnum = $db->lasterrnum;
+                $this->lasterrmsg = $db->lasterrmsg;
+                $db->fn_freesql($resource);
+                return false;
+            }
+
+            $tscore=0;
+
+            while ($row = mysql_fetch_array($resource)) {
+                $updatestr = $this->fn_calctablescore($table, $row);
+                $tscore += $this->m_tempscore;
+                $this->m_sql = 'update ' . $this->m_mysqltable . ' set ' . $updatestr . ' where ' . $table . '_id="' . $row[0] . '"';
+				$resource1 = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+                if (mysql_errno() != 0) {
+					$this->lasterrnum = $db->lasterrnum;
+					$this->lasterrmsg = $db->lasterrmsg;
+					$db->fn_freesql($resource);
+                    return false;
+                }
+                $db->fn_freesql($resource1);
+            }
+            $db->fn_freesql($resource);
+
+            $this->m_tscores[$table . '_tscore'] = $tscore;
+
+            return true;
         }
 
 		function fn_setbi($post) {
