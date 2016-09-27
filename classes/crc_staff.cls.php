@@ -480,7 +480,7 @@
 
                 if (isset($ppscore[$row['bi_cpos']])) {
                     if (isset($ppscore[$row['bi_cpos']][$row['bi_psca']])) {
-                        $pps_score = [$row['bi_cpos']][$row['bi_psca']];
+                        $pps_score = $ppscore[$row['bi_cpos']][$row['bi_psca']];
                     }
                 }
 
