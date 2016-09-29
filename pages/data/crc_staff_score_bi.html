@@ -45,11 +45,13 @@ function biinfo_reload() {
 
 <form id="form_bi" name="form_bi">
 <input type="hidden" name="bi_id" id="bi_id" value="0">
-    <table class="scoretbl">
-        <tr>
-            <th colspan="5" align="left">1、基本情况</th>
-            <th>得分</th>
-            <th id="bi_tscore"></th>
+    <table class="scoretbl inner-title-tab">
+        <tr class="inner-title-tab-title">
+            <th colspan="6" align="left">
+                1、基本情况</th>
+            <th class="score-th">得分
+                <span id="bi_tscore"></span>
+            </th>
         </tr>
         <tr>
             <td>姓名</td>

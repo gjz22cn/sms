@@ -1,16 +1,19 @@
-<TABLE width="100%">
+<table class="head-tab" width="100%">
 	<?php 
 		$APP_IMAGES = "../images/";
 	?>
 
 	<!-- The Page Header -->
 	<tr>
-		<th background="<?php echo $APP_IMAGES ?>title.jpg" colspan="2" class="banner" align="left">
-            <p><strong>Staff Management System (SMS)<br>Version 1.0.0</strong></p>
+		<th class="banner" align="left">
+            <h3>Staff Management System (SMS)</h3>
+            <h5>Version 1.0.0</h5>
+        </th>
+        <th class="banner user-info" >
 	<?php 
 		if (isset($_SESSION['name']))
 		{
-			echo "<p align='right'>User: " . $_SESSION['uid'] . "&nbsp&nbsp&nbsp&nbsp";
+			echo "<div>User: " . $_SESSION['uid'] . "</div></div>";
 			echo "Role: ";
 			
 			switch($_SESSION['roleid']) 
@@ -23,12 +26,9 @@
 					break; 
 			}
 
-			echo "</p>";
+			echo "</div>";
 		}
 	?>
         </th>
-	</tr>
-	<tr>
-		<th background="<?php echo $APP_IMAGES ?>title.jpg" colspan="2" class="banner" align="left"><strong></strong></th>
 	</tr>
 </table>

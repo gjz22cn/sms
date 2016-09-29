@@ -18,6 +18,7 @@ function showsten(response) {
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             tr = etable.insertRow(etable.rows.length);
+            tr.className="inner-title-tab-body";
 
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sten_date;
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sten_level;
@@ -28,10 +29,7 @@ function showsten(response) {
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].sten_entity;
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].sten_id+ ', this, show' +tname+ ')" value="修改">';
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\',' +g_pid+ ',' +data.data[i].sten_id+ ', this, show' +tname+ ')" value="删除">';
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].sten_id+ ', this, show' +tname+ ')" value="修改">'+'<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\',' +g_pid+ ',' +data.data[i].sten_id+ ', this, show' +tname+ ')" value="删除">';
         }
     }
 }
@@ -49,14 +47,22 @@ function steninfo_reload() {
 </script>
 
 <form name="form_sten" id="form_sten">
-    <table class="scoretbl" id="table_sten">
-		<tr>
-            <th colspan="5" align="left">1、科技与BIM类奖项（除公司高层，本公司技术系统排名前两位可得分）<input type="button" onclick="btnaction2('sten', 'add', g_pid, '0', this)" value="添加"></th>
-            <th>小计</th>
-            <th id="sten_tscore"></th><th colspan="2"></th>
+    <table class="scoretbl inner-title-tab" id="table_sten">
+		<tr class="inner-title-tab-title">
+            <th colspan="7" align="left">1、科技与BIM类奖项（除公司高层，本公司技术系统排名前两位可得分）<input type="button" onclick="btnaction2('sten', 'add', g_pid, '0', this)" value="添加"></th>
+            <th class="score-th">小计
+                <span id="sten_tscore"></span>
+            </th>
 		</tr>
-		<tr>
-            <th>时间(年)</th><th>级别</th><th>等级</th><th>角色</th><th width="400">获奖成果名称</th><th>得分</th><th width="200">授奖单位</th><th colspan="2">操作</th>
-		</tr>
+        <tr class="inner-title-tab-label">
+            <th>时间(年)</th>
+            <th>级别</th>
+            <th>等级</th>
+            <th>角色</th>
+            <th width="300">获奖成果名称</th>
+            <th>得分</th>
+            <th width="100">授奖单位</th>
+            <th>操作</th>
+        </tr>
     </table>
 </form>

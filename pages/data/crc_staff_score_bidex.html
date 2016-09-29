@@ -19,6 +19,7 @@ function showbidex(response) {
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             tr = etable.insertRow(etable.rows.length);
+            tr.className="inner-title-tab-body";
 
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_date;
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_pname;
@@ -29,10 +30,7 @@ function showbidex(response) {
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].bidex_result;
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].bidex_id+ ', this, show' +tname+ ')" value="修改">';
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\',' +g_pid+ ',' +data.data[i].bidex_id+ ', this, show' +tname+ ')" value="删除">';
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' +g_pid+ ', ' +data.data[i].bidex_id+ ', this, show' +tname+ ')" value="修改">'+'<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\',' +g_pid+ ',' +data.data[i].bidex_id+ ', this, show' +tname+ ')" value="删除">';
         }
     }
 }
@@ -50,14 +48,22 @@ function bidexinfo_reload() {
 </script>
 
 <form name="form_bidex" id="form_bidex">
-    <table class="scoretbl" id="table_bidex">
-		<tr>
-            <th colspan="5" align="left">4、投标经历（一年内，2015.8.31起至今，以市场部名单为准）<input type="button" onclick="btnaction2('bidex', 'add', g_pid, '0', this)" value="添加"></th>
-            <th>小计</th>
-            <th id="bidex_tscore"></th><th colspan="2"></th>
+    <table class="scoretbl inner-title-tab" id="table_bidex">
+		<tr class="inner-title-tab-title">
+            <th colspan="7" align="left">4、投标经历（一年内，2015.8.31起至今，以市场部名单为准）<input type="button" onclick="btnaction2('bidex', 'add', g_pid, '0', this)" value="添加"></th>
+            <th class="score-th">小计
+                <span id="bidex_tscore"></span>
+            </th>
 		</tr>
-		<tr>
-            <th>时间(年)</th><th>项目名称</th><th>级别</th><th>人员分类</th><th width="400">完成章节</th><th>得分</th><th width="200">中标情况</th><th colspan="2">操作</th>
-		</tr>
+        <tr class="inner-title-tab-label">
+            <th>时间(年)</th>
+            <th>项目名称</th>
+            <th>级别</th>
+            <th>人员分类</th>
+            <th width="300">完成章节</th>
+            <th>得分</th>
+            <th width="200">中标情况</th>
+            <th>操作</th>
+        </tr>
     </table>
 </form>

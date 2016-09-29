@@ -110,33 +110,63 @@ function btnaction2(func, action, pid, did, r, callback) {
         etable.deleteRow(row.rowIndex);
         ajaxRequest("GET", g_staffpre+"&func="+func+"&action=del&uid=" + g_uid + "&pid=" + pid + "&did=" + did, null, callback);
     } else {
-        OpenWindow(newurl, "test", 'iframe', 1000, 400);
+        OpenWindow(newurl, "test", 'iframe', 800, 400);
     }
 }
 
 function OpenWindow(content, title, type, width, height) {
-    var topsize = (window.screen.availHeight-30-height)/2;
-    var leftsize = (window.screen.availWidth-10-width)/2;
-    var winarg = 'height='+ height +',width=' + width + ',top=' + topsize + ',left=' + leftsize;
 
-    winarg+=',toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no';
+    // add by meili.jin
+        var titles = title;
+        var bgWidth = $(window).width()+$(document).scrollTop();
+        var bgHeight = $(window).height()+$(document).scrollLeft();
+        var Iheight = document.body.clientHeight;
+        var Iwidth = document.body.clientWidth;
+        var heights = height || 300;
+        var widths = width || 500;
+        var Oheight = 100 + $(document).scrollTop();
+        var Owidth;
+        Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
+        var iframeUrl = content;
+        var div = "<div id='InDiv' class='modal-bg' style='width:" + bgWidth + "px;height:" + bgHeight + "px;'><div id='offDiv' class='modal' style='position:absolute; width:" + widths + "px;height:" + heights + "px;left:" + Owidth + "px;top:" + Oheight + "px;'><h4 id='HTitle' class='modal-title'><a id='AClose' onclick='RemoveDiv()' class='modal-close'>x</a></h4><div id='Content'><iframe id='menu_window' src=" + iframeUrl + " width='" + widths + "'px height='" + heights + "px'></iframe></div></div></div>";
+        $(document.body).append(div);
 
-    window.open(content, title, winarg);
+        $(window).resize(function() { 
+            var Iwidth = document.body.clientWidth; 
+            Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
+            $('#offDiv').css({"left": Owidth+"px"}); 
+        });
 
-    return;
+
+    // var topsize = (window.screen.availHeight-30-height)/2;
+    // var leftsize = (window.screen.availWidth-10-width)/2;
+    // var winarg = 'height='+ height +',width=' + width + ',top=' + topsize + ',left=' + leftsize;
+
+    // winarg+=',toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no';
+
+    // window.open(content, title, winarg);
+
+    // return;
 
     /* TODO: */
     ///显示子页面
-    if (type == 'iframe') {
-        $("#menu_window").html("<iframe id='ifrme' name='ifrme' frameborder='0' scrolling='auto' width='" + width + "' height='" + height + "'></iframe>");
-        $("#ifrme").attr("src", content);
-    }
-    ///用于 弹出子页面。。。若果没有下面的，OpenWindow只能在父页面显示子页面，不会弹出来。
-    $("#menu_window").window({
-        title: title, iconCls: 'icon-info', width: width + 15, height: height + 40, top: topsize, left: leftsize, resizable: false, modal: true, shadow: true,
-        minimizable: false, maximizable: false, closable: true, closed: false, collapsible: false
-    });
+    // if (type == 'iframe') {
+    //     $("#menu_window").html("<iframe id='ifrme' name='ifrme' frameborder='0' scrolling='auto' width='" + width + "' height='" + height + "'></iframe>");
+    //     $("#ifrme").attr("src", content);
+    // }
+    // ///用于 弹出子页面。。。若果没有下面的，OpenWindow只能在父页面显示子页面，不会弹出来。
+    // $("#menu_window").window({
+    //     title: title, iconCls: 'icon-info', width: width + 15, height: height + 40, top: topsize, left: leftsize, resizable: false, modal: true, shadow: true,
+    //     minimizable: false, maximizable: false, closable: true, closed: false, collapsible: false
+    // });
 }
+function RemoveDiv() {
+        $("#AClose").remove();
+        $("#HTitle").remove();
+        $("#offDiv").remove();
+        $("#InDiv").remove();
+    }
+
 </script>
 
 
@@ -158,21 +188,21 @@ function OpenWindow(content, title, type, width, height) {
 
 <table align="left">
 	<tr>
-		<td valign="top" width="180">
+		<td valign="top" width="180" class="br-f0f0f0">
             <!-- This is the menu -->
             <?php
                 include "../common/crc_menu.html";
             ?>
 		</td>
 
-		<td valign="top" align="left">
+		<td valign="top" align="left" class="main-body">
 	    <!-- This is the content -->
 
         <?php
             if (isset($_SESSION["roleid"])) {
                 if ($_SESSION["roleid"] == '1') {
                    //include "data/crc_staff_select.html";
-                   print '<p>请选择一个员工<select id="stafflistselect" onchange="showscoreinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
+                   print '<p>请选择一个员工<select class="ml-20" id="stafflistselect" onchange="showscoreinfo(this.options[this.options.selectedIndex].value)"><option value="0">无</option></select></p>';
                 }
             
                 include "crc_staff_score_head.html";
@@ -180,52 +210,62 @@ function OpenWindow(content, title, type, width, height) {
        ?>
 
         <form>
-            <table class="scoretbl">
+            <table class="scoretbl outer-title-tab">
                 <tr>
-                    <th colspan="5" align="left">一、个人基本情况</th><th>得分</th><th colspan="2" id="score1"></th>
+                    <th align="left">一、个人基本情况</th>
+                    <th  class="score-th">得分
+                        <span id="score1"></span>
+                    </th>
                 </tr>
             </table>
         </form>
+        <div class="card">
         <?php
             include "crc_staff_score_bi.html";
             include "crc_staff_score_rap.html";
         ?>
-
+        </div>
 
         <form>
-            <table class="scoretbl">
+            <table class="scoretbl outer-title-tab">
                 <tr>
-                    <th colspan="5" align="left">二、考核情况</th><th>得分</th><th colspan="2" id="score2"></th>
+                    <th align="left">二、考核情况</th><th class="score-th">得分<span  id="score2"></span></th>
                 </tr>
             </table>
         </form>
+
+        <div class="card">
         <?php
             include "crc_staff_score_assessment.html";
         ?>
-
+        </div>
+        
         <form>
-            <table class="scoretbl">
+            <table class="scoretbl outer-title-tab">
                 <tr>
-                    <th colspan="5" align="left">三、业务经历</th><th>得分</th><th colspan="2" id="score3"></th>
+                    <th align="left">三、业务经历</th><th class="score-th">得分<span id="score3"></span></th>
                 </tr>
             </table>
         </form>
 
+        <div class="card">
         <?php
             include "crc_staff_score_workex.html";
             include "crc_staff_score_projex.html";
             include "crc_staff_score_tereex.html";
             include "crc_staff_score_bidex.html";
         ?>
+        </div>
 
         <form>
-            <table class="scoretbl">
+            <table class="scoretbl outer-title-tab">
                 <tr>
-                    <th colspan="5" align="left">四、科技成果与创优（两年内，2014.8.31至今）</th><th>得分</th><th colspan="2" id="score4"></th>
+                    <th align="left">四、科技成果与创优（两年内，2014.8.31至今）</th><th class="score-th">得分<span id="score4"></span></th>
                 </tr>
             </table>
         </form>
 
+        <div class="card">
         <?php
             include "crc_staff_score_sten.html";
             include "crc_staff_score_sgzzsjj.html";
@@ -235,6 +275,7 @@ function OpenWindow(content, title, type, width, height) {
             include "crc_staff_score_gccy.html";
             include "crc_staff_score_qcta.html";
         ?>
+        </div>
     </td>
   </tr>
 </table>
