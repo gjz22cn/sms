@@ -53,39 +53,47 @@ function calcscorecb(response) {
 
     if (data.ret == 0) {
         fillscores(data);
+        eres.innerHTML="算分成功!";
     } else {
         eres.innerHTML="算分失败: " + data.retstr + "!";
     }
 }
 
 function calcstaffscore() {
-    ajaxRequest("GET", g_staffpre+"&func=calcscore&uid=" + g_uid + "&pid=" + g_pid, null, calcscorecb);
+    var params = $('#form_kh').serialize();
+    params += "&kh_uid=" + g_pid;
+    alert(params);
+    ajaxRequest("POST", g_staffpre+"&func=calcscore&uid=" + g_uid, params, calcscorecb);
 }
 </script>
 
 
 <!-- base info start -->
-<form id="form_head" name="form_head">
+<form id="form_kh" name="form_kh">
     <table class="scoretbl">
         <tr>
-            <td><select name="head_psca"><option value="2">正式</option>
-                    <option value="0" selected="selected">劳务</option>
+            <td>考核名称</td>
+            <td><select name="kh_khname"><option value="2016" selected="selected">2016</option>
+                    <option value="2017">2017</option>
+                </select></td>
+            <td colspan="4" class="error" id="calcscore_ret"></td>
+            <td><input type="button" name="head_calcscore" size="8" value="算分" onclick="calcstaffscore()"></td>
+        </tr>
+        <tr>
+            <td><select name="kh_tolc"><option value="正式" selected="selected">正式</option>
+                    <option value="劳务">劳务</option>
                 </select></td>
             <td>序列</td>
-            <td><select name="head_psca"><option value="2">技术</option>
-                    <option value="0">质量</option>
-                    <option value="0" selected="selected">资料</option>
+            <td><select name="kh_pc"><option value="技术" selected="selected">技术</option>
+                    <option value="质量">质量</option>
+                    <option value="资料">资料</option>
                 </select></td>
             <td>现职级</td>
-            <td><select name="head_psca"><option value="2">D级</option>
-                    <option value="0" selected="selected">E、F级</option>
+            <td><select name="kh_currl"><option value="D级">D级</option>
+                    <option value="E、F级" selected="selected">E、F级</option>
                 </select></td>
             <td>总分</td>
             <td id="score0"></td>
-        </tr>
-        <tr>
-            <td colspan="6" id="calcscore_ret"></td>
-            <td><input type="button" name="head_calcscore" size="8" value="算分" onclick="calcstaffscore()"></td>
         </tr>
     </table>
 </form>

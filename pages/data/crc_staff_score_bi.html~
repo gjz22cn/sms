@@ -168,7 +168,7 @@ function biinfo_reload() {
         </tr>
         <tr>
             <td>一年内活动参与次数</td>
-            <td><input type="text" name="bi_act" size="8" value="0"></td>
+            <td><input type="text" name="bi_act" size="8" value=""></td>
             <td>参与活动得分</td>
             <td id="bi_actscore"></td>
             <td colspan="3"></td>
