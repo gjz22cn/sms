@@ -35,42 +35,47 @@
 <input type="hidden" name="action", id="action">
 <input type="hidden" name="rap_uid" id="rap_uid">
 <input type="hidden" name="rap_id" id="rap_id" value="0">
-    <table class="tbl">
-		<tr>
+    <div class="tab-title">
+        <h3>个人奖罚记录</h3>
+    </div>
+    <table class="inner-tab">
+		<!-- <tr>
 	        <th colspan="6">个人奖罚记录</th>
-		</tr>
+		</tr> -->
         <tr>
-            <td colspan="6" class="error" align="left" id='rap_ret'><b></b></td>
+            <td colspan="2" class="error" align="left" id='rap_ret'><b></b></td>
         </tr>
 		<tr>
         	<td align="right">时间(年): </td>
             <td><input type="text" name="rap_date" size="4" value=""></input></td>
-
-
-        	<td align="right">级别: </td>
+        </tr>
+        <tr>
+            <td align="right">级别: </td>
             <td><select name="rap_level"><option value="国家级">国家级</option>
                     <option value="省部级">省部级</option>
                     <option value="地市级">地市级</option>
                     <option value="公司级">公司级</option>
                     <option value="无" selected="selected">无</option>
                     </select></td>
-
-
-        	<td align="right">类别: </td>
+        </tr>
+        <tr>
+            <td align="right">类别: </td>
             <td><select name="rap_category"><option value="奖">奖</option>
                     <option value="罚" selected="selected">罚</option>
                     </select></td>
         </tr>
+
 		<tr>
         	<td align="right">奖罚原因: </td>
-            <td colspan="5"><textarea name="rap_reason" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+            <td><textarea name="rap_reason" rows="4"  maxlength="512" value=""></textarea></td>
         </tr>
 		<tr>
         	<td align="right">奖罚单位: </td>
-            <td colspan="5"><textarea name="rap_entity" rows="2" cols="128" maxlength="256" value=""></textarea></td>
+            <td><textarea name="rap_entity" rows="2"  maxlength="256" value=""></textarea></td>
         </tr>
 		<tr>
-      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+            <td></td>
+      		<td><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
     	</tr>
     </table>
 </form>

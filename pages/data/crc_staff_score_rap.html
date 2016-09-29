@@ -18,19 +18,18 @@ function showrap(response) {
         var etable=document.getElementById("table_"+tname);
         for (var i=0; i<data.data.length; i++) {
             tr = etable.insertRow(etable.rows.length);
+            tr.className="inner-title-tab-body";
             
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_date;
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_level;
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_category;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_reason;
+            td = tr.insertCell(tr.cells.length); td.className = 'break-word'; td.innerHTML = data.data[i].rap_reason;
+            td = tr.insertCell(tr.cells.length); td.className = 'break-word'; td.innerHTML = data.data[i].rap_entity;
             td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_score;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].rap_entity;
 
             td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="修改">';
-
-            td = tr.insertCell(tr.cells.length);
-            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="删除">';
+            td.innerHTML = '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'edit\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="修改">'+
+            '<input type="button" onclick="btnaction2(\'' +tname+ '\', \'del\', ' + g_pid + ', ' + data.data[i].rap_id + ', this, show' + tname + ')" value="删除">';
         }
     }
 }
@@ -47,14 +46,25 @@ function rapinfo_reload() {
 </script>
 
 <form name="form_rap" id="form_rap">
-    <table class="scoretbl" id="table_rap">
-		<tr>
-            <th colspan="5" align="left">2、奖罚记录（证书时间起一年内可加分，技术质量相关及优秀员工类可加分，处罚减分）<input type="button" onclick="btnaction2('rap', 'add', g_pid, '0', this)" value="添加"></th>
-            <th>小计</th>
-            <th colspan="2" id="rap_tscore"></th>
-		</tr>
-		<tr>
-            <th>时间(年)</th><th>级别</th><th>类别</th><th>奖罚原因</th><th>得分</th><th>奖罚单位</th><th colspan="2">操作</th>
-		</tr>
-    </table>
+<table class="scoretbl inner-title-tab" id="table_rap">
+    <thead>
+        <tr class="inner-title-tab-title">
+            <th colspan="6" align="left">
+                2、奖罚记录（证书时间起一年内可加分，技术质量相关及优秀员工类可加分，处罚减分）<input type="button" onclick="btnaction2('rap', 'add', g_pid, '0', this)" value="添加">
+            </th>
+            <th class="score-th">小计
+                <span id="rap_tscore"></span>
+            </th>
+        </tr>
+        <tr class="inner-title-tab-label">
+            <th class="short-w">时间(年)</th>
+            <th class="middle-w">级别</th>
+            <th class="xshort-w">类别</th>
+            <th>奖罚原因</th>
+            <th>奖罚单位</th>
+            <th class="short-w">得分</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+</table>
 </form>

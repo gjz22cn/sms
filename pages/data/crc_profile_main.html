@@ -17,16 +17,16 @@
 
 <form name="profile" action="crc_handler.php?method=profile&func=update" method="post">
 <input type="hidden" name="context" value="ou=Don Mills,ou=Toronto,ou=Ontario,ou=Canada,o=CRC World">
-<table align="left">
+<table align="left" style="height:100%">
     <tr>
-		<td valign="top" width="180" align="left">
+		<td valign="top" width="180" class="br-f0f0f0">
             <!-- This is the menu -->
             <?php
                 include "../common/crc_menu.html";
             ?>
 		</td>
-		<td valign="top" align="left">
-    <table width="320" class="std">
+		<td valign="top" align="left" class="main-body" style="width:80%">
+    <table width="320" class="std" style="margin:auto">
     <?php
         if (isset($_SESSION['msg'])) {
 		  $len = strlen($_SESSION['msg']);
@@ -46,7 +46,7 @@
           print '<td colspan="3"><span class="error">*</span>是必需项.<br></td>';
 		print '</tr>';
         print '<tr>';
-          print '<td><input type="hidden" name="profileid" value="' . $_SESSION['profileid'] . '" class="text"></td>';
+          print '<td colspan="3"><input type="hidden" name="profileid" value="' . $_SESSION['profileid'] . '" class="text"></td>';
         print '</tr>';
 		print '<tr>';
           print '<td width="10"></td>';

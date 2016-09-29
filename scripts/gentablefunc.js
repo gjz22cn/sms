@@ -14,6 +14,12 @@ function changedcb(response) {
         } else {
             eres.innerHTML="修改成功.";
         }
+        // for iframe
+        if (window.parent) {
+            var funcName = g_tname+"info_reload";
+            window.parent[funcName]();
+            window.parent.RemoveDiv();
+        }
     } else {
         if (data.action == 'add') {
             eres.innerHTML="添加失败: " + data.retstr + "!";
@@ -57,3 +63,4 @@ function load()
         document.getElementById("button").value="添加";
     }
 }
+
