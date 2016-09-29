@@ -14,7 +14,7 @@ if ($_GET['method'] == 'staff') {
     $staff = new crc_staff(false);
     //$staff = new crc_staff(true);
     if ($_GET['func'] == 'calcscore') {
-        $result = $staff->fn_calcstaffscore($_GET['pid']);
+        $result = $staff->fn_calcstaffscore($_POST);
         if ($result) {
             $staff->m_tscores['ret'] = 0;
             $staff->m_tscores['action'] = 'calcscore';

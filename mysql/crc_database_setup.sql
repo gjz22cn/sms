@@ -398,3 +398,36 @@ CREATE TABLE `crc_qcta` (
   `qcta_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`qcta_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP TABLE IF EXISTS `crc_kh`;
+CREATE TABLE `crc_kh` (
+  `kh_id` int(11) NOT NULL auto_increment,
+  `kh_uid` int(11) NOT NULL default '0',
+  `kh_khname` varchar(64) NOT NULL default '',
+  `kh_name` varchar(16) NOT NULL default '',
+  `kh_age` int(4) NOT NULL default '0',
+  `kh_wyear` int(4) NOT NULL default '0',
+  `kh_tolc` varchar(16) NOT NULL default '正式',
+  `kh_pc` varchar(16) NOT NULL default '技术',
+  `kh_currl` varchar(16) NOT NULL default 'D级',
+  `bi_tscore` float(6,2) NOT NULL default '0',
+  `rap_tscore` float(6,2) NOT NULL default '0',
+  `assess_tscore` float(6,2) NOT NULL default '0',
+  `workex_tscore` float(6,2) NOT NULL default '0',
+  `projex_tscore` float(6,2) NOT NULL default '0',
+  `tereex_tscore` float(6,2) NOT NULL default '0',
+  `bidex_tscore` float(6,2) NOT NULL default '0',
+  `sten_tscore` float(6,2) NOT NULL default '0',
+  `sgzzsjj_tscore` float(6,2) NOT NULL default '0',
+  `sfgc_tscore` float(6,2) NOT NULL default '0',
+  `patent_tscore` float(6,2) NOT NULL default '0',
+  `conmethod_tscore` float(6,2) NOT NULL default '0',
+  `gccy_tscore` float(6,2) NOT NULL default '0',
+  `qcta_tscore` float(6,2) NOT NULL default '0',
+  `score0` float(6,2) NOT NULL default '0',
+  `score1` float(6,2) NOT NULL default '0',
+  `score2` float(6,2) NOT NULL default '0',
+  `score3` float(6,2) NOT NULL default '0',
+  `score4` float(6,2) NOT NULL default '0',
+  PRIMARY KEY  (`kh_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;

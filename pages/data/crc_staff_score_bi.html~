@@ -45,13 +45,11 @@ function biinfo_reload() {
 
 <form id="form_bi" name="form_bi">
 <input type="hidden" name="bi_id" id="bi_id" value="0">
-    <table class="scoretbl inner-title-tab">
-        <tr class="inner-title-tab-title">
-            <th colspan="6" align="left">
-                1、基本情况</th>
-            <th class="score-th">得分
-                <span id="bi_tscore"></span>
-            </th>
+    <table class="scoretbl">
+        <tr>
+            <th colspan="5" align="left">1、基本情况</th>
+            <th>得分</th>
+            <th id="bi_tscore"></th>
         </tr>
         <tr>
             <td>姓名</td>
@@ -170,7 +168,7 @@ function biinfo_reload() {
         </tr>
         <tr>
             <td>一年内活动参与次数</td>
-            <td><input type="text" name="bi_act" size="8" value="0"></td>
+            <td><input type="text" name="bi_act" size="8" value=""></td>
             <td>参与活动得分</td>
             <td id="bi_actscore"></td>
             <td colspan="3"></td>
