@@ -44,6 +44,7 @@
 			$this->classdate = 'September 22th, 2010';
 			$this->classdevelopername = 'james';
 			$this->classdeveloperemail = 'gjz22cn@hotmail.com';
+            $this->lasterrmsg = "";
 			$this->_DEBUG = $debug;
 
             foreach ($this->m_tables as $table) {
@@ -231,46 +232,65 @@
             return true;
         }
 
-		function fn_gettableentry($mysqltable, $table, $pid, $did) {
+		function fn_select($mysqltable, $colstr, $filterstr) {
 			if ($this->_DEBUG) {
-				echo "DEBUG {crc_staff::fn_gettableentry table. }: Retreiving info table=" . $table . " pid=" . $pid . " id=" . $id . ". <br>";
+				echo "DEBUG {crc_staff::fn_select}: enter. <br>";
 			}
-
-            $filterstr = $table . '_uid="' . $pid . '"';
-            if ($did != 0) {
-                $filterstr=$filterstr . ' and ' . $table . '_id="' . $did . '"';
-            }
 
 			$result = null;
 			$db = new crc_mysql($this->_DEBUG);
 			$dbhandle = $db->fn_connect();
 			if ($dbhandle != false) {
-				$this->m_sql = 'select * ' . 
-                    'from ' . $mysqltable .
-                    ' where ' . $filterstr;
+                if ($filterstr) {
+                    $this->m_sql = 'select ' . $colstr . ' from ' . $mysqltable . ' where ' . $filterstr;
+                } else {
+                    $this->m_sql = 'select ' . $colstr . ' from ' . $mysqltable;
+                }
                 $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = mysql_error();
+					return null;
+				}
+
                 if (mysql_num_rows($resource) > 0) {
                     $result['data'] = array();
 					while ($row=mysql_fetch_array($resource)) {
                         $result['data'][] = $row;
                     }
-                } else {
-					$this->lasterrnum = ERR_PROFILE_NOPROFILE_NUM;
-					$this->lasterrmsg = ERR_PROFILE_NOPROFILE_DESC;
-					if ($this->_DEBUG) {
-						echo 'ERROR {crc_staff::fn_gettableentry}: The sql command returned nothing. <br>';
-					}
-				}
+                }
 				$db->fn_freesql($resource);
 				$db->fn_disconnect();
 			} else {
 				$this->lasterrmsg = mysql_error();
 				$this->lasterrnum = mysql_errno();
 				if ($this->_DEBUG) {
-					echo 'ERROR {crc_staff::fn_gettableentry}: ' . $this->lasterrmsg . '. <br>';
+					echo 'ERROR {crc_staff::fn_select}: ' . $this->lasterrmsg . '. <br>';
 				}
 			}
 			return $result;
+        }
+
+		function fn_gettableentry($mysqltable, $table, $pid, $did) {
+            $filterstr = null;
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_gettableentry table. }: Retreiving info table=" . $table . " pid=" . $pid . " id=" . $id . ". <br>";
+			}
+
+            if ($pid != 0) {
+                $filterstr = $table . '_uid="' . $pid . '"';
+            }
+
+            if ($did != 0) {
+                if ($filterstr) {
+                    $filterstr=$filterstr . ' and ' . $table . '_id="' . $did . '"';
+                } else {
+                    $filterstr=$table . '_id="' . $did . '"';
+                }
+            }
+
+            return $this->fn_select($mysqltable, '*', $filterstr);
         }
 
 		function fn_settableentry($post, $table) {
@@ -440,9 +460,14 @@
 				echo "DEBUG {crc_staff::fn_deltableentry table. }: delete one " . $table . " entry pid=" . $pid . " id=" . $id . ". <br>";
 			}
 
-            if ( $pid == null || $id == null) {
-				$this->lasterrmsg = "Missing param!";
+            if ( $id == 0 ) {
+				$this->lasterrmsg = "Missing param: id!";
                 return false;
+            }
+
+            $filterstr = $table . '_id="' . $id . '"';
+            if ( $pid != 0 ) {
+                $filterstr = $filterstr . ' and ' . $table . '_uid="' . $id . '"';
             }
 
 			$result = false;
@@ -450,8 +475,7 @@
             $db->fn_connect();
             $result = false;
 			if ($db->m_mysqlhandle != 0) {
-				$this->m_sql = 'delete from ' . $mysqltable . 
-								' where (' . $table . '_uid = "' . $pid . '" and ' . $table . '_id = "' . $id . '" ) ';
+				$this->m_sql = 'delete from ' . $mysqltable . ' where ' . $filterstr;
 				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
                 if (mysql_errno() != 0) {
 					if ($this->_DEBUG) {
@@ -880,66 +904,6 @@
             return true;
         }
 
-		function fn_setbi($post) {
-			//******************************************
-			// Update the base information
-			//******************************************
-            return;
-			if ($this->_DEBUG) {
-				echo "DEBUG {crc_staff::fn_setbi}: Setting base information <br>";
-			}
-
-            if(!isset($post['baseinfo'])) {
-				$this->lasterrmsg = "Missing param!";
-                return false;
-            }
-
-            if (!isset($post['bi_uid'])) {
-				$this->lasterrmsg = "Missing param!";
-                return false;
-            }
-
-            $bi = json_decode($post["baseinfo"], true);
-            $setstr = '';
-
-			$db = new crc_mysql($this->_DEBUG);
-			$db->fn_connect();
-			$result = false;
-			if ($db->m_mysqlhandle != false) {
-                $pnames=array('bi_name', 'bi_birth', 'bi_fwd', 'bi_no', 'bi_gs', 'bi_major', 'bi_cpro', 'bi_cpos', 'bi_psca', 'bi_edu', 
-                    'bi_cwy', 'bi_wti', 'bi_owy', 'bi_eng', 'bi_bim', 'bi_cer', 'bi_cer2', 'bi_act', 'bi_actdesc');
-
-                foreach ($pnames as $pname){ 
-                    if(array_key_exists($pname, $bi)) {
-                        $setstr = $setstr . ',' . $pname . '="' . $bi[$pname] . '"';
-                    }
-                }
-				$this->m_status = 'In progress';
-				
-				//set information
-                $this->m_sql = 'update ' . MYSQL_BI_TBL . ' set ' . substr($setstr, 1) .
-                        ' where bi_uid="' . $post['bi_uid'] . '"';
-				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);			
-				if (mysql_errno() != 0) {
-					if ($this->_DEBUG) {
-						echo 'ERROR {crc_staff::fn_setbi}: Could not set base information. <br>';
-					}
-					$db->fn_freesql($resource);
-					$db->fn_disconnect();
-					$this->lasterrmsg = "Could not set base information";					
-					return false;
-				}
-                $result = true;
-				
-				$db->fn_freesql($resource);
-				$db->fn_disconnect();
-			} else {
-				$db->fn_disconnect();
-				$this->lasterrmsg = "Cannot connect to MySQL database";
-			}
-			return $result;
-        }
-
 		function fn_getsscoreslist() {
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_getsscoreslist}: select list. <br>";
@@ -974,5 +938,76 @@
 			}
 			return $result;
         }
+
+        function fn_getkhinfo($get) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_getkhinfo}: enter. <br>";
+			}
+            
+            if (!isset($get['kh_khname'])) {
+                return false;
+            }
+
+            $filterstr = 'kh_khname="' . $get['kh_khname'] . '"';
+
+            if (isset($get['kh_uid'])) {
+                $filterstr = $filterstr . 'kh_uid="' . $get['kh_uid'] . '"';
+            }
+            
+            return $this->fn_select(MYSQL_KH_TBL, '*', $filterstr);
+        }
+
+		function fn_setkhmgmt($post) {
+			if ($this->_DEBUG) {
+				echo "DEBUG {crc_staff::fn_settableentry}: Setting " . $table . " information. <br>";
+			}
+
+            if(!isset($post['action'], $post['khmgmt_name'])) {
+				$this->lasterrmsg = "Missing param!";
+                return false;
+            }
+
+            if ($post['action'] != 'edit' && $post['action'] != 'add') {
+				$this->lasterrmsg = "Invalid param value!" . $post['action'];
+                return false;
+            }
+
+            if ($post['action'] == 'edit' && !isset($post['did']) ) {
+				$this->lasterrmsg = "Missing param: did!";
+                return false;
+            }
+
+			$db = new crc_mysql($this->_DEBUG);
+			$db->fn_connect();
+			$result = true;
+			if ($db->m_mysqlhandle != false) {
+				$this->m_status = 'In progress';
+				
+				//set information
+                if ($post['action'] == 'add') {
+                    $this->m_sql = 'insert into ' . MYSQL_KHMGMT_TBL . '(khmgmt_name) values("' . $post['khmgmt_name'] . '")';
+                } else {
+                    $this->m_sql = 'update ' . MYSQL_KHMGMT_TBL . ' set khmgmt_name="' . $post['khmgmt_name'] . '" where khmgmt_id="' . $post['did'] . '"';
+                }
+				$resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
+				if (mysql_errno() != 0) {
+					if ($this->_DEBUG) {
+						echo "ERROR {crc_staff::fn_setknmgmt}: Could not update/insert " . $table . " information. <br>";
+					}
+					$db->fn_freesql($resource);
+					$db->fn_disconnect();
+					$this->lasterrmsg = "Could not update/insert " . $table . " information";
+					return false;
+				}
+				
+				$db->fn_freesql($resource);
+				$db->fn_disconnect();
+			} else {
+				$db->fn_disconnect();
+				$result = false;
+				$this->lasterrmsg = "Cannot connect to MySQL database";
+			}
+			return $result;
+		}
 	}
 ?>

@@ -1,0 +1,152 @@
+<script type="text/javascript">
+function khmgmtchangedcb(response) {
+    var result=response;
+    var index=result.indexOf('mgmtresult=');
+    var data=JSON.parse(result.substr(index+11));
+    //alert(result);
+
+    if (data.ret != 0) {
+        if (data.action != 'get') {
+            alert(data.retstr);
+            window.location.reload();
+        }
+    } else {
+        if (data.action == 'add') {
+            window.location.reload();
+        } else if (data.action == 'get') {
+            for (var i=0; i<data.data.length; i++) {
+                amt.addRow(table, data.data[i].khmgmt_id, data.data[i].khmgmt_name);
+            }
+        }
+    }
+}
+
+var amt = {
+    col: 3,
+    addRow: function(table, id, name) {
+        var vals = [id, name, "<a href='###' onclick='amt.modify(table,this)'>修改</a> <a href='###' onclick='amt.del(table,this)'>删除</a>"];
+        var tr = table.insertRow(table.tBodies[0].rows.length);
+        for (var i = 0; i < amt.col-1; i++) {
+            var td = tr.insertCell(tr.cells.length);
+            td.innerHTML = vals[i];
+            
+            if (i==0) {
+                td.hidden=true;
+            }
+            if (id=='0') {
+                var txt = document.createElement("input");
+                txt.type = "text";
+                txt.value = td.innerHTML;
+                td.innerHTML = "";
+                td.appendChild(txt);
+            }
+        }
+
+        var tdbtn = tr.insertCell(tr.cells.length);
+        if (id=='0') {
+            tdbtn.innerHTML = "<a href='###' onclick='amt.modify(table,this)'>保存</a> <a href='###' onclick='amt.del(table,this)'>删除</a>";
+        } else {
+            tdbtn.innerHTML = "<a href='###' onclick='amt.modify(table,this)'>修改</a> <a href='###' onclick='amt.del(table,this)'>删除</a>";
+        }
+    },
+    modify: function(table, row) {
+        var r = row.parentElement.parentElement;
+        c = r.cells;
+        if (/.*修改.*/g.test(row.innerHTML)) {
+            for (var i = 0; i < c.length - 1; i++) {
+                var ci = c[i];
+                var txt = document.createElement("input");
+                txt.type = "text";
+                txt.value = ci.innerHTML;
+                ci.innerHTML = "";
+                ci.appendChild(txt);
+            }
+            row.innerHTML = "保存";
+        } else {
+            var params;
+            var isadd=0;
+            
+            if (c[0].children[0].value == 0) {
+                isadd=1;
+                params += '&action=add&did=0';
+            } else {
+                params += '&action=edit&did=' + c[0].children[0].value;
+            }
+            params += '&khmgmt_name=' + c[1].children[0].value;
+
+            for (var i=0; i<c.length-1; i++) {
+                var ci = c[i];
+                ci.innerHTML = ci.children[0].value;
+            }
+            row.innerHTML = "修改";
+
+            ajaxRequest("POST", "/sms/pages/crc_data.php?method=staff&func=khmgmt", params, khmgmtchangedcb);
+        }
+    },
+    del: function(table, row) {
+        var r = row.parentElement.parentElement;
+        var ind = r.rowIndex;
+        var pid=parseInt(r.cells[0].innerHTML);
+
+        if (pid > 0) {
+            var params = '&action=del&did=' + r.cells[0].innerHTML;
+            ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=khmgmt"+params, null, khmgmtchangedcb);
+        }
+        table.tBodies[0].deleteRow(ind);
+    }
+}
+
+function load() {
+    ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=khmgmt&action=get&did=0", null, khmgmtchangedcb);
+}
+</script>
+ 
+
+<!-- fix parts start -->
+<BODY onload="load()">
+<CENTER>
+<TABLE width="100%">
+<!-- The Page Header -->
+<TR CLASS="OUTER">
+<?php
+    include "data/crc_page_header_band.html";
+?>
+</TR>
+<!-- The Page Content -->
+<TR CLASS="OUTER">
+<!-- fix parts end -->
+
+
+
+<table align="left">
+    <tr>
+        <td valign="top" width="180" align="left">
+            <!-- This is the menu -->
+            <?php
+                include "../common/crc_menu.html";
+            ?>
+		</td>
+		<td valign="top" align="left">
+
+        <table id="table" class="std">
+            <tr>
+                <th hidden></th>
+                <th>考核名称</th>
+                <th><input type="button" value="添加" onclick="amt.addRow(table, '0', '', '', '')"/></input></th>
+            </tr>
+        </table>
+
+      </td>
+    </tr>
+</table>
+
+
+                
+                
+<!-- fix parts start -->
+</TR>
+</TABLE>
+</CENTER>
+</BODY>
+</HTML>
+<!-- fix parts end -->

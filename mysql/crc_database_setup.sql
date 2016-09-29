@@ -182,6 +182,13 @@ CREATE TABLE `crc_venue` (
   PRIMARY KEY  (`venue_id`)
 ) ENGINE=MyISAM auto_increment=2 ;
 
+DROP TABLE IF EXISTS `crc_khmgmt`;
+CREATE TABLE `crc_khmgmt` (
+  `khmgmt_id` int(11) NOT NULL auto_increment,
+  `khmgmt_name` varchar(128) NOT NULL default '',
+  PRIMARY KEY  (`khmgmt_id`)
+) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 DROP TABLE IF EXISTS `crc_bi`;
 CREATE TABLE `crc_bi` (
   `bi_id` int(11) NOT NULL auto_increment,

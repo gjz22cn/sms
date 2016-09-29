@@ -129,6 +129,9 @@ print '[' . $title . ']';
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=score&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else if ($_GET['func'] == 'scoreadminstatistics') {
                     echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=showscorestatistics&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
+                } else if ($_GET['func'] == 'khmgmt') {
+                    echo '<meta http-equiv="refresh"' . 'content="0;URL=crc_staff.php?method=' . $_GET['func'] . 
+                        '&' . session_name() . '=' . session_id() . '&uid=' . $_SESSION['uid'] . '">';
                 } else {
                     if (isset($_GET['action'], $_GET['pid'], $_GET['did'])) {
                         $_SESSION['action'] = $_GET['action'];

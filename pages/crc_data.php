@@ -24,8 +24,11 @@ if ($_GET['method'] == 'staff') {
         }
     } else {
         if (isset($_GET['action'])) {
+            $pid = 0; $did = 0;
+            if (isset($_GET['pid'])) { $pid = $_GET['pid']; }
+            if (isset($_GET['did'])) { $did = $_GET['did']; }
             if ($_GET['action'] == 'get') {
-                $result= $staff->fn_gettableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $_GET['pid'], $_GET['did']);
+                $result= $staff->fn_gettableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $pid, $did);
                 if ($result) {
                     $result['ret'] = 0;
                     $result['action'] = 'get';
@@ -34,7 +37,7 @@ if ($_GET['method'] == 'staff') {
                     echo $_GET['func'] . 'result={"ret":8008, "action":"get", "retstr":"' . $staff->lasterrmsg . '"}';
                 }
             } else if ($_GET['action'] == 'del') {
-                $result= $staff->fn_deltableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $_GET['pid'], $_GET['did']);
+                $result= $staff->fn_deltableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $pid, $did);
                 if ($result == false) {
                     echo $_GET['func'] . 'result={"ret":8008, "action":"del", "retstr":"' . $staff->lasterrmsg . '"}';
                 } else {
@@ -43,7 +46,11 @@ if ($_GET['method'] == 'staff') {
             }
         } else if (isset($_POST['action'])) {
             if ($_POST['action'] == 'add' || $_POST['action'] == 'edit') {
-                $result = $staff->fn_settableentry($_POST, $_GET['func']);
+                if ($_GET['func'] == 'khmgmt') {
+                    $result = $staff->fn_setkhmgmt($_POST);
+                } else {
+                    $result = $staff->fn_settableentry($_POST, $_GET['func']);
+                }
                 if ($result == false) {
                     echo $_GET['func'] . 'result={"ret":8008, "action":"' . $_POST['action'] . '", "retstr":"' . $staff->lasterrmsg . '"}';
                 } else {
