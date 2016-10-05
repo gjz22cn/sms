@@ -1,47 +1,4 @@
 <script type="text/javascript">
-function sethead() {
-    var url = "crc_data.php?method=staff&func=setbi&uid=" + g_uid;
-    var params = { 'head_uid':g_pid,
-        'head_name':'', 'bi_birth':'', 'bi_fwd':'',
-        'head_no':'', 'bi_gs':'', 'bi_major':'',
-        'head_cpro':'', 'bi_cpos':'', 'bi_psca':'',
-        'head_edu':'', 'bi_cwy':'', 'bi_wti':'',
-        'head_owy':'', 'bi_eng':'', 'bi_bim':'',
-        'head_cer':'', 'bi_cer2':'', 'bi_act':'',
-        'head_actdesc':''};
-
-
-    for(var x in params) {
-        var ee=document.getElementsByName(x);
-        if(ee.length == 1) {
-            params[x]=ee[0].value;
-        }
-    }
-
-    //alert(JSON.stringify(params));
-
-    $.ajax({
-        type: "post",
-        url: url,
-        data: "head_uid=" + g_pid + "&baseinfo=" + JSON.stringify(params),
-        success: function(msg){
-            var result=msg;
-            var index = result.indexOf('setbiresult=');
-            var res=JSON.parse(result.substr(index+12));
-            alert(res.retstr);
-        }
-    });
-}
-
-function showhead(response) {
-    var result=response;
-    var index = result.indexOf('getbiresult=');
-    var bidata=JSON.parse(result.substr(index+12));
-
-    //alert(result);
-    autofillformdata(document.forms['form_bi'], bidata);
-}
-
 function calcscorecb(response) {
     var tname = "calcscore";
     var resultstr=tname+"result=";
@@ -49,7 +6,7 @@ function calcscorecb(response) {
     var data=JSON.parse(response.substr(index+resultstr.length));
     var eres=document.getElementById(tname+"_ret");
 
-    alert(response);
+    //alert(response);
 
     if (data.ret == 0) {
         fillscores(data);
@@ -62,8 +19,35 @@ function calcscorecb(response) {
 function calcstaffscore() {
     var params = $('#form_kh').serialize();
     params += "&kh_uid=" + g_pid;
-    alert(params);
+    //alert(params);
     ajaxRequest("POST", g_staffpre+"&func=calcscore&uid=" + g_uid, params, calcscorecb);
+}
+
+function khcb(response) {
+    var tname = "kh";
+    var resultstr=tname+"result=";
+    var index=response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+    var eres=document.getElementById("calcscore_ret");
+
+    //alert(response);
+
+    if (data.ret == 0) {
+        if (data.action == 'get') {
+            if (data.data.length > 0) {
+                autofillformdata(document.forms['form_'+tname], data.data[0]);
+                fillscores(data.data[0]);
+            }
+        }
+    } else {
+        eres.innerHTML="获取计分信息失败: " + data.retstr + "!";
+    }
+}
+
+function khinfo_reload() {
+    var tname="kh";
+
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, khcb);
 }
 </script>
 
