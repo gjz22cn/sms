@@ -23,13 +23,81 @@ if (isset($_SESSION["staffdata"])) {
 }
 ?>
 
-var g_url;
+var g_staffpre="/sms/pages/crc_data.php?method=staff";
 
+function calcscorecb(response) {
+    var tname = "calcscore";
+    var resultstr=tname+"result=";
+    var index=response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+    //var eres=document.getElementById(tname+"_ret");
 
+    //alert(response);
 
+    if (data.ret == 0) {
+        //eres.innerHTML="算分成功!";
+    } else {
+        //eres.innerHTML="算分失败: " + data.retstr + "!";
+    }
+    khinfo_reload();
+}
+
+function showkh(response) {
+    var tname="kh";
+    var resultstr=tname+"result=";
+    var index = response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+
+    //alert(response);
+
+    if (data.ret == 0) {
+        var tr; var td;
+        var etable=document.getElementById("table_"+tname);
+        for (var i=0; i<data.data.length; i++) {
+            tr = etable.insertRow(etable.rows.length);
+            tr.className="inner-title-tab-body";
+
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_name;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_tolc;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_age;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_wyear;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_pc;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score1;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score2;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score3;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score4;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score0;
+            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score0;
+
+            td = tr.insertCell(tr.cells.length);
+            var params="&kh_uid=" + data.data[i].kh_uid;
+            params += "&kh_khname=" + data.data[i].kh_khname;
+            params += "&kh_tolc=" + data.data[i].kh_tolc;
+            params += "&kh_pc=" + data.data[i].kh_pc;
+            params += "&kh_currl=" + data.data[i].kh_currl;
+            td.innerHTML = '<input type="button" onclick="calcstaffscore(\'' + params + '\')" value="算分">';
+        }
+    }
+}
+
+function calcstaffscore(params) {
+    //alert(params);
+    ajaxRequest("POST", g_staffpre+"&func=calcscore&uid=" + g_uid, params, calcscorecb);
+}
+
+function khinfo_reload() {
+    var tname="kh";
+    var etable=document.getElementById("table_"+tname);
+
+    for (var i=etable.rows.length-1; i>0; i--) {
+        etable.deleteRow(i);
+    }
+
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=0&did=0", null, showkh);
+}
 
 function load() {
-    //ajaxRequest("GET", "/sms/pages/crc_data.php?method=staff&func=getbi&uid=" + g_uid + "&bi_uid=" + g_pid, null, showbi);
+    khinfo_reload();
 }
 </script>
 
@@ -63,7 +131,7 @@ function load() {
 	    <!-- This is the content -->
 
         <form name="scoresta">
-        <table class="std" style="width:800px">
+        <table id="table_kh" class="std" style="width:800px">
 		<tr>
             <th>姓名</th>
             <th>序列</th>
@@ -76,6 +144,7 @@ function load() {
             <th>科技成果及创优</th>
             <th>总分</th>
             <th>总分</th>
+            <th>操作</th>
 		</tr>
         </table>
         </form>
