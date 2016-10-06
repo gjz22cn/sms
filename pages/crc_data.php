@@ -68,7 +68,7 @@ if ($_GET['method'] == 'staff') {
     }
 } else if ($_GET['method'] == 'admin') {
     if ($_GET['func'] == 'getaccs') {
-        $profile = new crc_profile(true);
+        $profile = new crc_profile(false);
         $result = $profile->fn_getaccs();
         if ($result == null) {
             echo 'getaccsresult={"ret":8008, "retstr":"获取帐号信息失败!"}';
@@ -77,7 +77,7 @@ if ($_GET['method'] == 'staff') {
             echo 'getaccsresult=' . json_encode($result);
         }
     } else if ($_GET['func'] == 'addacc') {
-        $profile = new crc_profile(true);
+        $profile = new crc_profile(false);
         $result = $profile->fn_setacc(true, $_POST);
         if ($result == false) {
             echo 'chgaccresult={"ret":8008, "retstr":"添加失败!"}';
@@ -85,7 +85,7 @@ if ($_GET['method'] == 'staff') {
             echo 'chgaccresult={"ret":0, "action":"add", "retstr":"添加成功!"}';
         }
     } else if ($_GET['func'] == 'setacc') {
-        $profile = new crc_profile(true);
+        $profile = new crc_profile(false);
         $result = $profile->fn_setacc(false, $_POST);
         if ($result == false) {
             echo 'chgaccresult={"ret":8008, "retstr":"修改失败!"}';
@@ -93,7 +93,7 @@ if ($_GET['method'] == 'staff') {
             echo 'chgaccresult={"ret":0, "action":"set", "retstr":"修改成功!"}';
         }
     } else if ($_GET['func'] == 'delacc') {
-        $profile = new crc_profile(true);
+        $profile = new crc_profile(false);
         $result = $profile->fn_delacc($_POST);
         if ($result == false) {
             echo 'chgaccresult={"ret":8008, "retstr":"删除失败!"}';
@@ -101,7 +101,7 @@ if ($_GET['method'] == 'staff') {
             echo 'chgaccresult={"ret":0, "action":"del", "retstr":"删除成功!"}';
         }
     } else if ($_GET['func'] == 'getsscoreslist') {
-        $staff = new crc_staff(true);
+        $staff = new crc_staff(false);
         $result = $staff->fn_getsscoreslist();
         if ($result == null) {
             echo 'getsscoreslistresult={"ret":8008, "retstr":"获取帐号信息失败!"}';

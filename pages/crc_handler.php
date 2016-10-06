@@ -91,7 +91,8 @@ print '[' . $title . ']';
 			if (isset($_GET['func'])) {
 				if ($_GET['func'] == 'add') {
 					$_SESSION['registerdata'] = $_POST;
-					$profile= new crc_profile(true);
+					//$profile= new crc_profile(true);
+					$profile= new crc_profile(false);
 					$result = $profile->fn_setacc(true, $_POST);
 					if ($result == false) {
 						$_SESSION['msg'] = $register->lasterrmsg;
@@ -109,8 +110,8 @@ print '[' . $title . ']';
 			}
 /* james add start */
 		} else if ($_GET['method'] == 'staff') {
-            //$staff = new crc_staff(false);
-            $staff = new crc_staff(true);
+            $staff = new crc_staff(false);
+            //$staff = new crc_staff(true);
             $staff->fn_getuserinfo($_GET['uid']);
 
             if ($staff->m_profileid == 0) {
