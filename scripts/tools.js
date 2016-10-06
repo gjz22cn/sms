@@ -165,8 +165,9 @@ function autofillformdata(eform, data)
         if ("INPUT" == ee.tagName) {
             if (ee.type == "text") {
                 ee.value = data[ee.name];
-            }
-            else if (ee.type == "hidden") {
+            } else if (ee.type == "month") {
+                ee.value = data[ee.name];
+            } else if (ee.type == "hidden") {
                 ee.value = data[ee.name];
             }
         }

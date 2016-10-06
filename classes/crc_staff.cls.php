@@ -136,13 +136,16 @@
             }
             $result =false;
 
-            $this->m_sql = 'select bi_name,bi_no,bi_birth,bi_cwy,bi_owy from ' . MYSQL_BI_TBL . ' where bi_uid="' . $pid . '"';
+            $this->m_sql = 'select bi_name,bi_no,bi_birth,bi_fwd from ' . MYSQL_BI_TBL . ' where bi_uid="' . $pid . '"';
             $resource = $db->fn_runsql(MYSQL_DB, $this->m_sql);
             if (mysql_num_rows($resource) > 0) {
                 if ($row=mysql_fetch_array($resource)) {
                     $this->m_staffname = $row['bi_name'];
-                    $this->m_staffage = 30;
-                    $this->m_staffwyear = 6;
+                    $cyear = date("Y", time());
+                    $birth = substr($row['bi_birth'], 0, 4);
+                    $fwyear = substr($row['bi_fwd'], 0, 4);
+                    $this->m_staffage = intval($cyear)-intval($birth);
+                    $this->m_staffwyear = intval($cyear)-intval($fwyear);
                     $result =true;
                 }
             } else {					
