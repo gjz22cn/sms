@@ -436,5 +436,6 @@ CREATE TABLE `crc_kh` (
   `score2` float(6,2) NOT NULL default '0',
   `score3` float(6,2) NOT NULL default '0',
   `score4` float(6,2) NOT NULL default '0',
+  `score01` float(6,2) NOT NULL default '0',
   PRIMARY KEY  (`kh_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;

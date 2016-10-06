@@ -22,6 +22,7 @@ var amt = {
         var tr = table.insertRow(table.tBodies[0].rows.length);
         for (var i = 0; i < amt.col-1; i++) {
             var td = tr.insertCell(tr.cells.length);
+            td.align="center"; 
             td.innerHTML = vals[i];
             
             if (i==0) {
@@ -37,6 +38,7 @@ var amt = {
         }
 
         var tdbtn = tr.insertCell(tr.cells.length);
+        tdbtn.align="center"; 
         if (id=='0') {
             tdbtn.innerHTML = "<a href='###' onclick='amt.modify(table,this)'>保存</a> <a href='###' onclick='amt.del(table,this)'>删除</a>";
         } else {

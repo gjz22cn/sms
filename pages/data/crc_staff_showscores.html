@@ -22,6 +22,7 @@ if (isset($_SESSION["staffdata"])) {
     print 'var g_data=null;';
 }
 ?>
+var g_khname='';
 
 var g_staffpre="/sms/pages/crc_data.php?method=staff";
 
@@ -30,14 +31,14 @@ function calcscorecb(response) {
     var resultstr=tname+"result=";
     var index=response.indexOf(resultstr);
     var data=JSON.parse(response.substr(index+resultstr.length));
-    //var eres=document.getElementById(tname+"_ret");
+    var eres=document.getElementById("kh_ret");
 
     //alert(response);
 
     if (data.ret == 0) {
-        //eres.innerHTML="算分成功!";
+        eres.innerHTML="算分成功!";
     } else {
-        //eres.innerHTML="算分失败: " + data.retstr + "!";
+        eres.innerHTML="算分失败: " + data.retstr + "!";
     }
     khinfo_reload();
 }
@@ -57,24 +58,24 @@ function showkh(response) {
             tr = etable.insertRow(etable.rows.length);
             tr.className="inner-title-tab-body";
 
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_name;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_tolc;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_age;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_wyear;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].kh_pc;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score1;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score2;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score3;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score4;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score0;
-            td = tr.insertCell(tr.cells.length); td.innerHTML = data.data[i].score0;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].kh_name;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].kh_tolc;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].kh_age;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].kh_wyear;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].kh_pc;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].score1;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].score2;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].score3;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].score4;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].score0;
+            td = tr.insertCell(tr.cells.length); td.align="center"; td.innerHTML = data.data[i].score01;
 
-            td = tr.insertCell(tr.cells.length);
             var params="&kh_uid=" + data.data[i].kh_uid;
             params += "&kh_khname=" + data.data[i].kh_khname;
             params += "&kh_tolc=" + data.data[i].kh_tolc;
             params += "&kh_pc=" + data.data[i].kh_pc;
             params += "&kh_currl=" + data.data[i].kh_currl;
+            td = tr.insertCell(tr.cells.length); td.align="center";
             td.innerHTML = '<input type="button" onclick="calcstaffscore(\'' + params + '\')" value="算分">';
         }
     }
@@ -93,10 +94,38 @@ function khinfo_reload() {
         etable.deleteRow(i);
     }
 
-    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=0&did=0", null, showkh);
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=0&did=0&kh_khname="+g_khname, null, showkh);
 }
 
 function load() {
+    getkhlist();
+}
+
+function preparekhlist(response) {
+    var tname="khmgmt";
+    var resultstr=tname+"result=";
+    var index = response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+
+    //alert(response);
+    if (data.ret == 0) {
+        var ee=document.getElementById("kh_khnamelist");
+        for (var i=data.data.length-1; i>=0; i--) {
+            ee.options.add(new Option(data.data[i].khmgmt_name, data.data[i].khmgmt_name));
+        }
+
+        g_khname=data.data[data.data.length-1].khmgmt_name;
+        khinfo_reload();
+    }
+}
+
+function getkhlist() {
+    var tname="khmgmt";
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=0&did=0", null, preparekhlist);
+}
+
+function khinfo_load_withname(khname) {
+    g_khname=khname
     khinfo_reload();
 }
 </script>
@@ -131,7 +160,16 @@ function load() {
 	    <!-- This is the content -->
 
         <form name="scoresta">
-        <table id="table_kh" class="std" style="width:800px">
+            <table class="scoretbl" style="width:900px">
+                <tr>
+                    <td class="error" style="width:660px" id="kh_ret"></td>
+                    <td>考核名称</td>
+                    <td align="center">
+                        <select name="kh_khname" id="kh_khnamelist" onchange="khinfo_load_withname(this.options[this.options.selectedIndex].value)"></select>
+                    </td>
+                </tr>
+            </table>
+        <table id="table_kh" class="std" style="width:900px">
 		<tr>
             <th>姓名</th>
             <th>序列</th>

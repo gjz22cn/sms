@@ -52,6 +52,7 @@
             }
 
             $this->m_tscores['score0'] = 0;
+            $this->m_tscores['score01'] = 0;
             $this->m_tscores['score1'] = 0;
             $this->m_tscores['score2'] = 0;
             $this->m_tscores['score3'] = 0;
@@ -182,10 +183,10 @@
             }
             $db->fn_freesql($resource);
 
-            $keys=array('kh_uid','kh_khname','kh_tolc','kh_pc','kh_curel');
+            $keys=array('kh_uid','kh_khname','kh_tolc','kh_pc','kh_currl');
             $keys1=array('bi_tscore','rap_tscore','assess_tscore','workex_tscore','projex_tscore','tereex_tscore',
                 'bidex_tscore','sten_tscore','sgzzsjj_tscore','sfgc_tscore','patent_tscore','conmethod_tscore',
-                'gccy_tscore','qcta_tscore','score0','score1','score2','score3','score4');
+                'gccy_tscore','qcta_tscore','score0','score1','score2','score3','score4', 'score01');
 
             if ($isadd) {
                 $keystr = 'kh_name,kh_age,kh_wyear';
@@ -616,7 +617,13 @@
                 $this->m_tscores['sfgc_tscore']+$this->m_tscores['patent_tscore']+
                 $this->m_tscores['conmethod_tscore']+$this->m_tscores['gccy_tscore'];
                 $this->m_tscores['qcta_tscore'];
-            $this->m_tscores['score0'] = $this->m_tscores['score1'] + $this->m_tscores['score2'] + $this->m_tscores['score3'] + $this->m_tscores['score4'];
+            if($post['kh_currl'] == 'D级') {
+                $this->m_tscores['score0'] = 0.4*($this->m_tscores['score1'] + $this->m_tscores['score2']) + 0.6*($this->m_tscores['score3'] + $this->m_tscores['score4']);
+                $this->m_tscores['score01'] = 0.3*($this->m_tscores['score1'] + $this->m_tscores['score2']) + 0.7*($this->m_tscores['score3'] + $this->m_tscores['score4']);
+            } else {
+                $this->m_tscores['score0'] = 0.6*($this->m_tscores['score1'] + $this->m_tscores['score2']) + 0.4*($this->m_tscores['score3'] + $this->m_tscores['score4']);
+                $this->m_tscores['score01'] = 0.7*($this->m_tscores['score1'] + $this->m_tscores['score2']) + 0.3*($this->m_tscores['score3'] + $this->m_tscores['score4']);
+            }
 
             $this->_DEBUG = true;
             if ($this->fn_recordstaffkhinfo($pid, $db, $post) == false) {
