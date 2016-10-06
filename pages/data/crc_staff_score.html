@@ -26,8 +26,7 @@ var g_adminpre="/sms/pages/crc_data.php?method=admin";
 function showscoreinfo(spid) {
     g_pid=spid;
 
-    khinfo_reload();
-
+    getkhlist();
     /* base info */
     biinfo_reload();
     rapinfo_reload();
@@ -62,6 +61,7 @@ function preparestafflist(response) {
         }
     }
 }
+
 
 function load() {
     var temp_str=window.location.href;
@@ -117,58 +117,44 @@ function btnaction2(func, action, pid, did, r, callback) {
 }
 
 function OpenWindow(content, title, type, width, height) {
-
     // add by meili.jin
-        var titles = title;
-        var bgWidth = $(window).width()+$(document).scrollTop();
-        var bgHeight = $(window).height()+$(document).scrollLeft();
-        var Iheight = document.body.clientHeight;
-        var Iwidth = document.body.clientWidth;
-        var heights = height || 300;
-        var widths = width || 500;
-        var Oheight = 100 + $(document).scrollTop();
-        var Owidth;
-        Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
-        var iframeUrl = content;
-        var div = "<div id='InDiv' class='modal-bg' style='width:" + bgWidth + "px;height:" + bgHeight + "px;'><div id='offDiv' class='modal' style='position:absolute; width:" + widths + "px;height:" + heights + "px;left:" + Owidth + "px;top:" + Oheight + "px;'><h4 id='HTitle' class='modal-title'><a id='AClose' onclick='RemoveDiv()' class='modal-close'>x</a></h4><div id='Content'><iframe id='menu_window' src=" + iframeUrl + " width='" + widths + "'px height='" + heights + "px'></iframe></div></div></div>";
-        $(document.body).append(div);
+    var titles = title;
+    var bgWidth = $(window).width()+$(document).scrollTop();
+    var bgHeight = $(window).height()+$(document).scrollLeft();
+    var Iheight = document.body.clientHeight;
+    var Iwidth = document.body.clientWidth;
+function khinfo_reload() {
+    //var tname="kh";
 
-        $(window).resize(function() { 
-            var Iwidth = document.body.clientWidth; 
-            Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
-            $('#offDiv').css({"left": Owidth+"px"}); 
-        });
-
-
-    // var topsize = (window.screen.availHeight-30-height)/2;
-    // var leftsize = (window.screen.availWidth-10-width)/2;
-    // var winarg = 'height='+ height +',width=' + width + ',top=' + topsize + ',left=' + leftsize;
-
-    // winarg+=',toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no';
-
-    // window.open(content, title, winarg);
-
-    // return;
-
-    /* TODO: */
-    ///显示子页面
-    // if (type == 'iframe') {
-    //     $("#menu_window").html("<iframe id='ifrme' name='ifrme' frameborder='0' scrolling='auto' width='" + width + "' height='" + height + "'></iframe>");
-    //     $("#ifrme").attr("src", content);
-    // }
-    // ///用于 弹出子页面。。。若果没有下面的，OpenWindow只能在父页面显示子页面，不会弹出来。
-    // $("#menu_window").window({
-    //     title: title, iconCls: 'icon-info', width: width + 15, height: height + 40, top: topsize, left: leftsize, resizable: false, modal: true, shadow: true,
-    //     minimizable: false, maximizable: false, closable: true, closed: false, collapsible: false
-    // });
+    //ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, khcb);
 }
-function RemoveDiv() {
-        $("#AClose").remove();
-        $("#HTitle").remove();
-        $("#offDiv").remove();
-        $("#InDiv").remove();
-    }
+    var heights = height || 300;
+    var widths = width || 500;
+    var Oheight = 100 + $(document).scrollTop();
+    var Owidth;
+    Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
+    var iframeUrl = content;
+    var div = "<div id='InDiv' class='modal-bg' style='width:" + bgWidth + "px;height:" + bgHeight + "px;'><div id='offDiv' class='modal' style='position:absolute; width:" + widths + "px;height:" + heights + "px;left:" + Owidth + "px;top:" + Oheight + "px;'><h4 id='HTitle' class='modal-title'><a id='AClose' onclick='RemoveDiv()' class='modal-close'>x</a></h4><div id='Content'><iframe id='menu_window' src=" + iframeUrl + " width='" + widths + "'px height='" + heights + "px'></iframe></div></div></div>";
+    $(document.body).append(div);
 
+    $(window).resize(function() { 
+        var Iwidth = document.body.clientWidth; 
+        Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
+function khinfo_reload() {
+    //var tname="kh";
+
+    //ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, khcb);
+}
+        $('#offDiv').css({"left": Owidth+"px"}); 
+    });
+}
+
+function RemoveDiv() {
+    $("#AClose").remove();
+    $("#HTitle").remove();
+    $("#offDiv").remove();
+    $("#InDiv").remove();
+}
 </script>
 
 

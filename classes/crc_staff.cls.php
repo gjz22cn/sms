@@ -272,7 +272,7 @@
 			return $result;
         }
 
-		function fn_gettableentry($mysqltable, $table, $pid, $did) {
+		function fn_gettableentry($mysqltable, $table, $pid, $did, $get) {
             $filterstr = null;
 			if ($this->_DEBUG) {
 				echo "DEBUG {crc_staff::fn_gettableentry table. }: Retreiving info table=" . $table . " pid=" . $pid . " id=" . $id . ". <br>";
@@ -287,6 +287,19 @@
                     $filterstr=$filterstr . ' and ' . $table . '_id="' . $did . '"';
                 } else {
                     $filterstr=$table . '_id="' . $did . '"';
+                }
+            }
+
+            if ($table == "kh") {
+                if (!isset($get['kh_khname'])) {
+                    $this->lasterrmsg = "missing khname!";
+                    return null;
+                }
+
+                if ($filterstr) {
+                    $filterstr=$filterstr . ' and kh_khname="' . $get['kh_khname'] . '"';
+                } else {
+                    $filterstr='kh_khname="' . $get['kh_khname'] . '"';
                 }
             }
 

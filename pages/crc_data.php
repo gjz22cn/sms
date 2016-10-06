@@ -11,8 +11,8 @@ include_once('../classes/crc_profile.cls.php');
 include_once('../classes/crc_staff.cls.php');
 
 if ($_GET['method'] == 'staff') {
-    $staff = new crc_staff(false);
-    //$staff = new crc_staff(true);
+    //$staff = new crc_staff(false);
+    $staff = new crc_staff(true);
     if ($_GET['func'] == 'calcscore') {
         $result = $staff->fn_calcstaffscore($_POST);
         if ($result) {
@@ -28,7 +28,7 @@ if ($_GET['method'] == 'staff') {
             if (isset($_GET['pid'])) { $pid = $_GET['pid']; }
             if (isset($_GET['did'])) { $did = $_GET['did']; }
             if ($_GET['action'] == 'get') {
-                $result= $staff->fn_gettableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $pid, $did);
+                $result= $staff->fn_gettableentry('crcdb.crc_' . $_GET['func'], $_GET['func'], $pid, $did, $_GET);
                 if ($result) {
                     $result['ret'] = 0;
                     $result['action'] = 'get';

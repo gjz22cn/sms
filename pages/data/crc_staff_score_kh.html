@@ -1,4 +1,25 @@
 <script type="text/javascript">
+function preparekhlist(response) {
+    var tname="khmgmt";
+    var resultstr=tname+"result=";
+    var index = response.indexOf(resultstr);
+    var data=JSON.parse(response.substr(index+resultstr.length));
+
+    //alert(response);
+    if (data.ret == 0) {
+        var ee=document.getElementById("kh_khnamelist");
+        for (var i=data.data.length-1; i>=0; i--) {
+            ee.options.add(new Option(data.data[i].khmgmt_name, data.data[i].khmgmt_name));
+        }
+        showkhinfo(data.data[data.data.length-1].khmgmt_name);
+    }
+}
+
+function getkhlist() {
+    var tname="khmgmt";
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=0&did=0", null, preparekhlist);
+}
+
 function calcscorecb(response) {
     var tname = "calcscore";
     var resultstr=tname+"result=";
@@ -7,7 +28,6 @@ function calcscorecb(response) {
     var eres=document.getElementById(tname+"_ret");
 
     //alert(response);
-
     if (data.ret == 0) {
         fillscores(data);
         eres.innerHTML="算分成功!";
@@ -44,10 +64,9 @@ function khcb(response) {
     }
 }
 
-function khinfo_reload() {
+function showkhinfo(khname) {
     var tname="kh";
-
-    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, khcb);
+    ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0&kh_khname=" + khname, null, khcb);
 }
 </script>
 
@@ -57,9 +76,7 @@ function khinfo_reload() {
     <table class="scoretbl">
         <tr>
             <td>考核名称</td>
-            <td><select name="kh_khname"><option value="2016" selected="selected">2016</option>
-                    <option value="2017">2017</option>
-                </select></td>
+            <td><select name="kh_khname" id="kh_khnamelist" onchange="showkhinfo(this.options[this.options.selectedIndex].value)"></select></td>
             <td colspan="4" class="error" id="calcscore_ret"></td>
             <td><input type="button" name="head_calcscore" size="8" value="算分" onclick="calcstaffscore()"></td>
         </tr>
