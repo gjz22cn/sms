@@ -39,12 +39,13 @@
     </div>
     <table class="inner-tab">
         <tr>
-            <td colspan="6" class="error" align="left" id='sgzzsjj_ret'><b></b></td>
+            <td colspan="4" class="error" align="left" id='sgzzsjj_ret'><b></b></td>
         </tr>
 		<tr>
         	<td align="right">时间: </td>
-            <td><input type="text" name="sgzzsjj_date" size="4" value=""></input></td>
-
+            <td><input type="text" name="sgzzsjj_date" size="8" value=""></input></td>
+        </tr>
+		<tr>
         	<td align="right">级别: </td>
             <td><select name="sgzzsjj_level"><option value="总公司级">总公司级</option>
                     <option value="局级">局级</option>
@@ -61,18 +62,18 @@
 
 		<tr>
         	<td align="right">获奖成果名称: </td>
-            <td colspan="5"><input type="text" name="sgzzsjj_name" size="4" value=""></input></td>
+            <td colspan="3"><input type="text" name="sgzzsjj_name" size="128" style="width:300px" value=""></input></td>
         </tr>
 
 		<tr>
         	<td align="right">备注: </td>
-            <td colspan="5"><select name="sgzzsjj_comment"><option value="施组方案奖">施组方案奖</option>
+            <td colspan="3"><select name="sgzzsjj_comment"><option value="施组方案奖">施组方案奖</option>
                     <option value="优秀工法奖">优秀工法奖</option>
                     <option value="优秀专利奖" selected="selected">优秀专利奖</option>
                     </select></td>
         </tr>
 		<tr>
-      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+      		<td colspan="4" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
     	</tr>
     </table>
 </form>

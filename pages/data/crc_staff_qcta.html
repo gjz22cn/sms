@@ -39,15 +39,17 @@
     </div>
     <table class="inner-tab">
         <tr>
-            <td colspan="8" class="error" align="left" id='qcta_ret'><b></b></td>
+            <td colspan="4" class="error" align="left" id='qcta_ret'><b></b></td>
         </tr>
 		<tr>
         	<td align="right">获奖时间: </td>
-            <td><input type="text" name="qcta_winningdate" size="4" value=""></input></td>
-
+            <td><input type="text" name="qcta_winningdate" size="8" value=""></input></td>
+        </tr>
+		<tr>
         	<td align="right">颁奖单位: </td>
-            <td><input type="text" name="qcta_entity" size="4" value=""></input></td>
-
+            <td colspan="3"><input type="text" name="qcta_entity" size="128" style="width:300px" value=""></input></td>
+        </tr>
+		<tr>
         	<td align="right">级别: </td>
             <td><select name="qcta_level"><option value="国家级">国家级</option>
                     <option value="省部级">省部级</option>
@@ -61,18 +63,16 @@
                     <option value="项目技术工程师" selected="selected">项目技术工程师</option>
                     </select></td>
         </tr>
-
 		<tr>
         	<td align="right">获奖课题名称: </td>
-            <td colspan="7"><input type="text" name="qcta_name" size="4" value=""></input></td>
+            <td colspan="3"><input type="text" name="qcta_name" size="128" style="width:300px" value=""></input></td>
         </tr>
-
 		<tr>
         	<td align="right">备注: </td>
-            <td colspan="7"><textarea name="qcta_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
+            <td colspan="3"><textarea name="qcta_comment" rows="4" cols="128" maxlength="512" value=""></textarea></td>
         </tr>
 		<tr>
-      		<td colspan="8" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+      		<td colspan="4" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
     	</tr>
     </table>
 </form>

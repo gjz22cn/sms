@@ -39,14 +39,15 @@
     </div>
     <table class="inner-tab">
         <tr>
-            <td colspan="6" class="error" align="left" id='projex_ret'><b></b></td>
+            <td colspan="2" class="error" align="left" id='projex_ret'><b></b></td>
         </tr>
 		<tr>
         	<td align="right">时间: </td>
-            <td><input type="text" name="projex_dure" size="4" value=""></input></td>
-
+            <td><input type="text" name="projex_dure" size="8" value=""></input></td>
+        </tr>
+		<tr>
         	<td align="right">项目名称: </td>
-            <td colspan="3"><input type="text" name="projex_pname" size="4" value=""></input></td>
+            <td><input type="text" name="projex_pname" size="128" style="width:256px" value=""></input></td>
         </tr>
 		<tr>
         	<td align="right">级别: </td>
@@ -55,8 +56,8 @@
                     <option value="中小型">中小型</option>
                     <option value="无" selected="selected">无</option>
                     </select></td>
-
-
+        </tr>
+		<tr>
         	<td align="right">职务: </td>
             <td><select name="projex_position"><option value="项目总工">项目总工</option>
                     <option value="项目副总工/质量总监">项目副总工/质量总监</option>
@@ -64,7 +65,8 @@
                     <option value="项目技术质量工程师">项目技术质量工程师</option>
                     <option value="无" selected="selected">无</option>
                     </select></td>
-
+        </tr>
+		<tr>
         	<td align="right">备注: </td>
             <td><select name="projex_comment"><option value="完整经历">完整经历</option>
                     <option value="部分经历(计分)">部分经历(计分)</option>
@@ -72,7 +74,7 @@
                     </select></td>
         </tr>
 		<tr>
-      		<td colspan="6" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
+      		<td colspan="2" align="center"><BR/><input type="button" name="button" id="button" value="提交" onclick="apply()"></td>
     	</tr>
     </table>
 </form>
