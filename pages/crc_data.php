@@ -11,8 +11,8 @@ include_once('../classes/crc_profile.cls.php');
 include_once('../classes/crc_staff.cls.php');
 
 if ($_GET['method'] == 'staff') {
-    //$staff = new crc_staff(false);
-    $staff = new crc_staff(true);
+    $staff = new crc_staff(false);
+    //$staff = new crc_staff(true);
     if ($_GET['func'] == 'calcscore') {
         $result = $staff->fn_calcstaffscore($_POST);
         if ($result) {

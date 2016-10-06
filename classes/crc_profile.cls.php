@@ -101,8 +101,7 @@
 				$this->lasterrmsg = "Empty profile ID";
 				return false;
 			}
-			if (($post['username'] == "") || ($post['password'] == "") ||
-				($post['email'] == "")) {
+			if (($post['username'] == "") || ($post['password'] == "")) {
 					$this->lasterrmsg = "";
 					return false;
 			}			
