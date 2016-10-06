@@ -49,10 +49,9 @@ function projexinfo_reload() {
 <form name="form_projex" id="form_projex">
     <table class="scoretbl inner-title-tab" id="table_projex">
 		<tr class="inner-title-tab-title">
-            <th colspan="6" align="left">2、项目工作经历（本公司、五年内竣工的项目，未满1年半的项目仅计一个最高分，上限20分）<input type="button" onclick="btnaction2('projex', 'add', g_pid, '0', this)" value="添加"></th>
-            <th class="score-th" >小计
-                <span id="projex_tscore"></span>
-            </th>
+            <th colspan="5" align="left">2、项目工作经历（本公司、五年内竣工的项目，未满1年半的项目仅计一个最高分，上限20分）</th>
+            <th align="right"><input type="button" onclick="btnaction2('projex', 'add', g_pid, '0', this)" value="添加"></th>
+            <th class="score-th">小计<span id="projex_tscore"></span></th>
 		</tr>
 		<tr class="inner-title-tab-label">
             <th>时间</th>
@@ -60,7 +59,7 @@ function projexinfo_reload() {
             <th>级别</th>
             <th>职务</th>
             <th>得分</th>
-            <th width="200">备注</th>
+            <th width="100">备注</th>
             <th>操作</th>
 		</tr>
     </table>
