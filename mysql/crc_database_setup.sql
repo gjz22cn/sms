@@ -387,7 +387,7 @@ CREATE TABLE `crc_gccy` (
   `gccy_role` varchar(64) NOT NULL default '其他技术质量人员',
   `gccy_pname` varchar(256) NOT NULL default '',
   `gccy_score` float(6,2) NOT NULL default '0',
-  `gccy_comment` int(4) NOT NULL default '0',
+  `gccy_comment` varchar(512) NOT NULL default '',
   PRIMARY KEY  (`gccy_id`)
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 

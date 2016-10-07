@@ -781,6 +781,9 @@ th.middle-w{
 	white-space: normal;
 }
 
+table.scoretbl td.error {
+	color: red;
+}
 /*  add by meili.jin end */
 
 

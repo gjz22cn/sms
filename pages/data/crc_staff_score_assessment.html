@@ -18,7 +18,7 @@ function assessinfocb(response) {
         }
     } else {
         if (data.action == 'get') {
-            eres.innerHTML="获取信息失败: " + data.retstr + "!";
+            eres.innerHTML="获取信息失败: " + data.retstr + ".请填写考核情况信息,并点击\"保存考核信息\"按钮.";
         } else {
             eres.innerHTML="修改失败: " + data.retstr + "!";
         }
