@@ -8,6 +8,8 @@ function preparekhlist(response) {
     //alert(response);
     if (data.ret == 0) {
         var ee=document.getElementById("kh_khnamelist");
+        
+        ee.options.length = 0;
         for (var i=data.data.length-1; i>=0; i--) {
             ee.options.add(new Option(data.data[i].khmgmt_name, data.data[i].khmgmt_name));
         }

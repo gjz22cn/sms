@@ -123,11 +123,6 @@ function OpenWindow(content, title, type, width, height) {
     var bgHeight = $(window).height()+$(document).scrollLeft();
     var Iheight = document.body.clientHeight;
     var Iwidth = document.body.clientWidth;
-function khinfo_reload() {
-    //var tname="kh";
-
-    //ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, khcb);
-}
     var heights = height || 300;
     var widths = width || 500;
     var Oheight = 100 + $(document).scrollTop();
@@ -140,11 +135,6 @@ function khinfo_reload() {
     $(window).resize(function() { 
         var Iwidth = document.body.clientWidth; 
         Iwidth > widths?Owidth = (Iwidth - widths) / 2:Owidth=0;
-function khinfo_reload() {
-    //var tname="kh";
-
-    //ajaxRequest("GET", g_staffpre+"&func="+tname+"&action=get&uid=" + g_uid + "&pid=" + g_pid + "&did=0", null, khcb);
-}
         $('#offDiv').css({"left": Owidth+"px"}); 
     });
 }
